@@ -18,6 +18,15 @@ export function AuthProvider({ children }) {
     return utilisateur;
   }
 
+  async function inscrire(donnees) {
+    const reponse = await api.post('/auth/inscription', donnees);
+    const { utilisateur, token } = reponse.data;
+    localStorage.setItem('renteasy_token', token);
+    localStorage.setItem('renteasy_user', JSON.stringify(utilisateur));
+    setUtilisateur(utilisateur);
+    return utilisateur;
+  }
+
   function deconnecter() {
     localStorage.removeItem('renteasy_token');
     localStorage.removeItem('renteasy_user');
@@ -25,7 +34,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ utilisateur, connecter, deconnecter }}>
+    <AuthContext.Provider value={{ utilisateur, setUtilisateur, connecter, inscrire, deconnecter }}>
       {children}
     </AuthContext.Provider>
   );

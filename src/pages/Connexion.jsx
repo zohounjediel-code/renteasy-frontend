@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { redirigerSelonRole } from './Inscription';
 
 export default function Connexion() {
   const [email, setEmail] = useState('');
@@ -14,18 +15,25 @@ export default function Connexion() {
     setErreur('');
     setChargement(true);
     try {
-      await connecter(email, motDePasse);
-      navigate('/dashboard');
+      const utilisateur = await connecter(email, motDePasse);
+      redirigerSelonRole(utilisateur.role, navigate);
     } catch (err) {
-      setErreur(err.response?.data?.message || 'Identifiants incorrects');
+      // err.response existe uniquement si le serveur a répondu (ex: 401 "Identifiants incorrects").
+      // Si err.response est absent, c'est que le serveur est injoignable (en panne, réseau coupé, etc.) :
+      // afficher "Identifiants incorrects" dans ce cas induirait la personne en erreur sur son mot de passe.
+      if (err.response) {
+        setErreur(err.response.data?.message || 'Identifiants incorrects');
+      } else {
+        setErreur("Impossible de contacter le serveur. Vérifiez votre connexion et réessayez dans un instant.");
+      }
     } finally {
       setChargement(false);
     }
   }
 
   return (
-    <div style={styles.page}>
-      <div style={styles.card}>
+    <div style={styles.page} className="re-auth-page">
+      <div style={styles.card} className="re-auth-card">
         {/* Logo */}
         <div style={styles.logo}>
           <span style={styles.logoIcon}>🏠</span>
@@ -53,6 +61,9 @@ export default function Connexion() {
             onChange={(e) => setMotDePasse(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleConnexion()}
           />
+          <p style={{ ...styles.lien, textAlign: 'right', fontSize: '13px', margin: '0 0 4px' }} onClick={() => navigate('/mot-de-passe-oublie')}>
+            Mot de passe oublié ?
+          </p>
 
           {erreur && <p style={styles.erreur}>{erreur}</p>}
 
@@ -65,6 +76,10 @@ export default function Connexion() {
           </button>
         </div>
 
+        <p style={styles.lienInscription}>
+          Pas encore de compte ?{' '}
+          <span style={styles.lien} onClick={() => navigate('/inscription')}>S'inscrire</span>
+        </p>
         <p style={styles.footer}>
           © 2026 RentEasy Bénin · Cotonou, Bénin
         </p>
@@ -142,11 +157,19 @@ const styles = {
     marginTop: '8px',
     transition: 'opacity 0.2s',
   },
+  lienInscription: {
+    textAlign: 'center',
+    color: '#888',
+    fontSize: '13px',
+    marginTop: '16px',
+    marginBottom: 0,
+  },
+  lien: { color: '#e8a020', fontWeight: '600', cursor: 'pointer' },
   footer: {
     textAlign: 'center',
     color: '#aaa',
     fontSize: '12px',
-    marginTop: '24px',
+    marginTop: '8px',
     marginBottom: 0,
   },
 };
