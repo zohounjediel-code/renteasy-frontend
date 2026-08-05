@@ -23,7 +23,8 @@ export default function SuperAdminRapportFinancier() {
   const { deconnecter } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => { chargerApercu(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
+  useEffect(() => { chargerApercu(); }, []);
 
   async function chargerApercu() {
     setChargement(true);
