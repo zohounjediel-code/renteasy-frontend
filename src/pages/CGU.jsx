@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function CGU() {
   const navigate = useNavigate();
@@ -114,7 +114,7 @@ export default function CGU() {
         <section style={s.section}>
           <h2 style={s.h2}>8. Contact</h2>
           <p style={s.p}>
-            Pour toute question relative aux présentes conditions ou à vos données personnelles, contactez le support RentEasy Bénin depuis votre espace, ou à l'adresse de contact communiquée sur le site.
+            Pour toute question relative aux présentes conditions ou à vos données personnelles, contactez le support RentEasy Bénin depuis votre espace, ou via la <Link to="/contact" style={s.lien}>page Contact</Link>.
           </p>
         </section>
       </div>
@@ -127,6 +127,7 @@ const s = {
   conteneur: { maxWidth: '720px', margin: '0 auto', background: '#fff', borderRadius: '12px', padding: '40px', boxShadow: '0 4px 20px rgba(0,0,0,0.06)' },
   entete: { marginBottom: '24px' },
   lienRetour: { color: '#e8a020', fontWeight: '600', fontSize: '13px', cursor: 'pointer', display: 'inline-block', marginBottom: '16px' },
+  lien: { color: '#e8a020', fontWeight: '600' },
   titre: { fontSize: '24px', fontWeight: '800', color: '#1a3a5c', margin: '0 0 8px' },
   dateMaj: { color: '#888', fontSize: '13px', margin: 0 },
   avertissement: { background: '#fff7e6', border: '1px solid #f0c674', borderRadius: '8px', padding: '16px', fontSize: '13px', color: '#7a5c10', lineHeight: '1.6', marginBottom: '28px' },

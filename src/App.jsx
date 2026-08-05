@@ -7,6 +7,7 @@ import ActiverCompte from './pages/ActiverCompte';
 import MotDePasseOublie from './pages/MotDePasseOublie';
 import ReinitialiserMotDePasse from './pages/ReinitialiserMotDePasse';
 import CGU from './pages/CGU';
+import Contact from './pages/Contact';
 import Dashboard from './pages/Dashboard';
 import Biens from './pages/Biens';
 import Locataires from './pages/Locataires';
@@ -80,6 +81,7 @@ function App() {
           <Route path="/mot-de-passe-oublie" element={<MotDePasseOublie />} />
           <Route path="/reinitialiser-mot-de-passe" element={<ReinitialiserMotDePasse />} />
           <Route path="/cgu" element={<CGU />} />
+          <Route path="/contact" element={<Contact />} />
 
           {/* Propriétaire */}
           <Route path="/dashboard" element={<RouteProtegee rolesAutorises={['proprietaire','admin','super_admin']}><Dashboard /></RouteProtegee>} />
