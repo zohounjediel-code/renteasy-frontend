@@ -108,7 +108,7 @@ export default function AgentDemandes() {
     .sort((a, b) => (b.escaladee ? 1 : 0) - (a.escaladee ? 1 : 0));
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-brand-50">
       <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
         <div className="flex items-center gap-2 text-lg text-slate-900">🏠 <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span> <span className="rounded-full bg-accent-500 px-2.5 py-0.5 text-[11px] font-extrabold text-white">Agent</span></div>
         <div className="flex items-center gap-1.5">
@@ -146,7 +146,7 @@ export default function AgentDemandes() {
         {chargement ? (
           <p className="py-10 text-center text-slate-400">Chargement...</p>
         ) : demandesFiltrees.length === 0 ? (
-          <div className="rounded-2xl border border-slate-100 bg-white p-10 text-center text-slate-400 shadow-card">
+          <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-10 text-center text-slate-400 shadow-card">
             <p>✅ Aucune demande {filtre === 'en_attente' ? 'en attente' : ''}</p>
           </div>
         ) : (
@@ -155,7 +155,7 @@ export default function AgentDemandes() {
               const st = STATUT_COULEURS[d.statut] || { cls: 'bg-slate-100 text-slate-500', label: d.statut };
               const conditions = d.conditions_demandees || {};
               return (
-                <div key={d.id} className="rounded-2xl border border-slate-100 bg-white p-5 shadow-card">
+                <div key={d.id} className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-5 shadow-card">
                   <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
                     <div>
                       <span className={`rounded-full px-3 py-1 text-[13px] font-bold ${

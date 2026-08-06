@@ -104,7 +104,7 @@ export default function SuperAdminModeration() {
   });
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-brand-50">
       <nav className="re-nav sticky top-0 z-[100] flex h-16 flex-wrap items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
         <div className="flex cursor-pointer items-center gap-2.5 text-lg font-bold text-slate-900" onClick={() => navigate('/superadmin/dashboard')}>
           ⚡ RentEasy <span className="text-accent-600">Bénin</span>
@@ -156,7 +156,7 @@ export default function SuperAdminModeration() {
           chargement ? (
             <p className="py-10 text-center text-slate-400">Chargement...</p>
           ) : signalements.length === 0 ? (
-            <div className="rounded-2xl border border-slate-100 bg-white py-16 text-center text-slate-400 shadow-card">Aucun signalement en attente 🎉</div>
+            <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 py-16 text-center text-slate-400 shadow-card">Aucun signalement en attente 🎉</div>
           ) : (
             <div className="flex flex-col gap-3">
               {signalements.map(sig => (
@@ -189,7 +189,7 @@ export default function SuperAdminModeration() {
         ) : chargement ? (
           <p className="py-10 text-center text-slate-400">Chargement...</p>
         ) : annoncesFiltrees.length === 0 ? (
-          <div className="rounded-2xl border border-slate-100 bg-white py-16 text-center text-slate-400 shadow-card">Aucune annonce trouvée</div>
+          <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 py-16 text-center text-slate-400 shadow-card">Aucune annonce trouvée</div>
         ) : (
           <div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-4">
             {annoncesFiltrees.map(a => (

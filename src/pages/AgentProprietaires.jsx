@@ -63,7 +63,7 @@ export default function AgentProprietaires() {
   });
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-brand-50">
       <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
         <div className="flex items-center gap-2 text-lg text-slate-900">
           ⚡ <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span>
@@ -110,12 +110,12 @@ export default function AgentProprietaires() {
             {chargement ? (
               <p className="p-5 text-slate-400">Chargement...</p>
             ) : proprietaires.length === 0 ? (
-              <div className="mt-4 rounded-2xl border border-slate-100 bg-white p-10 text-center text-slate-400 shadow-card">
+              <div className="mt-4 rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-10 text-center text-slate-400 shadow-card">
                 <p>👤</p>
                 <p>Aucun propriétaire assigné pour l'instant.</p>
               </div>
             ) : proprietairesFiltres.length === 0 ? (
-              <div className="mt-4 rounded-2xl border border-slate-100 bg-white p-10 text-center text-slate-400 shadow-card">
+              <div className="mt-4 rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-10 text-center text-slate-400 shadow-card">
                 <p>🔍</p>
                 <p>Aucun propriétaire ne correspond à cette recherche/filtre.</p>
               </div>
@@ -176,7 +176,7 @@ export default function AgentProprietaires() {
                 contexte="proprietaire"
               />
             ) : (
-              <div className="flex h-[500px] flex-col items-center justify-center rounded-2xl border border-slate-100 bg-white p-10 text-center shadow-card">
+              <div className="flex h-[500px] flex-col items-center justify-center rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-10 text-center shadow-card">
                 <p className="mb-4 text-5xl">💬</p>
                 <p className="text-[15px] text-slate-400">Sélectionnez un propriétaire pour démarrer une conversation</p>
               </div>

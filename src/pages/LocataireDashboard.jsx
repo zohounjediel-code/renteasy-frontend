@@ -281,14 +281,14 @@ export default function LocataireDashboard() {
 
   if (chargement) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50">
+      <div className="flex min-h-screen items-center justify-center bg-brand-50">
         <p className="text-slate-400">Chargement...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-brand-50">
       <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
         <div className="text-lg text-slate-900">🏠 <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span></div>
         <div className="flex items-center gap-1.5">
@@ -395,14 +395,14 @@ export default function LocataireDashboard() {
         ))}
 
         {data?.contrats?.length === 0 && (
-          <div className="mb-6 rounded-2xl border border-slate-100 bg-white p-10 text-center text-slate-400 shadow-card">
+          <div className="mb-6 rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-10 text-center text-slate-400 shadow-card">
             <p>🏠 Aucun contrat actif trouvé.</p>
             <p className="text-sm text-slate-400">Contactez votre propriétaire pour plus d'informations.</p>
           </div>
         )}
 
         {/* Échéances */}
-        <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-card">
+        <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-6 shadow-card">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
             <h3 className="text-base font-bold text-slate-900">Mes échéances</h3>
             <div className="flex flex-wrap items-center gap-2">

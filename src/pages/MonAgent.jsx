@@ -58,7 +58,7 @@ export default function MonAgent() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-brand-50">
       <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
         <div className="text-lg text-slate-900">🏠 <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span></div>
         <div className="flex items-center gap-1.5">
@@ -85,7 +85,7 @@ export default function MonAgent() {
         {chargement ? (
           <p className="py-10 text-center text-slate-400">Chargement...</p>
         ) : erreur ? (
-          <div className="flex flex-col items-center gap-2 rounded-2xl border border-slate-100 bg-white p-14 text-center text-slate-400 shadow-card">
+          <div className="flex flex-col items-center gap-2 rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-14 text-center text-slate-400 shadow-card">
             <p className="text-3xl">👔</p>
             <p>{erreur}</p>
             <p className="text-[13px] text-slate-400">Contactez l'administration RentEasy pour vous assigner un agent.</p>
@@ -174,7 +174,7 @@ export default function MonAgent() {
             ) : (
               <div className="flex max-h-[380px] flex-col gap-2 overflow-y-auto">
                 {journal.map(j => (
-                  <div key={j.id} className="flex items-start gap-3 rounded-lg border border-slate-100 bg-white px-3.5 py-2.5 shadow-card">
+                  <div key={j.id} className="flex items-start gap-3 rounded-lg border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 px-3.5 py-2.5 shadow-card">
                     <span className="shrink-0 text-base">{ICONES_ACTION[j.type_action] || '🤝'}</span>
                     <div className="flex-1">
                       <p className="m-0 text-[13px] text-slate-800">{j.description}</p>

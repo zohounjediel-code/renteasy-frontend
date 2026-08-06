@@ -4,7 +4,7 @@ export default function CGU() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-slate-50 px-5 py-10">
+    <div className="min-h-screen bg-brand-50 px-5 py-10">
       <div className="mx-auto max-w-3xl rounded-3xl bg-white p-8 sm:p-10 shadow-card">
         <div className="mb-6">
           <span className="mb-4 inline-block cursor-pointer text-sm font-semibold text-accent-600 hover:text-accent-700" onClick={() => navigate(-1)}>← Retour</span>

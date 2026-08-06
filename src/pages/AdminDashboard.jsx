@@ -6,7 +6,7 @@ import ClocheNotifications from '../components/ClocheNotifications';
 
 function StatCard({ icone, valeur, label, couleur, sous }) {
   return (
-    <div className={`rounded-2xl border border-slate-100 bg-white p-5 shadow-card border-t-[3px] ${couleur}`}>
+    <div className={`rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-5 shadow-card border-t-[3px] ${couleur}`}>
       <div className="mb-2 text-2xl">{icone}</div>
       <div className="mb-1 text-2xl font-extrabold text-slate-900">{valeur}</div>
       <div className="text-[13px] font-medium text-slate-500">{label}</div>
@@ -74,7 +74,7 @@ export default function AdminDashboard() {
   const agentsTriesParRecouvrement = [...agents].sort((a, b) => (b.taux_recouvrement || 0) - (a.taux_recouvrement || 0));
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-brand-50">
       <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
         <div className="flex items-center gap-2 text-lg text-slate-900">
           🛡️ <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span>
@@ -120,12 +120,12 @@ export default function AdminDashboard() {
         {chargement ? (
           <p className="py-5 text-center text-slate-400">Chargement...</p>
         ) : agents.length === 0 ? (
-          <div className="flex flex-col items-center gap-3 rounded-2xl border border-slate-100 bg-white p-10 text-center text-slate-400 shadow-card">
+          <div className="flex flex-col items-center gap-3 rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-10 text-center text-slate-400 shadow-card">
             <p>Aucun agent enregistré.</p>
             <button className="rounded-xl bg-accent-500 px-5 py-2.5 text-sm font-bold text-white hover:bg-accent-600" onClick={() => setModalCreerAgent(true)}>+ Créer le premier agent</button>
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-2xl border border-slate-100 bg-white shadow-card">
+          <div className="overflow-x-auto rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 shadow-card">
             <div className="grid min-w-[760px] grid-cols-[1.6fr_1.6fr_0.9fr_0.9fr_1.3fr_1.1fr_0.9fr] bg-accent-50 px-5 py-3 text-[11px] font-bold uppercase tracking-wide text-accent-700">
               <span>Agent</span>
               <span>Contact</span>
@@ -166,7 +166,7 @@ export default function AdminDashboard() {
         {demandes.length > 0 && (
           <>
             <p className="mb-3 mt-7 text-xs font-bold uppercase tracking-wide text-accent-600">📋 Dernières demandes de contrats</p>
-            <div className="overflow-x-auto rounded-2xl border border-slate-100 bg-white shadow-card">
+            <div className="overflow-x-auto rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 shadow-card">
               <div className="grid min-w-[600px] grid-cols-[2fr_1.5fr_1.5fr_1fr_1fr] bg-accent-50 px-5 py-3 text-[11px] font-bold uppercase tracking-wide text-accent-700">
                 <span>Propriétaire</span>
                 <span>Bien</span>

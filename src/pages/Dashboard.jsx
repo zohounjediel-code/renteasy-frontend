@@ -7,7 +7,7 @@ import BoutonActiverRole from '../components/BoutonActiverRole';
 
 function KPICard({ titre, valeur, sous, icone, couleur }) {
   return (
-    <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-card">
+    <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-5 shadow-card">
       <div className={`mb-3 flex h-10 w-10 items-center justify-center rounded-xl text-lg ${couleur}`}>{icone}</div>
       <div className="text-2xl font-extrabold text-slate-900">{valeur}</div>
       <div className="mt-1 text-sm font-medium text-slate-500">{titre}</div>
@@ -57,7 +57,7 @@ export default function Dashboard() {
   }
 
   if (chargement) return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-slate-50">
+    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-brand-50">
       <div className="h-10 w-10 animate-spin rounded-full border-4 border-brand-100 border-t-brand-600" />
       <p className="text-brand-700">Chargement...</p>
     </div>
@@ -69,7 +69,7 @@ export default function Dashboard() {
   const paiements = data?.derniers_paiements || [];
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-brand-50">
       <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
         <div className="text-lg text-slate-900">🏠 <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span></div>
         <div className="flex items-center gap-1.5">
@@ -111,7 +111,7 @@ export default function Dashboard() {
         </div>
 
         <div className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-4">
-          <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-card">
+          <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-5 shadow-card">
             <h3 className="mb-4 text-sm font-bold text-slate-900">⚠️ Impayés en retard</h3>
             {impayes.length === 0 ? (
               <p className="py-5 text-center text-sm text-slate-400">Aucun impayé en retard 🎉</p>
@@ -129,7 +129,7 @@ export default function Dashboard() {
             )}
           </div>
 
-          <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-card">
+          <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-5 shadow-card">
             <h3 className="mb-4 text-sm font-bold text-slate-900">✅ Derniers paiements</h3>
             {paiements.length === 0 ? (
               <p className="py-5 text-center text-sm text-slate-400">Aucun paiement ce mois</p>

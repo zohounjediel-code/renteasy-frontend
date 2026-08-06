@@ -93,7 +93,7 @@ export default function Paiements() {
   });
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-brand-50">
       <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
         <div className="cursor-pointer text-lg text-slate-900" onClick={() => navigate(lienConsultation('/dashboard'))}>🏠 <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span></div>
         <div className="flex items-center gap-1.5">
@@ -141,11 +141,11 @@ export default function Paiements() {
         {chargement ? (
           <p className="py-10 text-center text-slate-400">Chargement...</p>
         ) : echeancesFiltrees.length === 0 ? (
-          <div className="rounded-2xl border border-slate-100 bg-white p-10 text-center text-slate-400 shadow-card">
+          <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-10 text-center text-slate-400 shadow-card">
             <p>Aucune échéance trouvée pour ce filtre.</p>
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-2xl border border-slate-100 bg-white shadow-card">
+          <div className="overflow-x-auto rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 shadow-card">
             <div className="grid min-w-[640px] grid-cols-[1.2fr_1.5fr_2fr_1.3fr_1.5fr] bg-slate-50 px-5 py-3 text-xs font-bold uppercase tracking-wide text-slate-400">
               <span>Période</span>
               <span>Locataire</span>

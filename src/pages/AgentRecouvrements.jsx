@@ -157,7 +157,7 @@ export default function AgentRecouvrements() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-brand-50">
       <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
         <div className="flex items-center gap-2 text-lg text-slate-900">
           ⚡ <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span>
@@ -191,17 +191,17 @@ export default function AgentRecouvrements() {
 
         {/* Stats rapides */}
         <div className="mb-7 grid grid-cols-3 gap-4">
-          <div className="rounded-2xl border border-slate-100 bg-white p-5 text-center shadow-card">
+          <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-5 text-center shadow-card">
             <div className="mb-2 text-2xl">⚠️</div>
             <div className="mb-1 text-3xl font-extrabold text-red-600">{impayes.length}</div>
             <div className="text-[13px] text-slate-400">Impayés à traiter</div>
           </div>
-          <div className="rounded-2xl border border-slate-100 bg-white p-5 text-center shadow-card">
+          <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-5 text-center shadow-card">
             <div className="mb-2 text-2xl">📋</div>
             <div className="mb-1 text-3xl font-extrabold text-brand-700">{recouvrements.length}</div>
             <div className="text-[13px] text-slate-400">Interventions totales</div>
           </div>
-          <div className="rounded-2xl border border-slate-100 bg-white p-5 text-center shadow-card">
+          <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-5 text-center shadow-card">
             <div className="mb-2 text-2xl">✅</div>
             <div className="mb-1 text-3xl font-extrabold text-emerald-600">
               {recouvrements.filter(r => r.resultat === 'paiement_complet').length}
@@ -216,7 +216,7 @@ export default function AgentRecouvrements() {
         {chargement ? (
           <p className="py-10 text-center text-slate-400">Chargement...</p>
         ) : impayes.length === 0 ? (
-          <div className="rounded-2xl border border-slate-100 bg-white p-14 text-center text-slate-400 shadow-card">
+          <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-14 text-center text-slate-400 shadow-card">
             <p className="mb-2 text-3xl">🎉</p>
             <p>Aucune échéance impayée en retard !</p>
           </div>
@@ -259,7 +259,7 @@ export default function AgentRecouvrements() {
         {recouvrements.length > 0 && (
           <>
             <p className="mb-3 mt-8 text-xs font-bold uppercase tracking-wide text-brand-700">📜 Historique des interventions</p>
-            <div className="overflow-x-auto rounded-2xl border border-slate-100 bg-white shadow-card">
+            <div className="overflow-x-auto rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 shadow-card">
               <div className="grid min-w-[640px] grid-cols-[1.5fr_1fr_1.5fr_1fr_2fr] bg-slate-50 px-5 py-3 text-[11px] font-bold uppercase tracking-wide text-slate-400">
                 <span>Locataire</span>
                 <span>Type</span>

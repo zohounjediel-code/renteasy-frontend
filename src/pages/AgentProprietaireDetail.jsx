@@ -518,12 +518,12 @@ export default function AgentProprietaireDetail() {
   }
 
   if (chargement) {
-    return <div className="flex min-h-screen items-center justify-center bg-slate-50"><p className="text-slate-400">Chargement...</p></div>;
+    return <div className="flex min-h-screen items-center justify-center bg-brand-50"><p className="text-slate-400">Chargement...</p></div>;
   }
 
   if (erreur) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-slate-50">
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-brand-50">
         <p className="text-red-600">{erreur}</p>
         <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/agent/proprietaires')}>← Retour à mes propriétaires</button>
       </div>
@@ -533,7 +533,7 @@ export default function AgentProprietaireDetail() {
   const p = dashboard?.proprietaire;
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-brand-50">
       <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
         <div className="flex items-center gap-2 text-lg text-slate-900">
           ⚡ <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span>
@@ -584,17 +584,17 @@ export default function AgentProprietaireDetail() {
         {onglet === 'apercu' && dashboard && (
           <div>
             <div className="mb-3 grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4">
-              <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-card">
+              <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-4 shadow-card">
                 <p className="m-0 text-xs text-slate-400">Biens</p>
                 <p className="my-1.5 text-xl font-bold text-slate-900">{dashboard.biens.total_biens}</p>
                 <p className="m-0 text-xs text-slate-400">{dashboard.biens.biens_occupes} occupé(s) · {dashboard.biens.biens_libres} libre(s)</p>
               </div>
-              <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-card">
+              <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-4 shadow-card">
                 <p className="m-0 text-xs text-slate-400">Échéances — {dashboard.mois_en_cours.mois}</p>
                 <p className="my-1.5 text-xl font-bold text-slate-900">{dashboard.mois_en_cours.echeances_payees} / {dashboard.mois_en_cours.total_echeances} payées</p>
                 <p className="m-0 text-xs text-slate-400">Taux de recouvrement : {dashboard.mois_en_cours.taux_recouvrement}%</p>
               </div>
-              <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-card">
+              <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-4 shadow-card">
                 <p className="m-0 text-xs text-slate-400">Montant collecté ce mois</p>
                 <p className="my-1.5 text-xl font-bold text-slate-900">{formaterMontant(dashboard.mois_en_cours.montant_total_collecte)}</p>
                 <p className="m-0 text-xs text-slate-400">Sur {formaterMontant(dashboard.mois_en_cours.montant_total_du)} dû</p>
@@ -607,7 +607,7 @@ export default function AgentProprietaireDetail() {
             ) : (
               <div className="flex flex-col gap-1.5">
                 {dashboard.impayes.map(e => (
-                  <div key={e.id} className="grid grid-cols-[1fr_1fr_auto_auto] items-center gap-3 rounded-lg border border-slate-100 bg-white px-3.5 py-2.5 text-[13px] text-slate-700 shadow-card">
+                  <div key={e.id} className="grid grid-cols-[1fr_1fr_auto_auto] items-center gap-3 rounded-lg border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 px-3.5 py-2.5 text-[13px] text-slate-700 shadow-card">
                     <span>{e.adresse}, {e.ville}</span>
                     <span>{e.locataire_nom}</span>
                     <span>{formaterMontant(e.montant_du)}</span>
@@ -623,7 +623,7 @@ export default function AgentProprietaireDetail() {
             ) : (
               <div className="flex flex-col gap-1.5">
                 {dashboard.derniers_paiements.map(pa => (
-                  <div key={pa.id} className="grid grid-cols-[1fr_1fr_auto_auto] items-center gap-3 rounded-lg border border-slate-100 bg-white px-3.5 py-2.5 text-[13px] text-slate-700 shadow-card">
+                  <div key={pa.id} className="grid grid-cols-[1fr_1fr_auto_auto] items-center gap-3 rounded-lg border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 px-3.5 py-2.5 text-[13px] text-slate-700 shadow-card">
                     <span>{pa.adresse}</span>
                     <span>{pa.locataire_nom}</span>
                     <span className="text-emerald-600">{formaterMontant(pa.montant)}</span>
@@ -647,7 +647,7 @@ export default function AgentProprietaireDetail() {
             ) : (
               <div className="flex flex-col gap-3">
                 {biens.map(b => (
-                  <div key={b.id} className="flex items-center justify-between gap-3 rounded-2xl border border-slate-100 bg-white p-4 shadow-card">
+                  <div key={b.id} className="flex items-center justify-between gap-3 rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-4 shadow-card">
                     <div>
                       <div className="font-bold text-slate-900">🔖 {b.numero_bien} — {LABELS_TYPE_BIEN[b.type_bien] || b.type_bien}</div>
                       <div className="mt-0.5 text-[13px] text-slate-400">{b.adresse}, {b.ville}{b.quartier ? ` (${b.quartier})` : ''}</div>
@@ -683,7 +683,7 @@ export default function AgentProprietaireDetail() {
             ) : (
               <div className="flex flex-col gap-3">
                 {contrats.map(c => (
-                  <div key={c.id} className="flex cursor-pointer items-center justify-between gap-3 rounded-2xl border border-slate-100 bg-white p-4 shadow-card" onClick={() => voirContrat(c.id)} role="button">
+                  <div key={c.id} className="flex cursor-pointer items-center justify-between gap-3 rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-4 shadow-card" onClick={() => voirContrat(c.id)} role="button">
                     <div>
                       <div className="font-bold text-slate-900">🔖 {c.numero_bien} — {c.locataire_nom}</div>
                       <div className="mt-0.5 text-[13px] text-slate-400">
@@ -710,7 +710,7 @@ export default function AgentProprietaireDetail() {
             ) : (
               <div className="flex flex-col gap-1.5">
                 {paiements.map(pa => (
-                  <div key={pa.id} className="grid grid-cols-[1fr_1fr_auto_auto_auto] items-center gap-3 rounded-lg border border-slate-100 bg-white px-3.5 py-2.5 text-[13px] text-slate-700 shadow-card">
+                  <div key={pa.id} className="grid grid-cols-[1fr_1fr_auto_auto_auto] items-center gap-3 rounded-lg border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 px-3.5 py-2.5 text-[13px] text-slate-700 shadow-card">
                     <span>{pa.adresse}</span>
                     <span>{pa.locataire_nom}</span>
                     <span className="text-emerald-600">{formaterMontant(pa.montant)}</span>
@@ -735,7 +735,7 @@ export default function AgentProprietaireDetail() {
             ) : (
               <div className="flex flex-col gap-2">
                 {journal.map(j => (
-                  <div key={j.id} className="flex items-start gap-3 rounded-lg border border-slate-100 bg-white px-3.5 py-2.5 shadow-card">
+                  <div key={j.id} className="flex items-start gap-3 rounded-lg border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 px-3.5 py-2.5 shadow-card">
                     <span className="shrink-0 text-base">{ICONES_ACTION[j.type_action] || '🤝'}</span>
                     <div className="flex-1">
                       <p className="m-0 text-[13px] text-slate-800">{j.description}</p>

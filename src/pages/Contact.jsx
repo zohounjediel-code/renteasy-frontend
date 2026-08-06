@@ -30,7 +30,7 @@ export default function Contact() {
   const champCls = 'rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30';
 
   return (
-    <div className="min-h-screen bg-slate-50 px-5 py-10">
+    <div className="min-h-screen bg-brand-50 px-5 py-10">
       <div className="mx-auto max-w-xl rounded-3xl bg-white p-8 sm:p-10 shadow-card">
         <div className="mb-6">
           <span className="mb-4 inline-block cursor-pointer text-sm font-semibold text-accent-600 hover:text-accent-700" onClick={() => navigate(-1)}>← Retour</span>

@@ -112,11 +112,11 @@ export default function SuperAdminParametres() {
   }
 
   if (chargement) {
-    return <div className="flex min-h-screen items-center justify-center bg-slate-50"><p className="text-brand-700">Chargement...</p></div>;
+    return <div className="flex min-h-screen items-center justify-center bg-brand-50"><p className="text-brand-700">Chargement...</p></div>;
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-brand-50">
       <nav className="re-nav sticky top-0 z-[100] flex h-16 items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
         <div className="flex cursor-pointer items-center gap-2.5 text-lg font-bold text-slate-900" onClick={() => navigate('/superadmin/dashboard')}>
           ⚡ RentEasy <span className="text-accent-600">Bénin</span>
@@ -150,7 +150,7 @@ export default function SuperAdminParametres() {
         )}
 
         {/* Commission */}
-        <div className="mb-4 rounded-2xl border border-slate-100 bg-white p-5 shadow-card">
+        <div className="mb-4 rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-5 shadow-card">
           <h3 className="text-base font-bold text-slate-900">💰 Commission RentEasy</h3>
           <p className="mt-1.5 text-[13px] text-slate-500">Pourcentage prélevé sur chaque paiement de loyer, quel que soit le mode de paiement.</p>
           <div className="mt-4 flex items-center gap-3">
@@ -175,7 +175,7 @@ export default function SuperAdminParametres() {
         {/* Opérateurs Mobile Money */}
         <p className="my-6 text-xs font-bold uppercase tracking-wide text-purple-600">🔑 Opérateurs Mobile Money</p>
         {operateurs.map(o => (
-          <div key={o.operateur} className="mb-4 rounded-2xl border border-slate-100 bg-white p-5 shadow-card">
+          <div key={o.operateur} className="mb-4 rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-5 shadow-card">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-bold text-slate-900">{NOMS_OPERATEUR[o.operateur] || o.operateur}</h3>
               <label className="flex cursor-pointer items-center gap-2">

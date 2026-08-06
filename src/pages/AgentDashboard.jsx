@@ -21,7 +21,7 @@ export default function AgentDashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-brand-50">
       <nav className="sticky top-0 z-[100] flex h-[60px] flex-wrap items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
         <div className="flex items-center gap-2 text-lg text-slate-900">
           ⚡ <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span>
@@ -49,14 +49,14 @@ export default function AgentDashboard() {
         ) : (
           <>
             <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4">
-              <div className="cursor-pointer rounded-2xl border border-slate-100 bg-white p-5 shadow-card transition hover:border-brand-200" onClick={() => navigate('/agent/proprietaires')} role="button">
+              <div className="cursor-pointer rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-5 shadow-card transition hover:border-brand-200" onClick={() => navigate('/agent/proprietaires')} role="button">
                 <p className="mb-2 text-xl">👤</p>
                 <p className="mb-1 text-2xl font-extrabold text-slate-900">{perf.nb_proprietaires}</p>
                 <p className="m-0 text-[13px] font-semibold text-brand-700">Propriétaire(s) géré(s)</p>
                 <p className="mt-1.5 text-xs text-slate-400">{perf.nb_proprietaires_delegation} en délégation active</p>
               </div>
 
-              <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-card">
+              <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-5 shadow-card">
                 <p className="mb-2 text-xl">📊</p>
                 <p className={`mb-1 text-2xl font-extrabold ${perf.taux_recouvrement >= 80 ? 'text-emerald-600' : perf.taux_recouvrement >= 50 ? 'text-accent-600' : 'text-red-600'}`}>
                   {perf.taux_recouvrement}%
@@ -65,7 +65,7 @@ export default function AgentDashboard() {
                 <p className="mt-1.5 text-xs text-slate-400">{perf.echeances_payees} / {perf.total_echeances} échéances payées ce mois</p>
               </div>
 
-              <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-card">
+              <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-5 shadow-card">
                 <p className="mb-2 text-xl">💰</p>
                 <p className="mb-1 text-2xl font-extrabold text-slate-900">{formaterMontant(perf.revenus_collectes)}</p>
                 <p className="m-0 text-[13px] font-semibold text-brand-700">Revenus collectés ce mois</p>
@@ -85,11 +85,11 @@ export default function AgentDashboard() {
             </div>
 
             <div className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4">
-              <div className="rounded-xl border border-slate-100 bg-white p-4 shadow-card">
+              <div className="rounded-xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-4 shadow-card">
                 <p className="m-0 text-[13px] font-semibold text-brand-700">Biens sous gestion</p>
                 <p className="mt-1 text-xl font-bold text-slate-900">{perf.nb_biens}</p>
               </div>
-              <div className="rounded-xl border border-slate-100 bg-white p-4 shadow-card">
+              <div className="rounded-xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-4 shadow-card">
                 <p className="m-0 text-[13px] font-semibold text-brand-700">Contrats actifs</p>
                 <p className="mt-1 text-xl font-bold text-slate-900">{perf.nb_contrats_actifs}</p>
               </div>

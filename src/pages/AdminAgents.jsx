@@ -67,7 +67,7 @@ export default function AdminAgents() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-brand-50">
       <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
         <div className="flex items-center gap-2 text-lg text-slate-900">
           🛡️ <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span>
@@ -170,10 +170,10 @@ export default function AdminAgents() {
               ) : (
                 <div className="flex flex-col gap-2.5">
                   {proprietairesAgent.length === 0 ? (
-                    <div className="rounded-2xl border border-slate-100 bg-white p-10 text-center text-slate-400 shadow-card">Aucun propriétaire assigné à cet agent</div>
+                    <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-10 text-center text-slate-400 shadow-card">Aucun propriétaire assigné à cet agent</div>
                   ) : (
                     proprietairesAgent.map(p => (
-                      <div key={p.id} className="flex items-center gap-3 rounded-xl border border-slate-100 bg-white p-3.5 shadow-card">
+                      <div key={p.id} className="flex items-center gap-3 rounded-xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-3.5 shadow-card">
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-purple-100 text-sm font-bold text-purple-700">{p.nom.charAt(0)}</div>
                         <div className="flex-1">
                           <div className="font-semibold text-slate-900">{p.nom}</div>

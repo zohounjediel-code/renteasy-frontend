@@ -51,7 +51,7 @@ const champInput = 'w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text
 const boutonPrim = 'rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 disabled:opacity-60';
 const boutonSec = 'rounded-xl border-[1.5px] border-accent-300 bg-white px-5 py-2.5 text-sm font-semibold text-accent-700 hover:bg-accent-50';
 const btnFermer = 'rounded-lg bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-500 hover:bg-slate-200';
-const card = 'mb-6 rounded-2xl border border-slate-100 bg-white p-6 shadow-card';
+const card = 'mb-6 rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-6 shadow-card';
 const cardTitre = 'mb-4 text-lg font-bold text-slate-900';
 const grille2 = 'mb-4 grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4';
 const badgeAttente = 'rounded-full bg-accent-50 px-2.5 py-1 text-xs font-semibold text-accent-700';
@@ -340,7 +340,7 @@ export default function Locataires() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-brand-50">
       <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
         <div className="cursor-pointer text-lg text-slate-900" onClick={() => navigate(lienConsultation('/dashboard'))}>🏠 <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span></div>
         <div className="flex items-center gap-1.5">
@@ -645,7 +645,7 @@ export default function Locataires() {
         {chargement ? (
           <p className="py-10 text-center text-slate-400">Chargement...</p>
         ) : locataires.length === 0 ? (
-          <div className="rounded-2xl border border-slate-100 bg-white p-10 text-center text-slate-400 shadow-card"><p>👤 Aucun locataire enregistré.</p></div>
+          <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-10 text-center text-slate-400 shadow-card"><p>👤 Aucun locataire enregistré.</p></div>
         ) : (
           <div className="flex flex-col gap-3">
             {locataires.map(l => {
@@ -655,7 +655,7 @@ export default function Locataires() {
               const contratsL = contrats.filter(c => c.locataire_id === l.id);
               const contratsActifsL = contratsL.filter(c => c.statut === 'actif' || c.statut === 'en_attente_signature');
               return (
-                <div key={l.id} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-100 bg-white px-5 py-4 shadow-card">
+                <div key={l.id} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 px-5 py-4 shadow-card">
                   <div className="flex items-center gap-3.5">
                     <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-600 text-lg font-bold text-white">{l.nom.charAt(0).toUpperCase()}</div>
                     <div>

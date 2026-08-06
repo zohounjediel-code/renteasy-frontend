@@ -159,7 +159,7 @@ export default function Profil() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-brand-50">
       <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
         <div className="cursor-pointer text-lg text-slate-900" onClick={retourDashboard}>
           🏠 <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span>
@@ -177,7 +177,7 @@ export default function Profil() {
         ) : (
           <div className="grid grid-cols-[280px_1fr] items-start gap-6">
             {/* Carte profil gauche */}
-            <div className="sticky top-[84px] flex flex-col items-center gap-3 rounded-2xl border border-slate-100 bg-white p-7 shadow-card">
+            <div className="sticky top-[84px] flex flex-col items-center gap-3 rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-7 shadow-card">
               <div className="flex h-20 w-20 items-center justify-center rounded-full bg-brand-600 text-3xl font-extrabold text-white">{profil?.nom?.charAt(0).toUpperCase()}</div>
               <h2 className="m-0 text-center text-xl font-extrabold text-slate-900">{profil?.nom}</h2>
               <p className="m-0 text-center text-[13px] text-slate-400">{profil?.email}</p>
@@ -224,7 +224,7 @@ export default function Profil() {
             </div>
 
             {/* Panneau droite */}
-            <div className="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-card">
+            <div className="overflow-hidden rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 shadow-card">
               {/* Onglets */}
               <div className="flex border-b border-slate-100">
                 <button

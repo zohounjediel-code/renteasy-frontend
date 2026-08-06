@@ -6,7 +6,7 @@ import ClocheNotifications from '../components/ClocheNotifications';
 
 function StatCard({ icone, valeur, label, couleur, sous }) {
   return (
-    <div className={`rounded-2xl border border-slate-100 bg-white p-5 shadow-card border-t-[3px] ${couleur}`}>
+    <div className={`rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-5 shadow-card border-t-[3px] ${couleur}`}>
       <div className="mb-2 text-2xl">{icone}</div>
       <div className="mb-1 text-2xl font-extrabold text-slate-900">{valeur}</div>
       <div className="text-[13px] font-medium text-slate-500">{label}</div>
@@ -48,7 +48,7 @@ export default function SuperAdminDashboard() {
 
   if (chargement) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-slate-50">
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-brand-50">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-brand-100 border-t-brand-600" />
         <p className="text-brand-700">Chargement...</p>
       </div>
@@ -62,7 +62,7 @@ export default function SuperAdminDashboard() {
   const d = stats?.demandes || {};
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-brand-50">
       {/* Nav */}
       <nav className="re-nav sticky top-0 z-[100] flex h-16 flex-wrap items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
         <div className="flex items-center gap-2.5 text-lg font-bold text-slate-900">
@@ -147,9 +147,9 @@ export default function SuperAdminDashboard() {
           <>
             <p className="mb-3 text-xs font-bold uppercase tracking-wide text-purple-600">👔 Performance des agents</p>
             {agents.length === 0 ? (
-              <div className="rounded-2xl border border-slate-100 bg-white p-10 text-center text-slate-400 shadow-card">Aucun agent enregistré</div>
+              <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-10 text-center text-slate-400 shadow-card">Aucun agent enregistré</div>
             ) : (
-              <div className="overflow-x-auto rounded-2xl border border-slate-100 bg-white shadow-card">
+              <div className="overflow-x-auto rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 shadow-card">
                 <div className="grid min-w-[760px] grid-cols-[1.3fr_1.8fr_0.9fr_1.4fr_1.4fr_1.1fr_0.9fr] bg-purple-50 px-5 py-3.5 text-[11px] font-bold uppercase tracking-wide text-purple-700">
                   <span>Agent</span>
                   <span>Contact</span>

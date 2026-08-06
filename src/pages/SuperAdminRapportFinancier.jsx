@@ -77,7 +77,7 @@ export default function SuperAdminRapportFinancier() {
   const totalCommission = paiements.reduce((s, p) => s + parseInt(p.commission_renteasy || 0), 0);
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-brand-50">
       <nav className="re-nav sticky top-0 z-[100] flex h-16 flex-wrap items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
         <div className="flex cursor-pointer items-center gap-2.5 text-lg font-bold text-slate-900" onClick={() => navigate('/superadmin/dashboard')}>
           ⚡ RentEasy <span className="text-accent-600">Bénin</span>
@@ -105,7 +105,7 @@ export default function SuperAdminRapportFinancier() {
           <span className="rounded-full border border-purple-200 bg-purple-50 px-4 py-1.5 text-sm font-semibold text-purple-700">{paiements.length} paiement(s)</span>
         </div>
 
-        <div className="mb-5 flex flex-wrap items-end gap-3 rounded-2xl border border-slate-100 bg-white p-4 shadow-card">
+        <div className="mb-5 flex flex-wrap items-end gap-3 rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-4 shadow-card">
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-slate-500">Du</label>
             <input className="rounded-xl border border-slate-200 px-3 py-2 text-[13px] outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" type="date" value={debut} onChange={e => setDebut(e.target.value)} />
@@ -127,11 +127,11 @@ export default function SuperAdminRapportFinancier() {
         </div>
 
         <div className="mb-5 flex gap-4">
-          <div className="flex-1 rounded-2xl border border-slate-100 bg-white p-4 shadow-card">
+          <div className="flex-1 rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-4 shadow-card">
             <div className="mb-1.5 text-[13px] text-slate-400">Total encaissé</div>
             <div className="text-2xl font-extrabold text-emerald-600">{formaterMontant(totalMontant)}</div>
           </div>
-          <div className="flex-1 rounded-2xl border border-slate-100 bg-white p-4 shadow-card">
+          <div className="flex-1 rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-4 shadow-card">
             <div className="mb-1.5 text-[13px] text-slate-400">Commissions RentEasy</div>
             <div className="text-2xl font-extrabold text-purple-600">{formaterMontant(totalCommission)}</div>
           </div>
@@ -140,9 +140,9 @@ export default function SuperAdminRapportFinancier() {
         {chargement ? (
           <p className="py-10 text-center text-slate-400">Chargement...</p>
         ) : paiements.length === 0 ? (
-          <div className="rounded-2xl border border-slate-100 bg-white py-16 text-center text-slate-400 shadow-card">Aucun paiement encaissé sur cette période</div>
+          <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 py-16 text-center text-slate-400 shadow-card">Aucun paiement encaissé sur cette période</div>
         ) : (
-          <div className="overflow-x-auto rounded-2xl border border-slate-100 bg-white shadow-card">
+          <div className="overflow-x-auto rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 shadow-card">
             <div className="grid min-w-[760px] grid-cols-[0.9fr_1.6fr_1.2fr_1.2fr_1fr_1fr_1fr] bg-purple-50 px-5 py-3.5 text-[11px] font-bold uppercase tracking-wide text-purple-700">
               <span>Date</span>
               <span>Bien</span>

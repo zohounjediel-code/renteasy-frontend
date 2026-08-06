@@ -59,7 +59,7 @@ export default function Chat({ interlocuteur, onFermer, contexte = 'proprietaire
   let dernierJour = null;
 
   return (
-    <div className="flex h-[500px] flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-card">
+    <div className="flex h-[500px] flex-col overflow-hidden rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 shadow-card">
       {/* En-tête */}
       <div className="relative flex items-center gap-3 border-b border-slate-100 bg-brand-50 px-5 py-4">
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-600 text-base font-bold text-white">{interlocuteur.nom?.charAt(0).toUpperCase()}</div>

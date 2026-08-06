@@ -210,7 +210,7 @@ export default function Marche() {
   const filtresActifs = Object.values(filtres).filter(v => v).length;
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-brand-50">
       <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
         <div className="text-lg text-slate-900">🏠 <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span></div>
         <div className="flex items-center gap-1.5">
@@ -242,7 +242,7 @@ export default function Marche() {
 
         {/* Panneau filtres */}
         {afficherFiltres && (
-          <div className="mb-6 rounded-2xl border border-slate-100 bg-white p-6 shadow-card">
+          <div className="mb-6 rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-6 shadow-card">
             <h3 className="mb-4 text-base font-bold text-slate-900">🔍 Filtrer les biens</h3>
             <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-3.5">
               <div>
@@ -327,7 +327,7 @@ export default function Marche() {
             <p className="text-slate-400">Chargement du marché...</p>
           </div>
         ) : biens.length === 0 ? (
-          <div className="rounded-2xl border border-slate-100 bg-white py-20 text-center shadow-card">
+          <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 py-20 text-center shadow-card">
             <p className="mb-3 text-5xl">🏘️</p>
             <p className="text-lg font-semibold text-slate-900">Aucun bien disponible</p>
             <p className="text-sm text-slate-400">Essayez de modifier vos filtres de recherche</p>
@@ -337,7 +337,7 @@ export default function Marche() {
             {biens.map(b => {
               const carac = b.caracteristiques || {};
               return (
-                <div key={b.id} className="flex cursor-pointer flex-col gap-2.5 rounded-2xl border border-slate-100 bg-white p-5 shadow-card" onClick={() => { const ouvre = bienDetail?.id !== b.id; setBienDetail(ouvre ? b : null); if (ouvre) chargerReservations(b.id); }}>
+                <div key={b.id} className="flex cursor-pointer flex-col gap-2.5 rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-5 shadow-card" onClick={() => { const ouvre = bienDetail?.id !== b.id; setBienDetail(ouvre ? b : null); if (ouvre) chargerReservations(b.id); }}>
                   {/* Badge type */}
                   <div className="flex items-center justify-between">
                     <span className="rounded-xl border border-brand-200 bg-brand-50 px-2.5 py-1 text-xs font-bold text-brand-700">{TYPES_BIEN.find(t => t.value === b.type_bien)?.label || b.type_bien}</span>

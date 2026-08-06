@@ -434,7 +434,7 @@ export default function Biens() {
   const grille2 = 'grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4';
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-brand-50">
       <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
         <div className="cursor-pointer text-lg text-slate-900" onClick={() => navigate(lienConsultation('/dashboard'))}>🏠 <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span></div>
         <div className="flex items-center gap-1.5">
@@ -465,7 +465,7 @@ export default function Biens() {
 
         {/* Formulaire d'ajout */}
         {afficherFormulaire && (
-          <div className="mb-6 rounded-2xl border border-slate-100 bg-white p-6 shadow-card">
+          <div className="mb-6 rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-6 shadow-card">
             <h3 className="mb-4 text-lg font-bold text-slate-900">Nouveau bien</h3>
 
             {/* Sélection du type */}
@@ -550,7 +550,7 @@ export default function Biens() {
 
         {/* Détail d'un bien */}
         {bienDetail && (
-          <div className="mb-6 rounded-2xl border border-slate-100 bg-white p-6 shadow-card">
+          <div className="mb-6 rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-6 shadow-card">
             <div className="mb-1 flex items-center justify-between">
               <h3 className="text-lg font-bold text-slate-900">
                 {TYPES_BIEN.find(t => t.value === bienDetail.type_bien)?.label} — {bienDetail.adresse || bienDetail.lieu_depot || '—'}
@@ -631,13 +631,13 @@ export default function Biens() {
         {chargement ? (
           <p className="py-10 text-center text-slate-400">Chargement...</p>
         ) : biens.length === 0 ? (
-          <div className="rounded-2xl border border-slate-100 bg-white p-10 text-center text-slate-400 shadow-card">
+          <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-10 text-center text-slate-400 shadow-card">
             <p>🏘️ Vous n'avez pas encore de bien enregistré.</p>
           </div>
         ) : (
           <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
             {biens.map(b => (
-              <div key={b.id} className="rounded-2xl border border-slate-100 bg-white p-5 shadow-card">
+              <div key={b.id} className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-5 shadow-card">
                 <div className="mb-3 flex items-center justify-between">
                   <span className="text-xs font-semibold uppercase tracking-wide text-brand-600">{TYPES_BIEN.find(t => t.value === b.type_bien)?.label || b.type_bien}</span>
                   <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${b.statut === 'occupe' ? 'bg-emerald-50 text-emerald-700' : 'bg-accent-50 text-accent-700'}`}>
