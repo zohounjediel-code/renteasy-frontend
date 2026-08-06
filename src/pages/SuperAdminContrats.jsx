@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
+const navBtn = 'rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50';
+const navBtnActif = 'rounded-lg border border-brand-600 bg-brand-50 px-3.5 py-1.5 text-[13px] font-semibold text-brand-700';
+
 export default function SuperAdminContrats() {
   const [contrats, setContrats] = useState([]);
   const [chargement, setChargement] = useState(true);
@@ -32,9 +35,9 @@ export default function SuperAdminContrats() {
   }
 
   const STATUT = {
-    actif: { bg: 'rgba(16,185,129,0.1)', color: '#10b981', label: '● Actif' },
-    resilie: { bg: 'rgba(239,68,68,0.1)', color: '#ef4444', label: '○ Résilié' },
-    expire: { bg: 'rgba(107,114,128,0.1)', color: '#6b7280', label: '○ Expiré' },
+    actif: { cls: 'bg-emerald-50 text-emerald-700', label: '● Actif' },
+    resilie: { cls: 'bg-red-50 text-red-600', label: '○ Résilié' },
+    expire: { cls: 'bg-slate-100 text-slate-500', label: '○ Expiré' },
   };
 
   const contratsFiltres = contrats.filter(c => {
@@ -47,48 +50,48 @@ export default function SuperAdminContrats() {
   });
 
   return (
-    <div style={s.page}>
-      <nav style={s.nav} className="re-nav">
-        <div style={s.navLogo} onClick={() => navigate('/superadmin/dashboard')}>
-          ⚡ RentEasy <span style={s.navBenin}>Bénin</span>
-          <span style={s.superBadge}>SUPER ADMIN</span>
+    <div className="min-h-screen bg-slate-50">
+      <nav className="re-nav sticky top-0 z-[100] flex h-16 items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
+        <div className="flex cursor-pointer items-center gap-2.5 text-lg font-bold text-slate-900" onClick={() => navigate('/superadmin/dashboard')}>
+          ⚡ RentEasy <span className="text-accent-600">Bénin</span>
+          <span className="rounded-full bg-purple-600 px-2.5 py-0.5 text-[10px] font-extrabold tracking-wide text-white">SUPER ADMIN</span>
         </div>
-        <div style={s.navMenu}>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/dashboard')}>Dashboard</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/utilisateurs')}>Utilisateurs</button>
-          <button style={{ ...s.navBtn, ...s.navBtnActif }}>Contrats</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/biens')}>Biens</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/locataires')}>Locataires</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/journal')}>Journal</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/parametres')}>Paramètres</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/moderation')}>Modération</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/rapport-financier')}>Rapport financier</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/rappels')}>Rappels</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/erreurs')}>Erreurs</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/utilisateurs?action=creer-admin')}>+ Créer compte</button>
-          <button style={s.navDeconnexion} onClick={deconnecter}>Déconnexion</button>
+        <div className="flex flex-wrap items-center gap-1.5">
+          <button className={navBtn} onClick={() => navigate('/superadmin/dashboard')}>Dashboard</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/utilisateurs')}>Utilisateurs</button>
+          <button className={navBtnActif}>Contrats</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/biens')}>Biens</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/locataires')}>Locataires</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/journal')}>Journal</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/parametres')}>Paramètres</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/moderation')}>Modération</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/rapport-financier')}>Rapport financier</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/rappels')}>Rappels</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/erreurs')}>Erreurs</button>
+          <button className="rounded-lg bg-accent-500 px-3.5 py-1.5 text-[13px] font-semibold text-white hover:bg-accent-600" onClick={() => navigate('/superadmin/utilisateurs?action=creer-admin')}>+ Créer compte</button>
+          <button className="rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
         </div>
       </nav>
 
-      <div style={s.contenu}>
-        <div style={s.entete}>
-          <h2 style={s.titre}>Tous les contrats</h2>
-          <span style={s.compteur}>{contratsFiltres.length} contrat(s)</span>
+      <div className="mx-auto max-w-6xl px-6 py-8">
+        <div className="mb-6 flex items-center justify-between">
+          <h2 className="text-2xl font-extrabold text-slate-900">Tous les contrats</h2>
+          <span className="rounded-full border border-purple-200 bg-purple-50 px-4 py-1.5 text-sm font-semibold text-purple-700">{contratsFiltres.length} contrat(s)</span>
         </div>
 
         {/* Filtres */}
-        <div style={s.filtres}>
+        <div className="mb-5 flex flex-wrap items-center gap-3">
           <input
-            style={s.recherche}
+            className="w-[300px] rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
             placeholder="🔍 Propriétaire, locataire, adresse..."
             value={recherche}
             onChange={e => setRecherche(e.target.value)}
           />
-          <div style={{ display: 'flex', gap: '8px' }}>
+          <div className="flex gap-2">
             {['tous', 'actif', 'resilie'].map(f => (
               <button
                 key={f}
-                style={{ ...s.filtreBouton, background: filtre === f ? '#7c3aed' : 'rgba(255,255,255,0.05)', color: filtre === f ? '#fff' : '#9ca3af', border: filtre === f ? '1px solid #7c3aed' : '1px solid rgba(255,255,255,0.1)' }}
+                className={`rounded-full border px-4 py-1.5 text-[13px] font-semibold ${filtre === f ? 'border-brand-600 bg-brand-600 text-white' : 'border-slate-200 bg-white text-slate-500'}`}
                 onClick={() => setFiltre(f)}
               >
                 {f === 'tous' ? 'Tous' : f.charAt(0).toUpperCase() + f.slice(1)}
@@ -98,12 +101,12 @@ export default function SuperAdminContrats() {
         </div>
 
         {chargement ? (
-          <p style={{ color: '#6b7280', textAlign: 'center', padding: '40px' }}>Chargement...</p>
+          <p className="py-10 text-center text-slate-400">Chargement...</p>
         ) : contratsFiltres.length === 0 ? (
-          <div style={s.vide}>Aucun contrat trouvé</div>
+          <div className="rounded-2xl border border-slate-100 bg-white py-16 text-center text-slate-400 shadow-card">Aucun contrat trouvé</div>
         ) : (
-          <div style={s.tableau}>
-            <div style={s.tableauEntete}>
+          <div className="overflow-x-auto rounded-2xl border border-slate-100 bg-white shadow-card">
+            <div className="grid min-w-[700px] grid-cols-[2fr_1.5fr_1.5fr_1.2fr_1fr_1fr] bg-purple-50 px-5 py-3.5 text-[11px] font-bold uppercase tracking-wide text-purple-700">
               <span>Bien</span>
               <span>Propriétaire</span>
               <span>Locataire</span>
@@ -112,25 +115,25 @@ export default function SuperAdminContrats() {
               <span>Statut</span>
             </div>
             {contratsFiltres.map(c => {
-              const st = STATUT[c.statut] || { bg: 'rgba(107,114,128,0.1)', color: '#6b7280', label: c.statut };
+              const st = STATUT[c.statut] || { cls: 'bg-slate-100 text-slate-500', label: c.statut };
               return (
-                <div key={c.id} style={s.tableauLigne}>
+                <div key={c.id} className="grid min-w-[700px] grid-cols-[2fr_1.5fr_1.5fr_1.2fr_1fr_1fr] items-center border-t border-slate-50 px-5 py-3.5 text-sm">
                   <div>
-                    <div style={s.cellPrincipal}>{c.adresse}</div>
-                    <div style={s.cellSous}>{c.ville} · {c.type_bien}</div>
+                    <div className="text-sm font-semibold text-slate-900">{c.adresse}</div>
+                    <div className="mt-0.5 text-xs text-slate-400">{c.ville} · {c.type_bien}</div>
                   </div>
                   <div>
-                    <div style={s.cellPrincipal}>{c.proprietaire_nom}</div>
-                    <div style={s.cellSous}>{c.proprietaire_email}</div>
+                    <div className="text-sm font-semibold text-slate-900">{c.proprietaire_nom}</div>
+                    <div className="mt-0.5 text-xs text-slate-400">{c.proprietaire_email}</div>
                   </div>
                   <div>
-                    <div style={s.cellPrincipal}>{c.locataire_nom}</div>
-                    <div style={s.cellSous}>{c.locataire_telephone}</div>
+                    <div className="text-sm font-semibold text-slate-900">{c.locataire_nom}</div>
+                    <div className="mt-0.5 text-xs text-slate-400">{c.locataire_telephone}</div>
                   </div>
-                  <div style={{ color: '#f59e0b', fontWeight: '700' }}>{formaterMontant(c.loyer_mensuel)}</div>
-                  <div style={{ color: '#9ca3af', fontSize: '13px' }}>{formaterDate(c.date_debut)}</div>
+                  <div className="font-bold text-accent-600">{formaterMontant(c.loyer_mensuel)}</div>
+                  <div className="text-[13px] text-slate-400">{formaterDate(c.date_debut)}</div>
                   <div>
-                    <span style={{ ...st, padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: '600' }}>
+                    <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${st.cls}`}>
                       {st.label}
                     </span>
                   </div>
@@ -143,29 +146,3 @@ export default function SuperAdminContrats() {
     </div>
   );
 }
-
-const s = {
-  page: { minHeight: '100vh', background: 'linear-gradient(135deg,#0a0a0f 0%,#0f0a1e 50%,#0a0f0a 100%)', fontFamily: "'Segoe UI',sans-serif", color: '#e2e8f0' },
-  nav: { background: 'rgba(10,10,20,0.95)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(124,58,237,0.3)', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' },
-  navLogo: { display: 'flex', alignItems: 'center', gap: '10px', color: '#e2e8f0', fontSize: '18px', fontWeight: '700', cursor: 'pointer' },
-  navBenin: { color: '#f59e0b' },
-  superBadge: { background: 'linear-gradient(135deg,#7c3aed,#5b21b6)', color: '#fff', fontSize: '10px', padding: '3px 10px', borderRadius: '20px', fontWeight: '800', letterSpacing: '1px' },
-  navMenu: { display: 'flex', gap: '8px', alignItems: 'center' },
-  navBtn: { background: 'transparent', border: '1px solid rgba(124,58,237,0.3)', color: '#a78bfa', cursor: 'pointer', padding: '7px 14px', borderRadius: '6px', fontSize: '13px' },
-  navBtnActif: { background: 'rgba(124,58,237,0.2)', border: '1px solid #7c3aed', color: '#c4b5fd' },
-  navBtnProfil: { background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.3)', color: '#a78bfa', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px', fontWeight: '600' },
-  navDeconnexion: { background: 'transparent', border: '1px solid rgba(239,68,68,0.4)', color: '#ef4444', cursor: 'pointer', padding: '7px 14px', borderRadius: '6px', fontSize: '13px' },
-  contenu: { padding: '32px 24px', maxWidth: '1300px', margin: '0 auto' },
-  entete: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' },
-  titre: { margin: 0, fontSize: '24px', fontWeight: '800', background: 'linear-gradient(135deg,#c4b5fd,#f59e0b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' },
-  compteur: { background: 'rgba(124,58,237,0.2)', color: '#a78bfa', padding: '6px 16px', borderRadius: '20px', fontSize: '14px', fontWeight: '600', border: '1px solid rgba(124,58,237,0.3)' },
-  filtres: { display: 'flex', gap: '12px', marginBottom: '20px', flexWrap: 'wrap', alignItems: 'center' },
-  recherche: { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#e2e8f0', padding: '10px 16px', borderRadius: '8px', fontSize: '14px', width: '300px', outline: 'none' },
-  filtreBouton: { padding: '6px 16px', borderRadius: '20px', fontSize: '13px', cursor: 'pointer', fontWeight: '600' },
-  vide: { textAlign: 'center', color: '#6b7280', padding: '60px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)' },
-  tableau: { background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', overflow: 'hidden', overflowX: 'auto' },
-  tableauEntete: { display: 'grid', gridTemplateColumns: '2fr 1.5fr 1.5fr 1.2fr 1fr 1fr', minWidth: '700px', padding: '14px 20px', background: 'rgba(124,58,237,0.1)', fontSize: '11px', fontWeight: '700', color: '#7c3aed', textTransform: 'uppercase', letterSpacing: '0.5px' },
-  tableauLigne: { display: 'grid', gridTemplateColumns: '2fr 1.5fr 1.5fr 1.2fr 1fr 1fr', minWidth: '700px', padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.05)', fontSize: '14px', alignItems: 'center' },
-  cellPrincipal: { fontWeight: '600', color: '#e2e8f0', fontSize: '14px' },
-  cellSous: { color: '#6b7280', fontSize: '12px', marginTop: '2px' },
-};

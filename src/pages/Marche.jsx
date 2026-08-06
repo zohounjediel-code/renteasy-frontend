@@ -66,6 +66,13 @@ const MOTIFS_SIGNALEMENT = [
   { value: 'autre', label: 'Autre' },
 ];
 
+const champLabel = 'mt-2.5 mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500';
+const champInput = 'w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-[13px] outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30';
+const overlay = 'fixed inset-0 z-[1000] flex items-center justify-center bg-slate-900/50 p-5 backdrop-blur-sm';
+const modal = 'w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-7 shadow-2xl';
+const btnAnnulerModal = 'flex-1 rounded-xl border border-slate-200 px-5 py-3 text-sm text-slate-600 hover:bg-slate-50';
+const btnValiderModal = 'flex-1 rounded-xl bg-brand-600 py-3 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-60';
+
 export default function Marche() {
   const [biens, setBiens] = useState([]);
   const [chargement, setChargement] = useState(true);
@@ -203,30 +210,30 @@ export default function Marche() {
   const filtresActifs = Object.values(filtres).filter(v => v).length;
 
   return (
-    <div style={s.page}>
-      <nav style={s.nav} className="re-nav">
-        <div style={s.navLogo}>🏠 <strong>RentEasy</strong> <span style={s.navBenin}>Bénin</span></div>
-        <div style={s.navMenu}>
-          <button style={s.navBtnActif}>🏪 Marché</button>
-          <button style={s.navBtn} onClick={() => navigate('/locataire/dashboard')}>Mon espace</button>
+    <div className="min-h-screen bg-slate-50">
+      <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
+        <div className="text-lg text-slate-900">🏠 <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span></div>
+        <div className="flex items-center gap-1.5">
+          <button className="rounded-lg border border-brand-600 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700">🏪 Marché</button>
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/locataire/dashboard')}>Mon espace</button>
           {estAussiProprietaire && (
-            <button style={s.navBtnBasculer} onClick={() => navigate('/dashboard')}>🔄 Espace propriétaire</button>
+            <button className="rounded-lg bg-accent-500 px-3 py-1.5 text-sm font-bold text-white hover:bg-accent-600" onClick={() => navigate('/dashboard')}>🔄 Espace propriétaire</button>
           )}
-          <button style={s.navBtnProfil} onClick={() => navigate('/profil')}>👤 Mon profil</button>
+          <button className="rounded-lg border border-brand-200 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700 hover:bg-brand-100" onClick={() => navigate('/profil')}>👤 Mon profil</button>
           <ClocheNotifications />
-          <button style={s.navDeconnexion} onClick={deconnecter}>Déconnexion</button>
+          <button className="rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
         </div>
       </nav>
 
-      <div style={s.contenu}>
+      <div className="mx-auto max-w-6xl px-6 py-7">
         {/* En-tête */}
-        <div style={s.entete}>
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 style={s.titre}>🏪 Marché immobilier RentEasy</h2>
-            <p style={s.sousTitre}>{biens.length} bien(s) disponible(s) sur le marché</p>
+            <h2 className="text-2xl font-extrabold text-slate-900">🏪 Marché immobilier RentEasy</h2>
+            <p className="mt-1 text-sm text-slate-500">{biens.length} bien(s) disponible(s) sur le marché</p>
           </div>
           <button
-            style={{ ...s.btnFiltres, background: filtresActifs > 0 ? 'linear-gradient(135deg,#7c3aed,#5b21b6)' : 'rgba(255,255,255,0.05)' }}
+            className={`rounded-xl border px-5 py-2.5 text-sm font-semibold ${filtresActifs > 0 ? 'border-brand-600 bg-brand-600 text-white' : 'border-slate-200 bg-white text-slate-600'}`}
             onClick={() => setAfficherFiltres(!afficherFiltres)}
           >
             🔍 Filtres {filtresActifs > 0 ? `(${filtresActifs})` : ''}
@@ -235,58 +242,58 @@ export default function Marche() {
 
         {/* Panneau filtres */}
         {afficherFiltres && (
-          <div style={s.panneauFiltres}>
-            <h3 style={s.filtresTitre}>🔍 Filtrer les biens</h3>
-            <div style={s.filtresGrille}>
+          <div className="mb-6 rounded-2xl border border-slate-100 bg-white p-6 shadow-card">
+            <h3 className="mb-4 text-base font-bold text-slate-900">🔍 Filtrer les biens</h3>
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-3.5">
               <div>
-                <label style={s.label}>Type de bien</label>
-                <select style={s.input} value={filtres.type_bien} onChange={e => setFiltres({ ...filtres, type_bien: e.target.value })}>
-                  {TYPES_BIEN.map(t => <option key={t.value} value={t.value} style={s.option}>{t.label}</option>)}
+                <label className={champLabel}>Type de bien</label>
+                <select className={champInput} value={filtres.type_bien} onChange={e => setFiltres({ ...filtres, type_bien: e.target.value })}>
+                  {TYPES_BIEN.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
                 </select>
               </div>
               <div>
-                <label style={s.label}>Ville</label>
-                <input style={s.input} placeholder="Ex: Cotonou" value={filtres.ville} onChange={e => setFiltres({ ...filtres, ville: e.target.value })} />
+                <label className={champLabel}>Ville</label>
+                <input className={champInput} placeholder="Ex: Cotonou" value={filtres.ville} onChange={e => setFiltres({ ...filtres, ville: e.target.value })} />
               </div>
               <div>
-                <label style={s.label}>Périodicité du loyer</label>
-                <select style={s.input} value={filtres.type_loyer} onChange={e => setFiltres({ ...filtres, type_loyer: e.target.value })}>
-                  {TYPES_LOYER.map(t => <option key={t.value} value={t.value} style={s.option}>{t.label}</option>)}
+                <label className={champLabel}>Périodicité du loyer</label>
+                <select className={champInput} value={filtres.type_loyer} onChange={e => setFiltres({ ...filtres, type_loyer: e.target.value })}>
+                  {TYPES_LOYER.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
                 </select>
               </div>
               <div>
-                <label style={s.label}>Loyer min (FCFA)</label>
-                <input style={s.input} type="number" placeholder="0" value={filtres.loyer_min} onChange={e => setFiltres({ ...filtres, loyer_min: e.target.value })} />
+                <label className={champLabel}>Loyer min (FCFA)</label>
+                <input className={champInput} type="number" placeholder="0" value={filtres.loyer_min} onChange={e => setFiltres({ ...filtres, loyer_min: e.target.value })} />
               </div>
               <div>
-                <label style={s.label}>Loyer max (FCFA)</label>
-                <input style={s.input} type="number" placeholder="500000" value={filtres.loyer_max} onChange={e => setFiltres({ ...filtres, loyer_max: e.target.value })} />
+                <label className={champLabel}>Loyer max (FCFA)</label>
+                <input className={champInput} type="number" placeholder="500000" value={filtres.loyer_max} onChange={e => setFiltres({ ...filtres, loyer_max: e.target.value })} />
               </div>
               <div>
-                <label style={s.label}>Chambres min</label>
-                <input style={s.input} type="number" placeholder="1" value={filtres.nb_chambres} onChange={e => setFiltres({ ...filtres, nb_chambres: e.target.value })} />
+                <label className={champLabel}>Chambres min</label>
+                <input className={champInput} type="number" placeholder="1" value={filtres.nb_chambres} onChange={e => setFiltres({ ...filtres, nb_chambres: e.target.value })} />
               </div>
               <div>
-                <label style={s.label}>Sanitaires min</label>
-                <input style={s.input} type="number" placeholder="1" value={filtres.nb_sanitaires} onChange={e => setFiltres({ ...filtres, nb_sanitaires: e.target.value })} />
+                <label className={champLabel}>Sanitaires min</label>
+                <input className={champInput} type="number" placeholder="1" value={filtres.nb_sanitaires} onChange={e => setFiltres({ ...filtres, nb_sanitaires: e.target.value })} />
               </div>
               <div>
-                <label style={s.label}>Étages min</label>
-                <input style={s.input} type="number" placeholder="1" value={filtres.nb_etages} onChange={e => setFiltres({ ...filtres, nb_etages: e.target.value })} />
+                <label className={champLabel}>Étages min</label>
+                <input className={champInput} type="number" placeholder="1" value={filtres.nb_etages} onChange={e => setFiltres({ ...filtres, nb_etages: e.target.value })} />
               </div>
               <div>
-                <label style={s.label}>Superficie min (m²)</label>
-                <input style={s.input} type="number" placeholder="20" value={filtres.superficie_min} onChange={e => setFiltres({ ...filtres, superficie_min: e.target.value })} />
+                <label className={champLabel}>Superficie min (m²)</label>
+                <input className={champInput} type="number" placeholder="20" value={filtres.superficie_min} onChange={e => setFiltres({ ...filtres, superficie_min: e.target.value })} />
               </div>
               <div>
-                <label style={s.label}>Superficie max (m²)</label>
-                <input style={s.input} type="number" placeholder="500" value={filtres.superficie_max} onChange={e => setFiltres({ ...filtres, superficie_max: e.target.value })} />
+                <label className={champLabel}>Superficie max (m²)</label>
+                <input className={champInput} type="number" placeholder="500" value={filtres.superficie_max} onChange={e => setFiltres({ ...filtres, superficie_max: e.target.value })} />
               </div>
             </div>
 
             {/* Caractéristiques booléennes */}
-            <p style={{ ...s.label, marginTop: '16px', marginBottom: '10px' }}>Équipements</p>
-            <div style={s.equipementsGrid}>
+            <p className={`${champLabel} mb-2.5 mt-4`}>Équipements</p>
+            <div className="flex flex-wrap gap-2.5">
               {[
                 { key: 'salon', label: '🛋️ Salon' },
                 { key: 'cuisine', label: '🍳 Cuisine' },
@@ -298,7 +305,7 @@ export default function Marche() {
               ].map(({ key, label }) => (
                 <button
                   key={key}
-                  style={{ ...s.equipBtn, background: filtres[key] === 'oui' ? 'rgba(124,58,237,0.3)' : 'rgba(255,255,255,0.05)', border: filtres[key] === 'oui' ? '1px solid #7c3aed' : '1px solid rgba(255,255,255,0.1)', color: filtres[key] === 'oui' ? '#c4b5fd' : '#9ca3af' }}
+                  className={`rounded-full border px-4 py-2 text-[13px] font-semibold ${filtres[key] === 'oui' ? 'border-brand-600 bg-brand-100 text-brand-700' : 'border-slate-200 bg-white text-slate-500'}`}
                   onClick={() => setFiltres({ ...filtres, [key]: filtres[key] === 'oui' ? '' : 'oui' })}
                 >
                   {label}
@@ -306,43 +313,43 @@ export default function Marche() {
               ))}
             </div>
 
-            <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
-              <button style={s.btnReinitialiser} onClick={reinitialiserFiltres}>Réinitialiser</button>
-              <button style={s.btnAppliquer} onClick={appliquerFiltres}>Appliquer les filtres</button>
+            <div className="mt-5 flex gap-3">
+              <button className="rounded-xl border border-slate-200 px-5 py-2.5 text-sm text-slate-600 hover:bg-slate-50" onClick={reinitialiserFiltres}>Réinitialiser</button>
+              <button className="flex-1 rounded-xl bg-brand-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-brand-700" onClick={appliquerFiltres}>Appliquer les filtres</button>
             </div>
           </div>
         )}
 
         {/* Grille des biens */}
         {chargement ? (
-          <div style={s.loading}>
-            <div style={s.spinner} />
-            <p style={{ color: '#9ca3af' }}>Chargement du marché...</p>
+          <div className="flex flex-col items-center gap-4 py-20">
+            <div className="h-10 w-10 animate-spin rounded-full border-4 border-brand-100 border-t-brand-600" />
+            <p className="text-slate-400">Chargement du marché...</p>
           </div>
         ) : biens.length === 0 ? (
-          <div style={s.vide}>
-            <p style={{ fontSize: '48px', margin: '0 0 12px' }}>🏘️</p>
-            <p style={{ fontSize: '18px', color: '#e2e8f0', fontWeight: '600' }}>Aucun bien disponible</p>
-            <p style={{ color: '#6b7280', fontSize: '14px' }}>Essayez de modifier vos filtres de recherche</p>
+          <div className="rounded-2xl border border-slate-100 bg-white py-20 text-center shadow-card">
+            <p className="mb-3 text-5xl">🏘️</p>
+            <p className="text-lg font-semibold text-slate-900">Aucun bien disponible</p>
+            <p className="text-sm text-slate-400">Essayez de modifier vos filtres de recherche</p>
           </div>
         ) : (
-          <div style={s.grille}>
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4">
             {biens.map(b => {
               const carac = b.caracteristiques || {};
               return (
-                <div key={b.id} style={s.bienCard} onClick={() => { const ouvre = bienDetail?.id !== b.id; setBienDetail(ouvre ? b : null); if (ouvre) chargerReservations(b.id); }}>
+                <div key={b.id} className="flex cursor-pointer flex-col gap-2.5 rounded-2xl border border-slate-100 bg-white p-5 shadow-card" onClick={() => { const ouvre = bienDetail?.id !== b.id; setBienDetail(ouvre ? b : null); if (ouvre) chargerReservations(b.id); }}>
                   {/* Badge type */}
-                  <div style={s.cardEntete}>
-                    <span style={s.typeBadge}>{TYPES_BIEN.find(t => t.value === b.type_bien)?.label || b.type_bien}</span>
-                    <span style={s.marcheBadge}>🏪 Disponible</span>
+                  <div className="flex items-center justify-between">
+                    <span className="rounded-xl border border-brand-200 bg-brand-50 px-2.5 py-1 text-xs font-bold text-brand-700">{TYPES_BIEN.find(t => t.value === b.type_bien)?.label || b.type_bien}</span>
+                    <span className="rounded-xl border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700">🏪 Disponible</span>
                   </div>
 
                   {/* Infos principales */}
-                  <div style={s.cardAdresse}>{b.adresse || b.lieu_depot}</div>
-                  <div style={s.cardVille}>📍 {b.quartier ? `${b.quartier}, ` : ''}{b.ville}</div>
+                  <div className="text-[15px] font-bold text-slate-900">{b.adresse || b.lieu_depot}</div>
+                  <div className="text-[13px] text-slate-400">📍 {b.quartier ? `${b.quartier}, ` : ''}{b.ville}</div>
 
                   {/* Tarif */}
-                  <div style={s.cardTarif}>
+                  <div className="flex flex-col gap-1">
                     {b.tarifs && Object.keys(b.tarifs).length > 0
                       ? (() => {
                           // Si un filtre de période est actif, on affiche en priorité le
@@ -355,53 +362,53 @@ export default function Marche() {
                             ? [[filtres.type_loyer, b.tarifs[filtres.type_loyer]], ...entrees.filter(([k]) => k !== filtres.type_loyer)]
                             : entrees;
                           return triees.slice(0, 2).map(([k, v]) => (
-                            <div key={k} style={s.tarifLigne}>
-                              <span style={s.tarifMontant}>{formaterMontant(v)}</span>
-                              <span style={s.tarifPeriode}>/ {k}</span>
+                            <div key={k} className="flex items-baseline gap-1.5">
+                              <span className="text-lg font-extrabold text-brand-700">{formaterMontant(v)}</span>
+                              <span className="text-[13px] text-slate-400">/ {k}</span>
                             </div>
                           ));
                         })()
-                      : <div style={s.tarifLigne}>
-                          <span style={s.tarifMontant}>{formaterMontant(b.loyer_mensuel)}</span>
-                          <span style={s.tarifPeriode}>/ {b.type_loyer || 'mois'}</span>
+                      : <div className="flex items-baseline gap-1.5">
+                          <span className="text-lg font-extrabold text-brand-700">{formaterMontant(b.loyer_mensuel)}</span>
+                          <span className="text-[13px] text-slate-400">/ {b.type_loyer || 'mois'}</span>
                         </div>
                     }
                   </div>
 
                   {/* Caractéristiques rapides */}
                   {Object.keys(carac).length > 0 && (
-                    <div style={s.caracRapides}>
-                      {carac.nb_chambres && <span style={s.caracBadge}>🛏️ {carac.nb_chambres} ch.</span>}
-                      {carac.superficie && <span style={s.caracBadge}>📐 {carac.superficie} m²</span>}
-                      {carac.climatise === 'oui' && <span style={s.caracBadge}>❄️ Clim</span>}
-                      {carac.meuble === 'oui' && <span style={s.caracBadge}>🛋️ Meublé</span>}
-                      {carac.piscine === 'oui' && <span style={s.caracBadge}>🏊 Piscine</span>}
-                      {carac.jardin === 'oui' && <span style={s.caracBadge}>🌿 Jardin</span>}
-                      {carac.type_vehicule && <span style={s.caracBadge}>🚗 {carac.type_vehicule}</span>}
+                    <div className="flex flex-wrap gap-1.5">
+                      {carac.nb_chambres && <span className="rounded-lg border border-slate-100 bg-slate-50 px-2 py-1 text-[11px] text-slate-500">🛏️ {carac.nb_chambres} ch.</span>}
+                      {carac.superficie && <span className="rounded-lg border border-slate-100 bg-slate-50 px-2 py-1 text-[11px] text-slate-500">📐 {carac.superficie} m²</span>}
+                      {carac.climatise === 'oui' && <span className="rounded-lg border border-slate-100 bg-slate-50 px-2 py-1 text-[11px] text-slate-500">❄️ Clim</span>}
+                      {carac.meuble === 'oui' && <span className="rounded-lg border border-slate-100 bg-slate-50 px-2 py-1 text-[11px] text-slate-500">🛋️ Meublé</span>}
+                      {carac.piscine === 'oui' && <span className="rounded-lg border border-slate-100 bg-slate-50 px-2 py-1 text-[11px] text-slate-500">🏊 Piscine</span>}
+                      {carac.jardin === 'oui' && <span className="rounded-lg border border-slate-100 bg-slate-50 px-2 py-1 text-[11px] text-slate-500">🌿 Jardin</span>}
+                      {carac.type_vehicule && <span className="rounded-lg border border-slate-100 bg-slate-50 px-2 py-1 text-[11px] text-slate-500">🚗 {carac.type_vehicule}</span>}
                     </div>
                   )}
 
                   {b.description_marche && (
-                    <p style={s.description}>{b.description_marche}</p>
+                    <p className="m-0 text-[13px] italic leading-relaxed text-slate-400">{b.description_marche}</p>
                   )}
 
                   {/* Détail étendu */}
                   {bienDetail?.id === b.id && (
-                    <div style={s.detailEtendu}>
-                      <div style={s.separateur} />
-                      <p style={s.detailTitre}>💰 Tous les tarifs proposés</p>
-                      <div style={s.detailGrille}>
+                    <div>
+                      <div className="my-1 h-px bg-slate-100" />
+                      <p className="mb-2.5 text-xs font-bold uppercase tracking-wide text-brand-700">💰 Tous les tarifs proposés</p>
+                      <div className="grid grid-cols-[repeat(auto-fill,minmax(130px,1fr))] gap-2">
                         {b.tarifs && Object.keys(b.tarifs).length > 0
                           ? Object.entries(b.tarifs).map(([k, v]) => (
-                              <div key={k} style={s.detailItem}>
-                                <span style={s.detailLabel}>{TYPES_LOYER.find(t => t.value === k)?.label || k}</span>
-                                <span style={s.detailVal}>{formaterMontant(v)}</span>
+                              <div key={k} className="rounded-lg bg-slate-50 px-2.5 py-2">
+                                <span className="mb-0.5 block text-[10px] uppercase tracking-wide text-slate-400">{TYPES_LOYER.find(t => t.value === k)?.label || k}</span>
+                                <span className="text-[13px] font-semibold text-slate-800">{formaterMontant(v)}</span>
                               </div>
                             ))
                           : (
-                              <div style={s.detailItem}>
-                                <span style={s.detailLabel}>{TYPES_LOYER.find(t => t.value === b.type_loyer)?.label || b.type_loyer || 'Mensuel'}</span>
-                                <span style={s.detailVal}>{formaterMontant(b.loyer_mensuel)}</span>
+                              <div className="rounded-lg bg-slate-50 px-2.5 py-2">
+                                <span className="mb-0.5 block text-[10px] uppercase tracking-wide text-slate-400">{TYPES_LOYER.find(t => t.value === b.type_loyer)?.label || b.type_loyer || 'Mensuel'}</span>
+                                <span className="text-[13px] font-semibold text-slate-800">{formaterMontant(b.loyer_mensuel)}</span>
                               </div>
                             )
                         }
@@ -409,18 +416,18 @@ export default function Marche() {
 
                       {b.photos && b.photos.length > 0 && (
                         <>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', marginBottom: '8px' }}>
-                            <p style={{ ...s.detailTitre, margin: 0 }}>📷 Aperçu</p>
+                          <div className="mb-2 mt-4 flex items-center justify-between">
+                            <p className="m-0 text-xs font-bold uppercase tracking-wide text-brand-700">📷 Aperçu</p>
                             <Lightbox medias={b.photos} />
                           </div>
-                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(100px,1fr))', gap: '8px' }}>
+                          <div className="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] gap-2">
                             {b.photos.map(photo => (
                               estVideo(photo) ? (
                                 <video
                                   key={photo}
                                   src={`${API_BASE}${photo}`}
                                   controls
-                                  style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.08)' }}
+                                  className="h-20 w-full rounded-lg border border-slate-100 object-cover"
                                   onClick={e => e.stopPropagation()}
                                 />
                               ) : (
@@ -428,7 +435,7 @@ export default function Marche() {
                                   key={photo}
                                   src={`${API_BASE}${photo}`}
                                   alt="Aperçu du bien"
-                                  style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.08)' }}
+                                  className="h-20 w-full rounded-lg border border-slate-100 object-cover"
                                   onClick={e => e.stopPropagation()}
                                 />
                               )
@@ -437,19 +444,15 @@ export default function Marche() {
                         </>
                       )}
 
-                      <p style={{ ...s.detailTitre, marginTop: '16px' }}>📅 Disponibilité</p>
+                      <p className="mb-2.5 mt-4 text-xs font-bold uppercase tracking-wide text-brand-700">📅 Disponibilité</p>
                       {(reservationsParBien[b.id] || []).length === 0 ? (
-                        <p style={{ color: '#10b981', fontSize: '13px', margin: '4px 0' }}>✅ Aucune réservation en cours — entièrement disponible</p>
+                        <p className="my-1 text-[13px] text-brand-600">✅ Aucune réservation en cours — entièrement disponible</p>
                       ) : (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <div className="flex flex-col gap-1.5">
                           {reservationsParBien[b.id].map((r, i) => (
-                            <div key={i} style={s.reservationLigne}>
+                            <div key={i} className="flex items-center justify-between rounded-lg bg-slate-50 px-2.5 py-1.5 text-xs text-slate-700">
                               <span>{new Date(r.date_debut).toLocaleDateString('fr-FR')} → {r.date_fin ? new Date(r.date_fin).toLocaleDateString('fr-FR') : 'indéterminé'}</span>
-                              <span style={{
-                                ...s.reservationBadge,
-                                color: r.statut === 'actif' ? '#ef4444' : '#f59e0b',
-                                background: r.statut === 'actif' ? 'rgba(239,68,68,0.1)' : 'rgba(245,158,11,0.1)',
-                              }}>
+                              <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${r.statut === 'actif' ? 'bg-red-50 text-red-600' : 'bg-accent-50 text-accent-700'}`}>
                                 {r.statut === 'actif' ? 'Occupé' : r.statut === 'en_attente_signature' ? 'En cours de validation' : 'Demande en cours'}
                               </span>
                             </div>
@@ -457,21 +460,21 @@ export default function Marche() {
                         </div>
                       )}
 
-                      <p style={{ ...s.detailTitre, marginTop: '16px' }}>📋 Toutes les caractéristiques</p>
-                      <div style={s.detailGrille}>
+                      <p className="mb-2.5 mt-4 text-xs font-bold uppercase tracking-wide text-brand-700">📋 Toutes les caractéristiques</p>
+                      <div className="grid grid-cols-[repeat(auto-fill,minmax(130px,1fr))] gap-2">
                         {Object.entries(carac).filter(([, v]) => v).map(([k, v]) => (
-                          <div key={k} style={s.detailItem}>
-                            <span style={s.detailLabel}>{LABELS_CARACTERISTIQUES[k] || k}</span>
-                            <span style={s.detailVal}>{v}</span>
+                          <div key={k} className="rounded-lg bg-slate-50 px-2.5 py-2">
+                            <span className="mb-0.5 block text-[10px] uppercase tracking-wide text-slate-400">{LABELS_CARACTERISTIQUES[k] || k}</span>
+                            <span className="text-[13px] font-semibold text-slate-800">{v}</span>
                           </div>
                         ))}
                       </div>
-                      <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
-                        <p style={{ color: '#6b7280', fontSize: '12px', margin: 0 }}>
+                      <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-3">
+                        <p className="m-0 text-xs text-slate-400">
                           Publié par RentEasy Bénin · Contactez votre agent pour visiter ce bien
                         </p>
                         <span
-                          style={s.lienSignaler}
+                          className="cursor-pointer whitespace-nowrap text-xs font-semibold text-red-600"
                           onClick={e => { e.stopPropagation(); setModalSignalement(b); setMotifSignalement(''); setDescriptionSignalement(''); setMessageSignalement(''); }}
                         >
                           🚩 Signaler cette annonce
@@ -480,16 +483,16 @@ export default function Marche() {
                     </div>
                   )}
 
-                  <div style={{ display: 'flex', gap: '8px' }}>
-                    <button style={{ ...s.btnDetail, flex: 1 }} onClick={e => { e.stopPropagation(); const ouvre = bienDetail?.id !== b.id; setBienDetail(ouvre ? b : null); if (ouvre) chargerReservations(b.id); }}>
+                  <div className="flex gap-2">
+                    <button className="mt-auto flex-1 py-1 text-left text-[13px] font-semibold text-brand-700" onClick={e => { e.stopPropagation(); const ouvre = bienDetail?.id !== b.id; setBienDetail(ouvre ? b : null); if (ouvre) chargerReservations(b.id); }}>
                       {bienDetail?.id === b.id ? '▲ Réduire' : '▼ Voir les détails'}
                     </button>
                     {estLocataire && (
                       <>
-                        <button style={{ ...s.btnDetail, flex: 1, background: 'rgba(124,58,237,0.15)', color: '#a78bfa' }} onClick={e => { e.stopPropagation(); ouvrirModalDemande(b, 'reservation'); }}>
+                        <button className="flex-1 rounded-lg bg-purple-50 py-1 text-[13px] font-semibold text-purple-700" onClick={e => { e.stopPropagation(); ouvrirModalDemande(b, 'reservation'); }}>
                           📅 Réserver
                         </button>
-                        <button style={{ ...s.btnDetail, flex: 1, background: 'linear-gradient(135deg,#10b981,#059669)', color: '#fff' }} onClick={e => { e.stopPropagation(); ouvrirModalDemande(b, 'location'); }}>
+                        <button className="flex-1 rounded-lg bg-brand-600 py-1 text-[13px] font-semibold text-white" onClick={e => { e.stopPropagation(); ouvrirModalDemande(b, 'location'); }}>
                           🔑 Louer
                         </button>
                       </>
@@ -503,64 +506,64 @@ export default function Marche() {
       </div>
 
       {modalDemande && (
-        <div style={s.overlay}>
-          <div style={s.modal}>
-            <h3 style={{ margin: '0 0 4px', color: '#c4b5fd', fontSize: '20px' }}>
+        <div className={overlay}>
+          <div className={modal}>
+            <h3 className="mb-1 text-xl font-bold text-slate-900">
               {modalDemande.origine === 'location' ? '🔑 Louer ce bien' : '📅 Réserver ce bien'}
             </h3>
-            <p style={{ color: '#6b7280', fontSize: '13px', marginBottom: '16px' }}>
+            <p className="mb-4 text-[13px] text-slate-400">
               🔖 {modalDemande.bien.numero_bien || ''} — {modalDemande.bien.adresse || modalDemande.bien.lieu_depot}, {modalDemande.bien.ville}
             </p>
 
             {succesDemande ? (
-              <div style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)', color: '#10b981', padding: '12px', borderRadius: '8px', textAlign: 'center' }}>
+              <div className="rounded-xl border border-brand-200 bg-brand-50 p-3 text-center text-brand-700">
                 ✅ {succesDemande}
               </div>
             ) : (
               <>
-                <label style={s.label}>Date de début *</label>
-                <input style={s.input} type="date" value={formDemande.date_debut} onChange={e => setFormDemande({ ...formDemande, date_debut: e.target.value })} />
+                <label className={champLabel}>Date de début *</label>
+                <input className={champInput} type="date" value={formDemande.date_debut} onChange={e => setFormDemande({ ...formDemande, date_debut: e.target.value })} />
 
-                <label style={s.label}>Durée</label>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <input style={{ ...s.input, flex: 1 }} type="number" min="1" placeholder="Vide = indéterminée" value={formDemande.duree_valeur} onChange={e => setFormDemande({ ...formDemande, duree_valeur: e.target.value })} />
-                  <select style={{ ...s.input, flex: 1 }} value={formDemande.duree_unite} onChange={e => setFormDemande({ ...formDemande, duree_unite: e.target.value })}>
-                    <option value="jours" style={s.option}>Jour(s)</option>
-                    <option value="semaines" style={s.option}>Semaine(s)</option>
-                    <option value="mois" style={s.option}>Mois</option>
-                    <option value="annees" style={s.option}>Année(s)</option>
+                <label className={champLabel}>Durée</label>
+                <div className="flex gap-2">
+                  <input className={`${champInput} flex-1`} type="number" min="1" placeholder="Vide = indéterminée" value={formDemande.duree_valeur} onChange={e => setFormDemande({ ...formDemande, duree_valeur: e.target.value })} />
+                  <select className={`${champInput} flex-1`} value={formDemande.duree_unite} onChange={e => setFormDemande({ ...formDemande, duree_unite: e.target.value })}>
+                    <option value="jours">Jour(s)</option>
+                    <option value="semaines">Semaine(s)</option>
+                    <option value="mois">Mois</option>
+                    <option value="annees">Année(s)</option>
                   </select>
                 </div>
 
-                <label style={s.label}>Type de loyer *</label>
-                <select style={s.input} value={formDemande.type_loyer} onChange={e => choisirTypeLoyerDemande(e.target.value)}>
+                <label className={champLabel}>Type de loyer *</label>
+                <select className={champInput} value={formDemande.type_loyer} onChange={e => choisirTypeLoyerDemande(e.target.value)}>
                   {Object.keys(modalDemande.bien.tarifs || {}).length > 0
                     ? Object.entries(modalDemande.bien.tarifs).map(([k, v]) => (
-                        <option key={k} value={k} style={s.option}>{TYPES_LOYER.find(t => t.value === k)?.label || k} — {parseInt(v).toLocaleString('fr-FR')} FCFA</option>
+                        <option key={k} value={k}>{TYPES_LOYER.find(t => t.value === k)?.label || k} — {parseInt(v).toLocaleString('fr-FR')} FCFA</option>
                       ))
-                    : <option value={modalDemande.bien.type_loyer} style={s.option}>{TYPES_LOYER.find(t => t.value === modalDemande.bien.type_loyer)?.label || modalDemande.bien.type_loyer}</option>
+                    : <option value={modalDemande.bien.type_loyer}>{TYPES_LOYER.find(t => t.value === modalDemande.bien.type_loyer)?.label || modalDemande.bien.type_loyer}</option>
                   }
                 </select>
 
                 {formDemande.date_debut && formDemande.type_loyer && (
-                  <p style={{ ...s.input, color: '#9ca3af', fontSize: '12px', display: 'flex', alignItems: 'center', minHeight: '20px', marginTop: '8px' }}>
+                  <p className={`${champInput} mt-2 flex min-h-[20px] items-center text-xs text-slate-500`}>
                     📅 {libelleEcheanceAuto(formDemande.date_debut, formDemande.type_loyer)}
                   </p>
                 )}
 
-                <label style={s.label}>Message au propriétaire (optionnel)</label>
+                <label className={champLabel}>Message au propriétaire (optionnel)</label>
                 <textarea
-                  style={{ ...s.input, height: '70px', resize: 'vertical' }}
+                  className={`${champInput} h-[70px] resize-y`}
                   placeholder="Précisez votre demande si besoin..."
                   value={formDemande.note}
                   onChange={e => setFormDemande({ ...formDemande, note: e.target.value })}
                 />
 
-                {erreurDemande && <p style={{ color: '#ef4444', fontSize: '13px', marginTop: '8px' }}>{erreurDemande}</p>}
+                {erreurDemande && <p className="mt-2 text-[13px] text-red-600">{erreurDemande}</p>}
 
-                <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
-                  <button style={s.btnAnnulerModal} onClick={() => setModalDemande(null)}>Annuler</button>
-                  <button style={s.btnValiderModal} onClick={soumettreDemande} disabled={envoiDemande}>
+                <div className="mt-4 flex gap-3">
+                  <button className={btnAnnulerModal} onClick={() => setModalDemande(null)}>Annuler</button>
+                  <button className={btnValiderModal} onClick={soumettreDemande} disabled={envoiDemande}>
                     {envoiDemande ? 'Envoi...' : modalDemande.origine === 'location' ? 'Envoyer la demande de location' : 'Envoyer la demande de réservation'}
                   </button>
                 </div>
@@ -570,44 +573,41 @@ export default function Marche() {
         </div>
       )}
       {modalSignalement && (
-        <div style={s.overlay} onClick={() => setModalSignalement(null)}>
-          <div style={s.modal} onClick={e => e.stopPropagation()}>
-            <h3 style={{ margin: '0 0 4px', color: '#c4b5fd', fontSize: '20px' }}>🚩 Signaler cette annonce</h3>
-            <p style={{ color: '#6b7280', fontSize: '13px', marginBottom: '16px' }}>
+        <div className={overlay} onClick={() => setModalSignalement(null)}>
+          <div className={modal} onClick={e => e.stopPropagation()}>
+            <h3 className="mb-1 text-xl font-bold text-slate-900">🚩 Signaler cette annonce</h3>
+            <p className="mb-4 text-[13px] text-slate-400">
               🔖 {modalSignalement.numero_bien || ''} — {modalSignalement.adresse || modalSignalement.lieu_depot}, {modalSignalement.ville}
             </p>
 
             {messageSignalement ? (
-              <div style={{
-                background: messageSignalement.includes('déjà') || messageSignalement.includes('Erreur') ? 'rgba(239,68,68,0.1)' : 'rgba(16,185,129,0.1)',
-                border: `1px solid ${messageSignalement.includes('déjà') || messageSignalement.includes('Erreur') ? 'rgba(239,68,68,0.3)' : 'rgba(16,185,129,0.3)'}`,
-                color: messageSignalement.includes('déjà') || messageSignalement.includes('Erreur') ? '#ef4444' : '#10b981',
-                padding: '12px', borderRadius: '8px', textAlign: 'center', fontSize: '14px',
-              }}>
+              <div className={`rounded-xl border p-3 text-center text-sm ${
+                messageSignalement.includes('déjà') || messageSignalement.includes('Erreur') ? 'border-red-200 bg-red-50 text-red-600' : 'border-brand-200 bg-brand-50 text-brand-700'
+              }`}>
                 {messageSignalement}
               </div>
             ) : (
               <>
-                <label style={s.label}>Motif *</label>
-                <select style={s.input} value={motifSignalement} onChange={e => setMotifSignalement(e.target.value)}>
-                  <option value="" style={s.option}>Sélectionnez un motif</option>
+                <label className={champLabel}>Motif *</label>
+                <select className={champInput} value={motifSignalement} onChange={e => setMotifSignalement(e.target.value)}>
+                  <option value="">Sélectionnez un motif</option>
                   {MOTIFS_SIGNALEMENT.map(m => (
-                    <option key={m.value} value={m.value} style={s.option}>{m.label}</option>
+                    <option key={m.value} value={m.value}>{m.label}</option>
                   ))}
                 </select>
 
-                <label style={s.label}>Précisions (optionnel)</label>
+                <label className={champLabel}>Précisions (optionnel)</label>
                 <textarea
-                  style={{ ...s.input, height: '70px', resize: 'vertical' }}
+                  className={`${champInput} h-[70px] resize-y`}
                   placeholder="Décrivez le problème si besoin..."
                   value={descriptionSignalement}
                   onChange={e => setDescriptionSignalement(e.target.value)}
                 />
 
-                <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
-                  <button style={s.btnAnnulerModal} onClick={() => setModalSignalement(null)}>Annuler</button>
+                <div className="mt-4 flex gap-3">
+                  <button className={btnAnnulerModal} onClick={() => setModalSignalement(null)}>Annuler</button>
                   <button
-                    style={{ ...s.btnValiderModal, background: 'linear-gradient(135deg,#ef4444,#b91c1c)' }}
+                    className={`${btnValiderModal} !bg-red-600 hover:!bg-red-700`}
                     onClick={envoyerSignalement}
                     disabled={envoiSignalement || !motifSignalement}
                   >
@@ -622,63 +622,3 @@ export default function Marche() {
     </div>
   );
 }
-
-const s = {
-  page: { minHeight: '100vh', background: 'linear-gradient(135deg,#0a0a0f 0%,#0d1117 100%)', fontFamily: "'Segoe UI',sans-serif", color: '#e2e8f0' },
-  nav: { background: 'rgba(10,10,20,0.95)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(124,58,237,0.2)', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '60px', position: 'sticky', top: 0, zIndex: 100 },
-  navLogo: { color: '#e2e8f0', fontSize: '18px' },
-  navBenin: { color: '#f59e0b' },
-  navMenu: { display: 'flex', gap: '8px', alignItems: 'center' },
-  navBtn: { background: 'transparent', border: '1px solid rgba(255,255,255,0.08)', color: '#9ca3af', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px' },
-  navBtnActif: { background: 'rgba(16,185,129,0.2)', border: '1px solid #10b981', color: '#6ee7b7', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px', fontWeight: '600' },
-  navBtnBasculer: { background: 'linear-gradient(135deg,#f59e0b,#d97706)', border: 'none', color: '#000', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px', fontWeight: '700' },
-  navBtnProfil: { background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.3)', color: '#a78bfa', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px', fontWeight: '600' },
-  navDeconnexion: { background: 'transparent', border: '1px solid rgba(239,68,68,0.4)', color: '#ef4444', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px' },
-  contenu: { padding: '28px 24px', maxWidth: '1300px', margin: '0 auto' },
-  entete: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' },
-  titre: { margin: 0, fontSize: '26px', fontWeight: '800', background: 'linear-gradient(135deg,#6ee7b7,#f59e0b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' },
-  sousTitre: { color: '#6b7280', margin: '4px 0 0', fontSize: '14px' },
-  btnFiltres: { color: '#e2e8f0', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 20px', fontSize: '14px', fontWeight: '600', cursor: 'pointer' },
-  panneauFiltres: { background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(124,58,237,0.3)', borderRadius: '12px', padding: '24px', marginBottom: '24px' },
-  filtresTitre: { margin: '0 0 16px', color: '#c4b5fd', fontSize: '16px', fontWeight: '700' },
-  filtresGrille: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: '14px' },
-  label: { fontSize: '12px', fontWeight: '600', color: '#9ca3af', display: 'block', marginBottom: '4px', marginTop: '10px', textTransform: 'uppercase', letterSpacing: '0.5px' },
-  input: { width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#e2e8f0', padding: '10px 12px', borderRadius: '8px', fontSize: '13px', boxSizing: 'border-box', outline: 'none' },
-  option: { background: '#0f0a1e', color: '#e2e8f0' },
-  overlay: { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' },
-  modal: { background: '#0f0a1e', border: '1px solid rgba(124,58,237,0.4)', borderRadius: '16px', padding: '32px', width: '100%', maxWidth: '460px', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 25px 50px rgba(0,0,0,0.5)' },
-  btnAnnulerModal: { flex: 1, background: 'rgba(255,255,255,0.05)', color: '#9ca3af', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '12px 20px', fontSize: '14px', cursor: 'pointer' },
-  btnValiderModal: { flex: 1, background: 'linear-gradient(135deg,#7c3aed,#5b21b6)', color: '#fff', border: 'none', borderRadius: '8px', padding: '12px 20px', fontSize: '14px', fontWeight: '700', cursor: 'pointer' },
-  lienSignaler: { color: '#ef4444', fontSize: '12px', fontWeight: '600', cursor: 'pointer', whiteSpace: 'nowrap' },
-  reservationLigne: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.03)', borderRadius: '6px', padding: '6px 10px', fontSize: '12px', color: '#e2e8f0' },
-  reservationBadge: { padding: '2px 8px', borderRadius: '10px', fontSize: '11px', fontWeight: '600' },
-  equipementsGrid: { display: 'flex', gap: '10px', flexWrap: 'wrap' },
-  equipBtn: { padding: '8px 16px', borderRadius: '20px', fontSize: '13px', cursor: 'pointer', fontWeight: '600' },
-  btnReinitialiser: { background: 'rgba(255,255,255,0.05)', color: '#9ca3af', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 20px', fontSize: '14px', cursor: 'pointer' },
-  btnAppliquer: { background: 'linear-gradient(135deg,#7c3aed,#5b21b6)', color: '#fff', border: 'none', borderRadius: '8px', padding: '10px 24px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', flex: 1 },
-  loading: { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '80px', gap: '16px' },
-  spinner: { width: '40px', height: '40px', border: '3px solid rgba(124,58,237,0.2)', borderTop: '3px solid #7c3aed', borderRadius: '50%', animation: 'spin 1s linear infinite' },
-  vide: { textAlign: 'center', padding: '80px 20px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px' },
-  grille: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: '16px' },
-  bienCard: { background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '20px', cursor: 'pointer', transition: 'border-color 0.2s', display: 'flex', flexDirection: 'column', gap: '10px' },
-  cardEntete: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
-  typeBadge: { background: 'rgba(124,58,237,0.15)', color: '#a78bfa', padding: '4px 10px', borderRadius: '12px', fontSize: '12px', fontWeight: '700', border: '1px solid rgba(124,58,237,0.3)' },
-  marcheBadge: { background: 'rgba(16,185,129,0.15)', color: '#10b981', padding: '4px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: '700', border: '1px solid rgba(16,185,129,0.3)' },
-  cardAdresse: { fontWeight: '700', color: '#e2e8f0', fontSize: '15px' },
-  cardVille: { color: '#9ca3af', fontSize: '13px' },
-  cardTarif: { display: 'flex', flexDirection: 'column', gap: '4px' },
-  tarifLigne: { display: 'flex', alignItems: 'baseline', gap: '6px' },
-  tarifMontant: { color: '#f59e0b', fontWeight: '800', fontSize: '18px' },
-  tarifPeriode: { color: '#6b7280', fontSize: '13px' },
-  caracRapides: { display: 'flex', gap: '6px', flexWrap: 'wrap' },
-  caracBadge: { background: 'rgba(255,255,255,0.05)', color: '#9ca3af', padding: '3px 8px', borderRadius: '10px', fontSize: '11px', border: '1px solid rgba(255,255,255,0.08)' },
-  description: { color: '#9ca3af', fontSize: '13px', fontStyle: 'italic', margin: 0, lineHeight: '1.5' },
-  btnDetail: { background: 'transparent', border: 'none', color: '#7c3aed', cursor: 'pointer', fontSize: '13px', fontWeight: '600', padding: '4px 0', textAlign: 'left', marginTop: 'auto' },
-  separateur: { height: '1px', background: 'rgba(255,255,255,0.08)', margin: '4px 0 12px' },
-  detailEtendu: {},
-  detailTitre: { color: '#a78bfa', fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 10px' },
-  detailGrille: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(130px,1fr))', gap: '8px' },
-  detailItem: { background: 'rgba(255,255,255,0.04)', borderRadius: '6px', padding: '8px 10px' },
-  detailLabel: { fontSize: '10px', color: '#6b7280', display: 'block', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '3px' },
-  detailVal: { fontSize: '13px', fontWeight: '600', color: '#e2e8f0' },
-};

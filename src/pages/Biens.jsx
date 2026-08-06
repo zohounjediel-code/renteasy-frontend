@@ -38,14 +38,17 @@ const LABELS_LOYER = {
   annuel: 'Annuel (par an)',
 };
 
+const champLabel = 'mt-3 mb-1 block text-sm font-semibold text-slate-700';
+const champInput = 'w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30';
+
 function ChampBoolean({ label, valeur, onChange }) {
   return (
     <div>
-      <label style={styles.label}>{label}</label>
-      <select style={styles.input} value={valeur} onChange={e => onChange(e.target.value)}>
-        <option value="" style={styles.option}>Non spécifié</option>
-        <option value="oui" style={styles.option}>Oui</option>
-        <option value="non" style={styles.option}>Non</option>
+      <label className={champLabel}>{label}</label>
+      <select className={champInput} value={valeur} onChange={e => onChange(e.target.value)}>
+        <option value="">Non spécifié</option>
+        <option value="oui">Oui</option>
+        <option value="non">Non</option>
       </select>
     </div>
   );
@@ -54,8 +57,8 @@ function ChampBoolean({ label, valeur, onChange }) {
 function ChampNombre({ label, valeur, onChange, placeholder }) {
   return (
     <div>
-      <label style={styles.label}>{label}</label>
-      <input style={styles.input} type="number" min="0" placeholder={placeholder || '0'} value={valeur} onChange={e => onChange(e.target.value)} />
+      <label className={champLabel}>{label}</label>
+      <input className={champInput} type="number" min="0" placeholder={placeholder || '0'} value={valeur} onChange={e => onChange(e.target.value)} />
     </div>
   );
 }
@@ -63,8 +66,8 @@ function ChampNombre({ label, valeur, onChange, placeholder }) {
 function ChampTexte({ label, valeur, onChange, placeholder }) {
   return (
     <div>
-      <label style={styles.label}>{label}</label>
-      <input style={styles.input} type="text" placeholder={placeholder || ''} value={valeur} onChange={e => onChange(e.target.value)} />
+      <label className={champLabel}>{label}</label>
+      <input className={champInput} type="text" placeholder={placeholder || ''} value={valeur} onChange={e => onChange(e.target.value)} />
     </div>
   );
 }
@@ -75,10 +78,11 @@ function CaracteristiquesForm({ typeBien, caracteristiques, setCaracteristiques 
   }
 
   const c = caracteristiques;
+  const grille = 'grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4';
 
   if (['appartement', 'studio', 'chambre'].includes(typeBien)) {
     return (
-      <div style={styles.grille2}>
+      <div className={grille}>
         <ChampNombre label="Nombre de chambres" valeur={c.nb_chambres || ''} onChange={v => set('nb_chambres', v)} placeholder="2" />
         <ChampBoolean label="Salon" valeur={c.salon || ''} onChange={v => set('salon', v)} />
         <ChampBoolean label="Cuisine" valeur={c.cuisine || ''} onChange={v => set('cuisine', v)} />
@@ -93,7 +97,7 @@ function CaracteristiquesForm({ typeBien, caracteristiques, setCaracteristiques 
 
   if (['maison', 'villa'].includes(typeBien)) {
     return (
-      <div style={styles.grille2}>
+      <div className={grille}>
         <ChampNombre label="Nombre d'étages" valeur={c.nb_etages || ''} onChange={v => set('nb_etages', v)} placeholder="1" />
         <ChampNombre label="Superficie (m²)" valeur={c.superficie || ''} onChange={v => set('superficie', v)} placeholder="200" />
         <ChampNombre label="Nombre de chambres" valeur={c.nb_chambres || ''} onChange={v => set('nb_chambres', v)} placeholder="3" />
@@ -112,7 +116,7 @@ function CaracteristiquesForm({ typeBien, caracteristiques, setCaracteristiques 
 
   if (typeBien === 'commerce') {
     return (
-      <div style={styles.grille2}>
+      <div className={grille}>
         <ChampNombre label="Superficie (m²)" valeur={c.superficie || ''} onChange={v => set('superficie', v)} placeholder="30" />
         <ChampTexte label="Type d'activité possible" valeur={c.type_activite || ''} onChange={v => set('type_activite', v)} placeholder="Boutique, bureau, restaurant..." />
         <ChampBoolean label="Climatisé" valeur={c.climatise || ''} onChange={v => set('climatise', v)} />
@@ -125,16 +129,16 @@ function CaracteristiquesForm({ typeBien, caracteristiques, setCaracteristiques 
 
   if (typeBien === 'vehicule') {
     return (
-      <div style={styles.grille2}>
+      <div className={grille}>
         <div>
-          <label style={styles.label}>Type de véhicule</label>
-          <select style={styles.input} value={c.type_vehicule || ''} onChange={e => set('type_vehicule', e.target.value)}>
-            <option value="" style={styles.option}>Sélectionner...</option>
-            <option value="voiture" style={styles.option}>Voiture</option>
-            <option value="moto" style={styles.option}>Moto</option>
-            <option value="camion" style={styles.option}>Camion</option>
-            <option value="bus" style={styles.option}>Bus / Minibus</option>
-            <option value="autre" style={styles.option}>Autre</option>
+          <label className={champLabel}>Type de véhicule</label>
+          <select className={champInput} value={c.type_vehicule || ''} onChange={e => set('type_vehicule', e.target.value)}>
+            <option value="">Sélectionner...</option>
+            <option value="voiture">Voiture</option>
+            <option value="moto">Moto</option>
+            <option value="camion">Camion</option>
+            <option value="bus">Bus / Minibus</option>
+            <option value="autre">Autre</option>
           </select>
         </div>
         <ChampTexte label="Marque" valeur={c.marque || ''} onChange={v => set('marque', v)} placeholder="Toyota, Honda..." />
@@ -155,7 +159,7 @@ function DetailsBien({ bien }) {
   const c = bien.caracteristiques || {};
   const items = Object.entries(c).filter(([, v]) => v && v !== '');
 
-  if (items.length === 0) return <p style={{ color: '#6b7280', fontSize: '13px' }}>Aucune caractéristique renseignée.</p>;
+  if (items.length === 0) return <p className="text-[13px] text-slate-400">Aucune caractéristique renseignée.</p>;
 
   const labels = {
     nb_chambres: 'Chambres', nb_sanitaires: 'Sanitaires', nb_etages: 'Étages',
@@ -168,11 +172,11 @@ function DetailsBien({ bien }) {
   };
 
   return (
-    <div style={styles.detailsGrid}>
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-2.5">
       {items.map(([key, val]) => (
-        <div key={key} style={styles.detailItem}>
-          <span style={styles.detailLabel}>{labels[key] || key}</span>
-          <span style={styles.detailValeur}>{val}</span>
+        <div key={key} className="rounded-lg bg-slate-50 px-3 py-2.5">
+          <span className="mb-1 block text-[11px] uppercase tracking-wide text-slate-400">{labels[key] || key}</span>
+          <span className="text-sm font-semibold text-slate-800">{val}</span>
         </div>
       ))}
     </div>
@@ -423,118 +427,122 @@ export default function Biens() {
 
   const estVehicule = typeBien === 'vehicule';
   const typeLoyers = TYPES_LOYER[typeBien] || ['mensuel'];
-  // typeLoyers utilisé dans le formulaire de tarifs
+
+  const boutonPrimaire = 'rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 disabled:opacity-60';
+  const boutonSecondaire = 'rounded-lg border border-slate-200 px-3.5 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50';
+  const boutonSupprimer = 'rounded-lg border border-red-200 bg-red-50 px-3.5 py-2 text-xs font-semibold text-red-600 hover:bg-red-100';
+  const grille2 = 'grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4';
 
   return (
-    <div style={styles.page}>
-      <nav style={styles.nav} className="re-nav">
-        <div style={styles.navLogo} onClick={() => navigate(lienConsultation('/dashboard'))}>🏠 <strong>RentEasy</strong> <span style={styles.navBenin}>Bénin</span></div>
-        <div style={styles.navMenu}>
-          <button style={styles.navBtnActif}>Mes biens</button>
-          <button style={styles.navBtn} onClick={() => navigate(lienConsultation('/locataires'))}>Locataires</button>
-          <button style={styles.navBtn} onClick={() => navigate(lienConsultation('/paiements'))}>Paiements</button>
-          <button style={styles.navBtn} onClick={() => navigate(lienConsultation('/dashboard'))}>Dashboard</button>
+    <div className="min-h-screen bg-slate-50">
+      <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
+        <div className="cursor-pointer text-lg text-slate-900" onClick={() => navigate(lienConsultation('/dashboard'))}>🏠 <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span></div>
+        <div className="flex items-center gap-1.5">
+          <button className="rounded-lg border border-brand-600 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700">Mes biens</button>
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate(lienConsultation('/locataires'))}>Locataires</button>
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate(lienConsultation('/paiements'))}>Paiements</button>
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate(lienConsultation('/dashboard'))}>Dashboard</button>
           {estAussiLocataire && !enConsultationAdmin && (
-            <button style={styles.navBtnBasculer} onClick={() => navigate('/locataire/dashboard')}>🔄 Espace locataire</button>
+            <button className="rounded-lg bg-accent-500 px-3 py-1.5 text-sm font-bold text-white hover:bg-accent-600" onClick={() => navigate('/locataire/dashboard')}>🔄 Espace locataire</button>
           )}
-          <button style={styles.navBtnProfil} onClick={() => navigate('/profil')}>👤 Mon profil</button>
+          <button className="rounded-lg border border-brand-200 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700 hover:bg-brand-100" onClick={() => navigate('/profil')}>👤 Mon profil</button>
           <ClocheNotifications />
         </div>
       </nav>
 
-      <div style={styles.contenu}>
+      <div className="mx-auto max-w-6xl px-6 py-6">
         {enConsultationAdmin && (
-          <div style={styles.bandeauConsultation}>
+          <div className="mb-5 rounded-xl border border-accent-200 bg-accent-50 px-4 py-2.5 text-sm text-accent-800">
             🛡️ Vous consultez et gérez les biens de <strong>{proprietaireNomConsulte || 'ce propriétaire'}</strong> en tant qu'administrateur.
           </div>
         )}
-        <div style={styles.entete}>
-          <h2 style={styles.titre}>Mes biens</h2>
-          <button style={styles.boutonPrimaire} onClick={() => { setAfficherFormulaire(!afficherFormulaire); setBienDetail(null); }}>
+        <div className="mb-6 flex items-center justify-between">
+          <h2 className="text-2xl font-extrabold text-slate-900">Mes biens</h2>
+          <button className={boutonPrimaire} onClick={() => { setAfficherFormulaire(!afficherFormulaire); setBienDetail(null); }}>
             {afficherFormulaire ? '✕ Annuler' : '+ Ajouter un bien'}
           </button>
         </div>
 
         {/* Formulaire d'ajout */}
         {afficherFormulaire && (
-          <div style={styles.formulaire}>
-            <h3 style={styles.formulaireTitre}>Nouveau bien</h3>
+          <div className="mb-6 rounded-2xl border border-slate-100 bg-white p-6 shadow-card">
+            <h3 className="mb-4 text-lg font-bold text-slate-900">Nouveau bien</h3>
 
             {/* Sélection du type */}
-            <label style={styles.label}>Type de bien *</label>
-            <div style={styles.typeGrid}>
+            <label className={champLabel}>Type de bien *</label>
+            <div className="mb-2 grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-2.5">
               {TYPES_BIEN.map(t => (
                 <div
                   key={t.value}
-                  style={{ ...styles.typeCard, border: typeBien === t.value ? '2px solid #e8a020' : '1px solid rgba(255,255,255,0.08)', background: typeBien === t.value ? 'rgba(245,158,11,0.08)' : 'rgba(255,255,255,0.03)' }}
+                  className={`cursor-pointer rounded-xl border-2 p-3 transition ${typeBien === t.value ? 'border-brand-500 bg-brand-50' : 'border-slate-200 bg-white'}`}
                   onClick={() => changerTypeBien(t.value)}
                 >
-                  <div style={styles.typeCardLabel}>{t.label}</div>
-                  <div style={styles.typeCardDesc}>{t.description}</div>
+                  <div className="mb-1 text-sm font-bold text-slate-900">{t.label}</div>
+                  <div className="text-[11px] leading-snug text-slate-400">{t.description}</div>
                 </div>
               ))}
             </div>
 
             {/* Localisation */}
-            <div style={{ ...styles.grille2, marginTop: '20px' }}>
+            <div className={`mt-5 ${grille2}`}>
               {!estVehicule && (
                 <div>
-                  <label style={styles.label}>Adresse *</label>
-                  <input style={styles.input} placeholder="Rue 123, Quartier..." value={form.adresse} onChange={e => setForm({ ...form, adresse: e.target.value })} />
+                  <label className={champLabel}>Adresse *</label>
+                  <input className={champInput} placeholder="Rue 123, Quartier..." value={form.adresse} onChange={e => setForm({ ...form, adresse: e.target.value })} />
                 </div>
               )}
               <div>
-                <label style={styles.label}>Ville *</label>
-                <input style={styles.input} placeholder="Cotonou" value={form.ville} onChange={e => setForm({ ...form, ville: e.target.value })} />
+                <label className={champLabel}>Ville *</label>
+                <input className={champInput} placeholder="Cotonou" value={form.ville} onChange={e => setForm({ ...form, ville: e.target.value })} />
               </div>
               {!estVehicule && (
                 <div>
-                  <label style={styles.label}>Quartier</label>
-                  <input style={styles.input} placeholder="Fidjrosse" value={form.quartier} onChange={e => setForm({ ...form, quartier: e.target.value })} />
+                  <label className={champLabel}>Quartier</label>
+                  <input className={champInput} placeholder="Fidjrosse" value={form.quartier} onChange={e => setForm({ ...form, quartier: e.target.value })} />
                 </div>
               )}
               {estVehicule && (
                 <div>
-                  <label style={styles.label}>Lieu de dépôt / stationnement</label>
-                  <input style={styles.input} placeholder="Ex: Carrefour Cadjèhoun" value={form.lieu_depot} onChange={e => setForm({ ...form, lieu_depot: e.target.value })} />
+                  <label className={champLabel}>Lieu de dépôt / stationnement</label>
+                  <input className={champInput} placeholder="Ex: Carrefour Cadjèhoun" value={form.lieu_depot} onChange={e => setForm({ ...form, lieu_depot: e.target.value })} />
                 </div>
               )}
             </div>
 
             {/* Caractéristiques dynamiques */}
-            <div style={{ marginTop: '16px' }}>
-              <label style={{ ...styles.label, fontSize: '14px', color: '#c4b5fd', marginBottom: '12px', display: 'block' }}>
+            <div className="mt-4">
+              <label className="mb-3 block text-sm font-bold text-brand-700">
                 Caractéristiques du {TYPES_BIEN.find(t => t.value === typeBien)?.label}
               </label>
               <CaracteristiquesForm typeBien={typeBien} caracteristiques={caracteristiques} setCaracteristiques={setCaracteristiques} />
             </div>
 
             {/* Tarifs multiples */}
-            <div style={{ marginTop: '16px' }}>
-              <label style={{ ...styles.label, fontSize: '14px', color: '#c4b5fd', marginBottom: '12px', display: 'block' }}>
-                💰 Tarifs du loyer * <span style={{ color: '#6b7280', fontWeight: '400', fontSize: '12px' }}>(renseignez les périodicités que vous proposez)</span>
+            <div className="mt-4">
+              <label className="mb-3 block text-sm font-bold text-brand-700">
+                💰 Tarifs du loyer * <span className="text-xs font-normal text-slate-400">(renseignez les périodicités que vous proposez)</span>
               </label>
-              <div style={styles.grille2}>
+              <div className={grille2}>
                 {typeLoyers.map(t => (
                   <div key={t}>
-                    <label style={styles.label}>{LABELS_LOYER[t]}</label>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <label className={champLabel}>{LABELS_LOYER[t]}</label>
+                    <div className="flex items-center gap-2">
                       <input
-                        style={{ ...styles.input, borderColor: tarifs[t] ? '#e8a020' : '#ddd' }}
+                        className={`${champInput} ${tarifs[t] ? 'border-accent-400' : ''}`}
                         type="number"
                         placeholder="Laisser vide si non proposé"
                         value={tarifs[t] || ''}
                         onChange={e => setTarifs({ ...tarifs, [t]: e.target.value })}
                       />
-                      <span style={{ color: '#6b7280', fontSize: '13px', whiteSpace: 'nowrap' }}>FCFA</span>
+                      <span className="whitespace-nowrap text-[13px] text-slate-400">FCFA</span>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            {erreur && <p style={styles.erreur}>{erreur}</p>}
-            <button style={{ ...styles.boutonPrimaire, marginTop: '16px' }} onClick={ajouterBien} disabled={envoi}>
+            {erreur && <p className="mt-2 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{erreur}</p>}
+            <button className={`${boutonPrimaire} mt-4`} onClick={ajouterBien} disabled={envoi}>
               {envoi ? 'Enregistrement...' : 'Enregistrer le bien'}
             </button>
           </div>
@@ -542,75 +550,73 @@ export default function Biens() {
 
         {/* Détail d'un bien */}
         {bienDetail && (
-          <div style={styles.formulaire}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-              <h3 style={styles.formulaireTitre}>
+          <div className="mb-6 rounded-2xl border border-slate-100 bg-white p-6 shadow-card">
+            <div className="mb-1 flex items-center justify-between">
+              <h3 className="text-lg font-bold text-slate-900">
                 {TYPES_BIEN.find(t => t.value === bienDetail.type_bien)?.label} — {bienDetail.adresse || bienDetail.lieu_depot || '—'}
               </h3>
-              <button style={styles.boutonFermer} onClick={() => setBienDetail(null)}>✕ Fermer</button>
+              <button className="rounded-lg bg-slate-100 px-4 py-2 text-xs font-semibold text-slate-500 hover:bg-slate-200" onClick={() => setBienDetail(null)}>✕ Fermer</button>
             </div>
-            <p style={{ ...styles.numeroBien, marginBottom: '16px' }}>🔖 N° {bienDetail.numero_bien} <span style={{ color: '#6b7280', fontWeight: '400' }}>— à utiliser pour créer un contrat</span></p>
-            <div style={styles.grille2}>
-              <div style={styles.detailSection}>
-                <p style={styles.detailSectionTitre}>📍 Localisation</p>
-                <p><strong>Ville :</strong> {bienDetail.ville}</p>
-                {bienDetail.quartier && <p><strong>Quartier :</strong> {bienDetail.quartier}</p>}
-                {bienDetail.adresse && <p><strong>Adresse :</strong> {bienDetail.adresse}</p>}
-                {bienDetail.lieu_depot && <p><strong>Lieu de dépôt :</strong> {bienDetail.lieu_depot}</p>}
+            <p className="mb-4 text-xs font-bold tracking-wide text-accent-600">🔖 N° {bienDetail.numero_bien} <span className="font-normal text-slate-400">— à utiliser pour créer un contrat</span></p>
+            <div className={grille2}>
+              <div className="mb-2">
+                <p className="mb-2 text-sm font-bold text-brand-700">📍 Localisation</p>
+                <p className="text-sm text-slate-700"><strong>Ville :</strong> {bienDetail.ville}</p>
+                {bienDetail.quartier && <p className="text-sm text-slate-700"><strong>Quartier :</strong> {bienDetail.quartier}</p>}
+                {bienDetail.adresse && <p className="text-sm text-slate-700"><strong>Adresse :</strong> {bienDetail.adresse}</p>}
+                {bienDetail.lieu_depot && <p className="text-sm text-slate-700"><strong>Lieu de dépôt :</strong> {bienDetail.lieu_depot}</p>}
               </div>
-              <div style={styles.detailSection}>
-                <p style={styles.detailSectionTitre}>💰 Loyer</p>
+              <div className="mb-2">
+                <p className="mb-2 text-sm font-bold text-brand-700">💰 Loyer</p>
                 {bienDetail.tarifs && Object.keys(bienDetail.tarifs).length > 0
                   ? Object.entries(bienDetail.tarifs).map(([k, v]) => (
-                      <p key={k}><strong>{LABELS_LOYER[k]} :</strong> {formaterMontant(v)}</p>
+                      <p key={k} className="text-sm text-slate-700"><strong>{LABELS_LOYER[k]} :</strong> {formaterMontant(v)}</p>
                     ))
-                  : <p><strong>Loyer :</strong> {formaterMontant(bienDetail.loyer_mensuel)}</p>
+                  : <p className="text-sm text-slate-700"><strong>Loyer :</strong> {formaterMontant(bienDetail.loyer_mensuel)}</p>
                 }
-                <p><strong>Statut :</strong> {bienDetail.statut === 'occupe' ? '● Occupé' : '○ Libre'}</p>
+                <p className="text-sm text-slate-700"><strong>Statut :</strong> {bienDetail.statut === 'occupe' ? '● Occupé' : '○ Libre'}</p>
               </div>
             </div>
             {bienDetail.photos && bienDetail.photos.length > 0 && (
-              <div style={{ marginTop: '16px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                  <p style={{ ...styles.detailSectionTitre, margin: 0 }}>📷 Aperçu</p>
+              <div className="mt-4">
+                <div className="mb-2.5 flex items-center justify-between">
+                  <p className="m-0 text-sm font-bold text-brand-700">📷 Aperçu</p>
                   <Lightbox medias={bienDetail.photos} />
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(90px,1fr))', gap: '8px' }}>
+                <div className="grid grid-cols-[repeat(auto-fill,minmax(90px,1fr))] gap-2">
                   {bienDetail.photos.map(photo => (
                     estVideo(photo) ? (
-                      <video key={photo} src={`${API_BASE}${photo}`} style={{ width: '100%', height: '70px', objectFit: 'cover', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }} />
+                      <video key={photo} src={`${API_BASE}${photo}`} className="h-[70px] w-full rounded-lg border border-slate-100 object-cover" />
                     ) : (
-                      <img key={photo} src={`${API_BASE}${photo}`} alt="Aperçu du bien" style={{ width: '100%', height: '70px', objectFit: 'cover', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }} />
+                      <img key={photo} src={`${API_BASE}${photo}`} alt="Aperçu du bien" className="h-[70px] w-full rounded-lg border border-slate-100 object-cover" />
                     )
                   ))}
                 </div>
               </div>
             )}
-            <div style={{ marginTop: '16px' }}>
-              <p style={styles.detailSectionTitre}>🔍 Caractéristiques</p>
+            <div className="mt-4">
+              <p className="mb-2 text-sm font-bold text-brand-700">🔍 Caractéristiques</p>
               <DetailsBien bien={bienDetail} />
             </div>
-            <div style={{ marginTop: '16px' }}>
-              <p style={styles.detailSectionTitre}>📅 Réservations</p>
+            <div className="mt-4">
+              <p className="mb-2 text-sm font-bold text-brand-700">📅 Réservations</p>
               {reservationsBien.length === 0 ? (
-                <p style={{ color: '#10b981', fontSize: '13px' }}>✅ Aucune réservation — bien entièrement disponible</p>
+                <p className="text-[13px] text-brand-600">✅ Aucune réservation — bien entièrement disponible</p>
               ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div className="flex flex-col gap-2">
                   {reservationsBien.map(r => (
-                    <div key={r.id} style={styles.reservationLigne}>
+                    <div key={r.id} className="flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50 px-3.5 py-2.5">
                       <div>
-                        <div style={{ fontWeight: '600', color: '#e2e8f0', fontSize: '13px' }}>
+                        <div className="text-[13px] font-semibold text-slate-800">
                           {r.origine === 'locataire_location' ? '🔑' : r.origine === 'locataire_reservation' ? '📅' : '📋'} {r.locataire_nom} · {r.locataire_telephone}
                         </div>
-                        <div style={{ color: '#6b7280', fontSize: '12px' }}>
+                        <div className="text-xs text-slate-400">
                           Du {new Date(r.date_debut).toLocaleDateString('fr-FR')} {r.date_fin ? `au ${new Date(r.date_fin).toLocaleDateString('fr-FR')}` : '(indéterminée)'} · {r.type_loyer}
                         </div>
                       </div>
-                      <span style={{
-                        ...styles.reservationBadge,
-                        color: r.statut === 'actif' ? '#ef4444' : r.statut === 'en_attente_signature' ? '#f59e0b' : '#a78bfa',
-                        background: r.statut === 'actif' ? 'rgba(239,68,68,0.1)' : r.statut === 'en_attente_signature' ? 'rgba(245,158,11,0.1)' : 'rgba(124,58,237,0.1)',
-                      }}>
+                      <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold ${
+                        r.statut === 'actif' ? 'bg-red-50 text-red-600' : r.statut === 'en_attente_signature' ? 'bg-accent-50 text-accent-700' : 'bg-brand-50 text-brand-700'
+                      }`}>
                         {r.statut === 'actif' ? 'Actif' : r.statut === 'en_attente_signature' ? 'Signature en attente' : 'Demande en attente'}
                       </span>
                     </div>
@@ -623,60 +629,60 @@ export default function Biens() {
 
         {/* Liste des biens */}
         {chargement ? (
-          <p style={styles.vide}>Chargement...</p>
+          <p className="py-10 text-center text-slate-400">Chargement...</p>
         ) : biens.length === 0 ? (
-          <div style={styles.vide}>
+          <div className="rounded-2xl border border-slate-100 bg-white p-10 text-center text-slate-400 shadow-card">
             <p>🏘️ Vous n'avez pas encore de bien enregistré.</p>
           </div>
         ) : (
-          <div style={styles.grilleBiens}>
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
             {biens.map(b => (
-              <div key={b.id} style={styles.carteBien}>
-                <div style={styles.carteBienEntete}>
-                  <span style={styles.typeBien}>{TYPES_BIEN.find(t => t.value === b.type_bien)?.label || b.type_bien}</span>
-                  <span style={{ ...styles.statutBadge, background: b.statut === 'occupe' ? '#e8f5e9' : '#fff3e0', color: b.statut === 'occupe' ? '#2e7d32' : '#e65100' }}>
+              <div key={b.id} className="rounded-2xl border border-slate-100 bg-white p-5 shadow-card">
+                <div className="mb-3 flex items-center justify-between">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-brand-600">{TYPES_BIEN.find(t => t.value === b.type_bien)?.label || b.type_bien}</span>
+                  <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${b.statut === 'occupe' ? 'bg-emerald-50 text-emerald-700' : 'bg-accent-50 text-accent-700'}`}>
                     {b.statut === 'occupe' ? '● Occupé' : '○ Libre'}
                   </span>
                 </div>
-                <p style={styles.numeroBien}>🔖 N° {b.numero_bien}</p>
-                <p style={styles.carteBienAdresse}>{b.adresse || b.lieu_depot || '—'}</p>
-                <p style={styles.carteBienVille}>{b.quartier ? `${b.quartier}, ` : ''}{b.ville}</p>
+                <p className="mb-1.5 text-xs font-bold tracking-wide text-accent-600">🔖 N° {b.numero_bien}</p>
+                <p className="m-0 text-[15px] font-semibold text-slate-900">{b.adresse || b.lieu_depot || '—'}</p>
+                <p className="mb-3 mt-0.5 text-[13px] text-slate-400">{b.quartier ? `${b.quartier}, ` : ''}{b.ville}</p>
                 {b.effectue_par_agent_id && (
-                  <span style={{ display: 'inline-block', marginTop: '6px', background: 'rgba(245,158,11,0.15)', color: '#e65100', border: '1px solid rgba(245,158,11,0.3)', borderRadius: '20px', padding: '2px 10px', fontSize: '11px', fontWeight: '700' }}>
+                  <span className="mt-1.5 inline-block rounded-full border border-accent-200 bg-accent-50 px-2.5 py-0.5 text-[11px] font-bold text-accent-700">
                     🤝 Ajouté par votre agent
                   </span>
                 )}
-                <div style={{ marginTop: '8px' }}>
+                <div className="mt-2">
                   {b.tarifs && Object.keys(b.tarifs).length > 0
                     ? Object.entries(b.tarifs).slice(0, 2).map(([k, v]) => (
-                        <p key={k} style={{ ...styles.carteBienLoyer, fontSize: '14px', margin: '2px 0' }}>
-                          {formaterMontant(v)} <span style={styles.perioBadge}>/ {k}</span>
+                        <p key={k} className="m-0 my-0.5 text-sm font-bold text-brand-700">
+                          {formaterMontant(v)} <span className="text-xs font-normal text-slate-400">/ {k}</span>
                         </p>
                       ))
-                    : <p style={styles.carteBienLoyer}>{formaterMontant(b.loyer_mensuel)} <span style={styles.perioBadge}>/ {b.type_loyer || 'mois'}</span></p>
+                    : <p className="m-0 text-base font-bold text-brand-700">{formaterMontant(b.loyer_mensuel)} <span className="text-xs font-normal text-slate-400">/ {b.type_loyer || 'mois'}</span></p>
                   }
                 </div>
-                <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
-                  <button style={{ ...styles.boutonDetails, flex: 1 }} onClick={() => { setBienDetail(b); setAfficherFormulaire(false); chargerReservationsBien(b.id); }}>
-                  🔍 Voir les détails
-                </button>
+                <div className="mt-3 flex gap-2">
+                  <button className={`${boutonSecondaire} flex-1`} onClick={() => { setBienDetail(b); setAfficherFormulaire(false); chargerReservationsBien(b.id); }}>
+                    🔍 Voir les détails
+                  </button>
                   {b.statut === 'libre' && (
                     <button
-                      style={{ ...styles.boutonDetails, flex: 1, background: b.sur_le_marche ? 'rgba(239,68,68,0.2)' : 'linear-gradient(135deg,#10b981,#059669)', color: '#fff', border: b.sur_le_marche ? '1px solid #ef4444' : 'none' }}
+                      className={`flex-1 rounded-lg px-3.5 py-2 text-xs font-semibold ${b.sur_le_marche ? 'border border-red-300 bg-red-50 text-red-600' : 'bg-brand-600 text-white hover:bg-brand-700'}`}
                       onClick={() => { setModalMarche(b); setDescriptionMarche(b.description_marche || ''); setSuccesMarche(''); }}
                     >
                       {b.sur_le_marche ? '🏪 Retirer du marché' : '🏪 Mettre sur le marché'}
                     </button>
                   )}
                 </div>
-                <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+                <div className="mt-2 flex gap-2">
                   {b.statut === 'libre' && (
-                    <button style={{ ...styles.boutonSecondaire, flex: 1 }} onClick={() => ouvrirModification(b)}>
+                    <button className={`${boutonSecondaire} flex-1`} onClick={() => ouvrirModification(b)}>
                       ✏️ Modifier
                     </button>
                   )}
                   {b.statut === 'libre' && (
-                    <button style={{ ...styles.boutonSupprimer, flex: 1 }} onClick={() => supprimerBienAction(b)}>
+                    <button className={`${boutonSupprimer} flex-1`} onClick={() => supprimerBienAction(b)}>
                       🗑️ Supprimer
                     </button>
                   )}
@@ -686,16 +692,17 @@ export default function Biens() {
           </div>
         )}
       </div>
+
       {/* Modal modification */}
       {bienModifier && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' }}>
-          <div style={{ background: '#0f0a1e', border: '1px solid rgba(124,58,237,0.4)', borderRadius: '16px', padding: '32px', width: '100%', maxWidth: '560px', maxHeight: '85vh', overflowY: 'auto', boxShadow: '0 25px 50px rgba(0,0,0,0.5)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <h3 style={{ margin: 0, color: '#c4b5fd', fontSize: '18px' }}>✏️ Modifier le bien</h3>
-              <button style={styles.boutonFermer} onClick={() => setBienModifier(null)}>✕ Fermer</button>
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-slate-900/50 p-5 backdrop-blur-sm">
+          <div className="w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-2xl bg-white p-7 shadow-2xl">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-lg font-bold text-slate-900">✏️ Modifier le bien</h3>
+              <button className="rounded-lg bg-slate-100 px-4 py-2 text-xs font-semibold text-slate-500 hover:bg-slate-200" onClick={() => setBienModifier(null)}>✕ Fermer</button>
             </div>
 
-            <div style={styles.grille2}>
+            <div className={grille2}>
               {bienModifier.type_bien !== 'vehicule' ? (
                 <>
                   <ChampTexte label="Adresse" valeur={formModif.adresse} onChange={v => setFormModif({ ...formModif, adresse: v })} />
@@ -707,53 +714,53 @@ export default function Biens() {
               <ChampTexte label="Ville" valeur={formModif.ville} onChange={v => setFormModif({ ...formModif, ville: v })} />
             </div>
 
-            <div style={{ marginTop: '16px' }}>
-              <label style={{ ...styles.label, fontSize: '14px', color: '#c4b5fd', marginBottom: '12px', display: 'block' }}>
-                💰 Tarifs du loyer * <span style={{ color: '#6b7280', fontWeight: '400', fontSize: '12px' }}>(renseignez les périodicités que vous proposez)</span>
+            <div className="mt-4">
+              <label className="mb-3 block text-sm font-bold text-brand-700">
+                💰 Tarifs du loyer * <span className="text-xs font-normal text-slate-400">(renseignez les périodicités que vous proposez)</span>
               </label>
-              <div style={styles.grille2}>
+              <div className={grille2}>
                 {(TYPES_LOYER[bienModifier.type_bien] || ['mensuel']).map(t => (
                   <div key={t}>
-                    <label style={styles.label}>{LABELS_LOYER[t]}</label>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <label className={champLabel}>{LABELS_LOYER[t]}</label>
+                    <div className="flex items-center gap-2">
                       <input
-                        style={{ ...styles.input, borderColor: tarifsModif[t] ? '#e8a020' : 'rgba(255,255,255,0.1)' }}
+                        className={`${champInput} ${tarifsModif[t] ? 'border-accent-400' : ''}`}
                         type="number"
                         placeholder="Laisser vide si non proposé"
                         value={tarifsModif[t] || ''}
                         onChange={e => setTarifsModif({ ...tarifsModif, [t]: e.target.value })}
                       />
-                      <span style={{ color: '#6b7280', fontSize: '13px', whiteSpace: 'nowrap' }}>FCFA</span>
+                      <span className="whitespace-nowrap text-[13px] text-slate-400">FCFA</span>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div style={{ marginTop: '16px' }}>
-              <p style={styles.detailSectionTitre}>🔍 Caractéristiques</p>
+            <div className="mt-4">
+              <p className="mb-2 text-sm font-bold text-brand-700">🔍 Caractéristiques</p>
               <CaracteristiquesForm typeBien={bienModifier.type_bien} caracteristiques={caracteristiquesModif} setCaracteristiques={setCaracteristiquesModif} />
             </div>
 
-            <div style={{ marginTop: '16px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <p style={styles.detailSectionTitre}>📷 Aperçu (photos & vidéos) <span style={{ color: '#6b7280', fontWeight: '400', fontSize: '12px' }}>(optionnel)</span></p>
+            <div className="mt-4">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-bold text-brand-700">📷 Aperçu (photos &amp; vidéos) <span className="text-xs font-normal text-slate-400">(optionnel)</span></p>
                 {(bienModifier.photos || []).length > 0 && <Lightbox medias={bienModifier.photos} />}
               </div>
 
               {(bienModifier.photos || []).length > 0 && (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(90px,1fr))', gap: '8px', marginBottom: '12px' }}>
+                <div className="mb-3 grid grid-cols-[repeat(auto-fill,minmax(90px,1fr))] gap-2">
                   {bienModifier.photos.map(photo => (
-                    <div key={photo} style={{ position: 'relative' }}>
+                    <div key={photo} className="relative">
                       {estVideo(photo) ? (
-                        <video src={`${API_BASE}${photo}`} controls style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }} />
+                        <video src={`${API_BASE}${photo}`} controls className="h-20 w-full rounded-lg border border-slate-100 object-cover" />
                       ) : (
-                        <img src={`${API_BASE}${photo}`} alt="Aperçu du bien" style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }} />
+                        <img src={`${API_BASE}${photo}`} alt="Aperçu du bien" className="h-20 w-full rounded-lg border border-slate-100 object-cover" />
                       )}
                       <button
                         type="button"
                         onClick={() => supprimerPhoto(photo)}
-                        style={{ position: 'absolute', top: '4px', right: '4px', background: 'rgba(239,68,68,0.9)', color: '#fff', border: 'none', borderRadius: '50%', width: '20px', height: '20px', fontSize: '12px', cursor: 'pointer', lineHeight: '20px', padding: 0 }}
+                        className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 p-0 text-xs leading-5 text-white"
                       >
                         ✕
                       </button>
@@ -767,61 +774,62 @@ export default function Biens() {
                 accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,video/quicktime"
                 multiple
                 onChange={e => setPhotosSelectionnees(Array.from(e.target.files))}
-                style={{ color: '#9ca3af', fontSize: '13px' }}
+                className="text-[13px] text-slate-500"
               />
               {photosSelectionnees.length > 0 && (
-                <button type="button" style={{ ...styles.boutonSecondaire, marginLeft: '10px', padding: '6px 12px' }} onClick={ajouterPhotos} disabled={envoiPhotos}>
+                <button type="button" className={`${boutonSecondaire} ml-2.5`} onClick={ajouterPhotos} disabled={envoiPhotos}>
                   {envoiPhotos ? 'Envoi...' : `📤 Envoyer (${photosSelectionnees.length})`}
                 </button>
               )}
-              {erreurPhotos && <p style={{ color: '#ef4444', fontSize: '12px', marginTop: '6px' }}>{erreurPhotos}</p>}
+              {erreurPhotos && <p className="mt-1.5 text-xs text-red-600">{erreurPhotos}</p>}
             </div>
 
-            {erreurModif && <p style={styles.erreur}>{erreurModif}</p>}
+            {erreurModif && <p className="mt-2 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{erreurModif}</p>}
 
-            <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
-              <button style={{ ...styles.boutonSecondaire, flex: 1 }} onClick={() => setBienModifier(null)}>Annuler</button>
-              <button style={{ ...styles.boutonPrimaire, flex: 1 }} onClick={enregistrerModification} disabled={envoiModif}>
+            <div className="mt-5 flex gap-3">
+              <button className="flex-1 rounded-xl border border-slate-200 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-50" onClick={() => setBienModifier(null)}>Annuler</button>
+              <button className={`${boutonPrimaire} flex-1`} onClick={enregistrerModification} disabled={envoiModif}>
                 {envoiModif ? 'Enregistrement...' : '✅ Enregistrer'}
               </button>
             </div>
           </div>
         </div>
       )}
+
       {/* Modal marché */}
       {modalMarche && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
-          <div style={{ background: '#0f0a1e', border: '1px solid rgba(16,185,129,0.4)', borderRadius: '16px', padding: '32px', width: '100%', maxWidth: '460px', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 25px 50px rgba(0,0,0,0.5)' }}>
-            <h3 style={{ margin: '0 0 8px', color: '#10b981', fontSize: '20px', fontWeight: '700' }}>
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-slate-900/50 p-5 backdrop-blur-sm">
+          <div className="w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-7 shadow-2xl">
+            <h3 className="mb-2 text-xl font-bold text-brand-700">
               {modalMarche.sur_le_marche ? '🏪 Retirer du marché' : '🏪 Mettre sur le marché'}
             </h3>
-            <p style={{ color: '#9ca3af', fontSize: '14px', marginBottom: '16px' }}>{modalMarche.adresse}, {modalMarche.ville}</p>
+            <p className="mb-4 text-sm text-slate-500">{modalMarche.adresse}, {modalMarche.ville}</p>
 
             {succesMarche ? (
-              <div style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)', color: '#10b981', padding: '12px', borderRadius: '8px', textAlign: 'center' }}>
+              <div className="rounded-xl border border-brand-200 bg-brand-50 p-3 text-center text-brand-700">
                 ✅ {succesMarche}
               </div>
             ) : (
               <>
                 {!modalMarche.sur_le_marche && (
                   <div>
-                    <label style={{ fontSize: '12px', fontWeight: '600', color: '#9ca3af', display: 'block', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-500">
                       Description pour les locataires (optionnel)
                     </label>
                     <textarea
-                      style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#e2e8f0', padding: '10px 12px', borderRadius: '8px', fontSize: '14px', boxSizing: 'border-box', outline: 'none', height: '80px', resize: 'vertical' }}
+                      className={`${champInput} h-20 resize-y`}
                       placeholder="Ex: Appartement lumineux au 2e étage, proche du marché..."
                       value={descriptionMarche}
                       onChange={e => setDescriptionMarche(e.target.value)}
                     />
                   </div>
                 )}
-                <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
-                  <button style={{ background: 'rgba(255,255,255,0.05)', color: '#9ca3af', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 20px', fontSize: '14px', cursor: 'pointer', flex: 1 }} onClick={() => setModalMarche(null)}>
+                <div className="mt-4 flex gap-3">
+                  <button className="flex-1 rounded-lg border border-slate-200 px-5 py-2.5 text-sm text-slate-500 hover:bg-slate-50" onClick={() => setModalMarche(null)}>
                     Annuler
                   </button>
                   <button
-                    style={{ background: modalMarche.sur_le_marche ? 'linear-gradient(135deg,#ef4444,#b91c1c)' : 'linear-gradient(135deg,#10b981,#059669)', color: '#fff', border: 'none', borderRadius: '8px', padding: '10px 20px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', flex: 1 }}
+                    className={`flex-1 rounded-lg px-5 py-2.5 text-sm font-semibold text-white ${modalMarche.sur_le_marche ? 'bg-red-600 hover:bg-red-700' : 'bg-brand-600 hover:bg-brand-700'}`}
                     onClick={handleToggleMarche}
                     disabled={envoiMarche}
                   >
@@ -836,53 +844,3 @@ export default function Biens() {
     </div>
   );
 }
-
-const styles = {
-    page: { minHeight: '100vh', background: 'linear-gradient(135deg,#0a0a0f 0%,#0d1117 100%)', fontFamily: "'Segoe UI',sans-serif", color: '#e2e8f0' },
-    nav: { background: 'rgba(10,10,20,0.95)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(124,58,237,0.2)', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '60px', position: 'sticky', top: 0, zIndex: 100 },
-    navLogo: { color: '#e2e8f0', fontSize: '18px', cursor: 'pointer' },
-    navBenin: { color: '#f59e0b' },
-  navMenu: { display: 'flex', gap: '8px', alignItems: 'center' },
-    navBtn: { background: 'transparent', border: '1px solid rgba(255,255,255,0.08)', color: '#9ca3af', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px' },
-    navBtnProfil: { background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.3)', color: '#a78bfa', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px', fontWeight: '600' },
-  navBtnActif: { background: 'rgba(124,58,237,0.2)', border: '1px solid #7c3aed', color: '#c4b5fd', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px', fontWeight: '600' },
-  contenu: { padding: '24px', maxWidth: '1200px', margin: '0 auto' },
-  bandeauConsultation: { background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.35)', color: '#f59e0b', padding: '10px 16px', borderRadius: '8px', fontSize: '13px', marginBottom: '20px' },
-  entete: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' },
-    titre: { margin: 0, fontSize: '24px', fontWeight: '800', background: 'linear-gradient(135deg,#c4b5fd,#f59e0b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' },
-    boutonPrimaire: { background: 'linear-gradient(135deg,#7c3aed,#5b21b6)', color: '#fff', border: 'none', borderRadius: '8px', padding: '10px 20px', fontSize: '14px', fontWeight: '600', cursor: 'pointer' },
-  boutonFermer: { background: 'rgba(255,255,255,0.05)', color: '#9ca3af', border: 'none', borderRadius: '8px', padding: '8px 16px', fontSize: '13px', cursor: 'pointer' },
-  boutonSecondaire: { background: 'rgba(255,255,255,0.05)', color: '#c4b5fd', border: '1px solid rgba(196,181,253,0.3)', borderRadius: '6px', padding: '8px 14px', fontSize: '12px', cursor: 'pointer', fontWeight: '600' },
-  boutonSupprimer: { background: 'rgba(239,68,68,0.1)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.3)', borderRadius: '6px', padding: '8px 14px', fontSize: '12px', cursor: 'pointer', fontWeight: '600' },
-  boutonDetails: { background: '#1a3a5c', color: '#fff', border: 'none', borderRadius: '6px', padding: '8px 14px', fontSize: '12px', cursor: 'pointer', fontWeight: '600', width: '100%', marginTop: '12px' },
-  formulaire: { background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '24px', marginBottom: '24px' },
-  formulaireTitre: { margin: '0 0 16px', color: '#c4b5fd' },
-  typeGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '10px', marginBottom: '8px' },
-  typeCard: { borderRadius: '8px', padding: '12px', cursor: 'pointer', transition: 'all 0.2s' },
-  typeCardLabel: { fontWeight: '700', fontSize: '14px', color: '#c4b5fd', marginBottom: '4px' },
-  typeCardDesc: { fontSize: '11px', color: '#6b7280', lineHeight: '1.3' },
-  grille2: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' },
-    label: { fontSize: '13px', fontWeight: '600', color: '#9ca3af', display: 'block', marginBottom: '4px', marginTop: '12px' },
-    input: { width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', fontSize: '14px', boxSizing: 'border-box', background: 'rgba(255,255,255,0.05)', color: '#e2e8f0', outline: 'none' },
-    option: { background: '#0f0a1e', color: '#e2e8f0' },
-    erreur: { color: '#ef4444', background: 'rgba(239,68,68,0.1)', padding: '10px', borderRadius: '6px', fontSize: '13px', marginTop: '8px', border: '1px solid rgba(239,68,68,0.2)' },
-    vide: { textAlign: 'center', color: '#6b7280', padding: '40px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px' },
-  grilleBiens: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' },
-  carteBien: { background: 'rgba(255,255,255,0.03)', borderRadius: '12px', padding: '20px', border: '1px solid rgba(255,255,255,0.08)' },
-  carteBienEntete: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' },
-  typeBien: { fontSize: '12px', fontWeight: '600', color: '#c4b5fd', textTransform: 'uppercase', letterSpacing: '0.5px' },
-  statutBadge: { fontSize: '12px', fontWeight: '600', padding: '4px 10px', borderRadius: '20px' },
-  numeroBien: { fontSize: '12px', fontWeight: '700', color: '#f59e0b', margin: '0 0 6px', letterSpacing: '0.5px' },
-  reservationLigne: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px 14px' },
-  reservationBadge: { padding: '3px 10px', borderRadius: '20px', fontSize: '11px', fontWeight: '700' },
-  carteBienAdresse: { fontSize: '15px', fontWeight: '600', color: '#e2e8f0', margin: '0 0 4px' },
-  carteBienVille: { fontSize: '13px', color: '#6b7280', margin: '0 0 12px' },
-  carteBienLoyer: { fontSize: '16px', fontWeight: '700', color: '#e8a020', margin: 0 },
-  perioBadge: { fontSize: '12px', color: '#6b7280', fontWeight: '400' },
-  detailsGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '10px' },
-  detailItem: { background: 'rgba(255,255,255,0.03)', borderRadius: '8px', padding: '10px 12px' },
-  detailLabel: { fontSize: '11px', color: '#6b7280', display: 'block', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px' },
-  detailValeur: { fontSize: '14px', fontWeight: '600', color: '#e2e8f0' },
-  detailSection: { marginBottom: '8px' },
-  detailSectionTitre: { fontWeight: '700', color: '#c4b5fd', fontSize: '14px', marginBottom: '8px' },
-};

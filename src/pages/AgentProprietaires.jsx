@@ -63,43 +63,43 @@ export default function AgentProprietaires() {
   });
 
   return (
-    <div style={s.page}>
-      <nav style={s.nav} className="re-nav">
-        <div style={s.navLogo}>
-          ⚡ <strong>RentEasy</strong> <span style={s.navBenin}>Bénin</span>
-          <span style={s.agentBadge}>Agent</span>
+    <div className="min-h-screen bg-slate-50">
+      <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
+        <div className="flex items-center gap-2 text-lg text-slate-900">
+          ⚡ <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span>
+          <span className="rounded-full bg-accent-500 px-2.5 py-0.5 text-[11px] font-extrabold text-white">Agent</span>
         </div>
-        <div style={s.navMenu}>
-          <button style={s.navBtn} onClick={() => navigate('/agent/dashboard')}>Tableau de bord</button>
-          <button style={s.navBtn} onClick={() => navigate('/agent/demandes')}>Demandes</button>
-          <button style={s.navBtn} onClick={() => navigate('/agent/recouvrements')}>Recouvrements</button>
-          <button style={{ ...s.navBtn, ...s.navBtnActif }}>Mes propriétaires</button>
-          <button style={s.navBtnProfil} onClick={() => navigate('/profil')}>👤 Mon profil</button>
+        <div className="flex items-center gap-1.5">
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/agent/dashboard')}>Tableau de bord</button>
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/agent/demandes')}>Demandes</button>
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/agent/recouvrements')}>Recouvrements</button>
+          <button className="rounded-lg border border-brand-600 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700">Mes propriétaires</button>
+          <button className="rounded-lg border border-brand-200 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700 hover:bg-brand-100" onClick={() => navigate('/profil')}>👤 Mon profil</button>
           <ClocheNotifications />
-          <button style={s.navDeconnexion} onClick={deconnecter}>Déconnexion</button>
+          <button className="rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
         </div>
       </nav>
 
-      <div style={s.contenu}>
-        <div style={s.layout}>
+      <div className="mx-auto max-w-6xl px-6 py-7">
+        <div className="grid grid-cols-[380px_1fr] items-start gap-6">
           {/* Liste propriétaires */}
-          <div style={s.colListe}>
-            <h2 style={s.titre}>Mes propriétaires</h2>
-            <p style={s.sousTitre}>{proprietaires.length} propriétaire(s) assigné(s)</p>
+          <div className="flex flex-col">
+            <h2 className="text-xl font-extrabold text-slate-900">Mes propriétaires</h2>
+            <p className="mt-1 text-[13px] text-slate-500">{proprietaires.length} propriétaire(s) assigné(s)</p>
 
             <input
-              style={s.recherche}
+              className="mt-4 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
               type="text"
               placeholder="🔍 Rechercher par nom, téléphone, email, ville..."
               value={recherche}
               onChange={e => setRecherche(e.target.value)}
             />
 
-            <div style={s.filtres}>
+            <div className="mt-3 flex flex-wrap gap-2">
               {CATEGORIES.map(c => (
                 <button
                   key={c.id}
-                  style={{ ...s.filtreBouton, ...(filtreCategorie === c.id ? s.filtreBoutonActif : {}) }}
+                  className={`rounded-full border px-3.5 py-1.5 text-xs font-semibold ${filtreCategorie === c.id ? 'border-brand-600 bg-brand-50 text-brand-700' : 'border-slate-200 bg-white text-slate-500'}`}
                   onClick={() => setFiltreCategorie(c.id)}
                 >
                   {c.label}
@@ -108,57 +108,57 @@ export default function AgentProprietaires() {
             </div>
 
             {chargement ? (
-              <p style={{ color: '#6b7280', padding: '20px' }}>Chargement...</p>
+              <p className="p-5 text-slate-400">Chargement...</p>
             ) : proprietaires.length === 0 ? (
-              <div style={s.vide}>
+              <div className="mt-4 rounded-2xl border border-slate-100 bg-white p-10 text-center text-slate-400 shadow-card">
                 <p>👤</p>
                 <p>Aucun propriétaire assigné pour l'instant.</p>
               </div>
             ) : proprietairesFiltres.length === 0 ? (
-              <div style={s.vide}>
+              <div className="mt-4 rounded-2xl border border-slate-100 bg-white p-10 text-center text-slate-400 shadow-card">
                 <p>🔍</p>
                 <p>Aucun propriétaire ne correspond à cette recherche/filtre.</p>
               </div>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '16px' }}>
+              <div className="mt-4 flex flex-col gap-3">
                 {proprietairesFiltres.map(p => (
                   <div
                     key={p.id}
-                    style={{ ...s.propCard, border: interlocuteur?.id === p.id ? '1px solid #7c3aed' : '1px solid rgba(255,255,255,0.08)', background: interlocuteur?.id === p.id ? 'rgba(124,58,237,0.1)' : 'rgba(255,255,255,0.02)' }}
+                    className={`flex flex-col gap-3 rounded-2xl p-4 shadow-card transition ${interlocuteur?.id === p.id ? 'border border-brand-400 bg-brand-50' : 'border border-slate-100 bg-white'}`}
                   >
-                    <div style={s.propEntete}>
-                      <div style={{ position: 'relative' }}>
-                        <div style={s.propAvatar}>{p.nom.charAt(0).toUpperCase()}</div>
+                    <div className="flex items-center gap-3">
+                      <div className="relative">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-600 text-lg font-bold text-white">{p.nom.charAt(0).toUpperCase()}</div>
                         {p.nb_impayes > 0 && (
-                          <span style={s.badgeImpayes} title={`${p.nb_impayes} échéance(s) impayée(s) ou partiellement payée(s)`}>
+                          <span className="absolute -right-1 -top-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full border-2 border-white bg-red-600 px-1 text-[11px] font-extrabold leading-none text-white" title={`${p.nb_impayes} échéance(s) impayée(s) ou partiellement payée(s)`}>
                             {p.nb_impayes}
                           </span>
                         )}
                       </div>
-                      <div style={{ flex: 1 }}>
-                        <div style={s.propNom}>{p.nom}</div>
-                        <div style={s.propDetail}>{p.telephone}</div>
-                        <div style={s.propDetail}>{p.email}</div>
+                      <div className="flex-1">
+                        <div className="text-[15px] font-bold text-slate-900">{p.nom}</div>
+                        <div className="mt-0.5 text-xs text-slate-400">{p.telephone}</div>
+                        <div className="mt-0.5 text-xs text-slate-400">{p.email}</div>
                       </div>
                     </div>
-                    <div style={s.propStats}>
-                      <span style={s.statBadge}>🏘️ {p.nb_biens} bien(s)</span>
-                      <span style={s.statBadge}>📋 {p.nb_contrats} contrat(s)</span>
-                      {p.ville && <span style={s.statBadge}>📍 {p.ville}</span>}
+                    <div className="flex flex-wrap gap-2">
+                      <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs text-slate-500">🏘️ {p.nb_biens} bien(s)</span>
+                      <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs text-slate-500">📋 {p.nb_contrats} contrat(s)</span>
+                      {p.ville && <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs text-slate-500">📍 {p.ville}</span>}
                       {p.nb_impayes > 0 && (
-                        <span style={s.statBadgeAlerte}>⚠️ {p.nb_impayes} impayé(s)</span>
+                        <span className="rounded-full border border-red-200 bg-red-50 px-2.5 py-1 text-xs font-bold text-red-600">⚠️ {p.nb_impayes} impayé(s)</span>
                       )}
                     </div>
                     <button
-                      style={{ ...s.btnMessage, background: interlocuteur?.id === p.id ? 'linear-gradient(135deg,#5b21b6,#4c1d95)' : 'linear-gradient(135deg,#7c3aed,#5b21b6)', position: 'relative' }}
+                      className={`relative w-full rounded-xl px-4 py-2.5 text-[13px] font-semibold text-white ${interlocuteur?.id === p.id ? 'bg-brand-800' : 'bg-brand-600 hover:bg-brand-700'}`}
                       onClick={() => ouvrirChat(p)}
                     >
                       {interlocuteur?.id === p.id ? '✕ Fermer le chat' : '💬 Message'}
                       {p.nb_messages_non_lus > 0 && (
-                        <span style={s.badgeMessage}>{p.nb_messages_non_lus}</span>
+                        <span className="absolute -right-1.5 -top-1.5 flex h-[19px] min-w-[19px] items-center justify-center rounded-full border-2 border-slate-50 bg-red-600 px-1 text-[11px] font-extrabold leading-none text-white">{p.nb_messages_non_lus}</span>
                       )}
                     </button>
-                    <button style={s.btnVoirCompte} onClick={() => navigate(`/agent/proprietaires/${p.id}`)}>
+                    <button className="w-full rounded-xl border border-brand-300 px-4 py-2.5 text-[13px] font-semibold text-brand-700 hover:bg-brand-50" onClick={() => navigate(`/agent/proprietaires/${p.id}`)}>
                       🔍 Voir le compte
                     </button>
                   </div>
@@ -168,7 +168,7 @@ export default function AgentProprietaires() {
           </div>
 
           {/* Zone de chat */}
-          <div style={s.colChat}>
+          <div className="sticky top-[84px]">
             {interlocuteur ? (
               <Chat
                 interlocuteur={interlocuteur}
@@ -176,9 +176,9 @@ export default function AgentProprietaires() {
                 contexte="proprietaire"
               />
             ) : (
-              <div style={s.chatVide}>
-                <p style={{ fontSize: '48px', margin: '0 0 16px' }}>💬</p>
-                <p style={{ color: '#6b7280', fontSize: '15px' }}>Sélectionnez un propriétaire pour démarrer une conversation</p>
+              <div className="flex h-[500px] flex-col items-center justify-center rounded-2xl border border-slate-100 bg-white p-10 text-center shadow-card">
+                <p className="mb-4 text-5xl">💬</p>
+                <p className="text-[15px] text-slate-400">Sélectionnez un propriétaire pour démarrer une conversation</p>
               </div>
             )}
           </div>
@@ -187,40 +187,3 @@ export default function AgentProprietaires() {
     </div>
   );
 }
-
-const s = {
-  page: { minHeight: '100vh', background: 'linear-gradient(135deg,#0a0a0f 0%,#0d1117 100%)', fontFamily: "'Segoe UI',sans-serif", color: '#e2e8f0' },
-  nav: { background: 'rgba(10,10,20,0.95)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(124,58,237,0.2)', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '60px', position: 'sticky', top: 0, zIndex: 100 },
-  navLogo: { color: '#e2e8f0', fontSize: '18px', display: 'flex', alignItems: 'center', gap: '8px' },
-  navBenin: { color: '#f59e0b' },
-  agentBadge: { background: 'linear-gradient(135deg,#f59e0b,#d97706)', color: '#000', fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '800' },
-  navMenu: { display: 'flex', gap: '8px', alignItems: 'center' },
-  navBtn: { background: 'transparent', border: '1px solid rgba(255,255,255,0.08)', color: '#9ca3af', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px' },
-  navBtnActif: { background: 'rgba(124,58,237,0.2)', border: '1px solid #7c3aed', color: '#c4b5fd', fontWeight: '600' },
-  navBtnProfil: { background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.3)', color: '#a78bfa', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px', fontWeight: '600' },
-  navDeconnexion: { background: 'transparent', border: '1px solid rgba(239,68,68,0.4)', color: '#ef4444', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px' },
-  contenu: { padding: '28px 24px', maxWidth: '1300px', margin: '0 auto' },
-  layout: { display: 'grid', gridTemplateColumns: '380px 1fr', gap: '24px', alignItems: 'start' },
-  colListe: { display: 'flex', flexDirection: 'column' },
-  colChat: { position: 'sticky', top: '84px' },
-  titre: { margin: 0, fontSize: '22px', fontWeight: '800', background: 'linear-gradient(135deg,#c4b5fd,#f59e0b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' },
-  sousTitre: { color: '#6b7280', margin: '4px 0 0', fontSize: '13px' },
-  vide: { textAlign: 'center', color: '#6b7280', padding: '40px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', marginTop: '16px' },
-  recherche: { width: '100%', boxSizing: 'border-box', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.05)', color: '#e2e8f0', fontSize: '14px', outline: 'none', marginTop: '16px' },
-  filtres: { display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '12px' },
-  filtreBouton: { background: 'rgba(255,255,255,0.05)', color: '#9ca3af', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '20px', padding: '6px 14px', fontSize: '12px', fontWeight: '600', cursor: 'pointer' },
-  filtreBoutonActif: { background: 'rgba(124,58,237,0.2)', color: '#c4b5fd', border: '1px solid #7c3aed' },
-  propCard: { borderRadius: '12px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', transition: 'all 0.2s' },
-  propEntete: { display: 'flex', alignItems: 'center', gap: '12px' },
-  propAvatar: { width: '44px', height: '44px', borderRadius: '50%', background: 'linear-gradient(135deg,#7c3aed,#5b21b6)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '700', fontSize: '18px', flexShrink: 0 },
-  propNom: { fontWeight: '700', color: '#e2e8f0', fontSize: '15px' },
-  propDetail: { color: '#9ca3af', fontSize: '12px', marginTop: '2px' },
-  propStats: { display: 'flex', gap: '8px', flexWrap: 'wrap' },
-  statBadge: { background: 'rgba(255,255,255,0.05)', color: '#9ca3af', padding: '3px 10px', borderRadius: '12px', fontSize: '12px', border: '1px solid rgba(255,255,255,0.08)' },
-  statBadgeAlerte: { background: 'rgba(239,68,68,0.15)', color: '#ef4444', padding: '3px 10px', borderRadius: '12px', fontSize: '12px', border: '1px solid rgba(239,68,68,0.35)', fontWeight: '700' },
-  badgeImpayes: { position: 'absolute', top: '-4px', right: '-4px', background: '#ef4444', color: '#fff', fontSize: '11px', fontWeight: '800', borderRadius: '999px', minWidth: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 4px', border: '2px solid #0d1117', lineHeight: 1 },
-  badgeMessage: { position: 'absolute', top: '-7px', right: '-7px', background: '#ef4444', color: '#fff', fontSize: '11px', fontWeight: '800', borderRadius: '999px', minWidth: '19px', height: '19px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 5px', border: '2px solid #0a0a0f', lineHeight: 1 },
-  btnMessage: { color: '#fff', border: 'none', borderRadius: '8px', padding: '9px 16px', fontSize: '13px', fontWeight: '600', cursor: 'pointer', width: '100%' },
-  btnVoirCompte: { background: 'transparent', color: '#c4b5fd', border: '1px solid rgba(124,58,237,0.4)', borderRadius: '8px', padding: '9px 16px', fontSize: '13px', fontWeight: '600', cursor: 'pointer', width: '100%' },
-  chatVide: { background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '16px', height: '500px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '40px' },
-};

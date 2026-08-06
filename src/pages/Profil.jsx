@@ -5,12 +5,15 @@ import { useAuth } from '../context/AuthContext';
 import ClocheNotifications from '../components/ClocheNotifications';
 
 const ROLES_LABELS = {
-  proprietaire: { label: 'Propriétaire', couleur: '#7c3aed', icone: '🏘️' },
-  locataire: { label: 'Locataire', couleur: '#a78bfa', icone: '🏠' },
-  agent: { label: 'Agent', couleur: '#f59e0b', icone: '👔' },
-  admin: { label: 'Admin', couleur: '#ef4444', icone: '🛡️' },
-  super_admin: { label: 'Super Admin', couleur: '#10b981', icone: '⚡' },
+  proprietaire: { label: 'Propriétaire', cls: 'bg-brand-50 text-brand-700 border-brand-200', icone: '🏘️' },
+  locataire: { label: 'Locataire', cls: 'bg-purple-50 text-purple-700 border-purple-200', icone: '🏠' },
+  agent: { label: 'Agent', cls: 'bg-accent-50 text-accent-700 border-accent-200', icone: '👔' },
+  admin: { label: 'Admin', cls: 'bg-red-50 text-red-600 border-red-200', icone: '🛡️' },
+  super_admin: { label: 'Super Admin', cls: 'bg-emerald-50 text-emerald-700 border-emerald-200', icone: '⚡' },
 };
+
+const champLabel = 'mt-3 mb-1.5 block text-xs font-bold uppercase tracking-wide text-slate-500';
+const champInput = 'w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30';
 
 export default function Profil() {
   const [profil, setProfil] = useState(null);
@@ -156,153 +159,153 @@ export default function Profil() {
   }
 
   return (
-    <div style={s.page}>
-      <nav style={s.nav} className="re-nav">
-        <div style={s.navLogo} onClick={retourDashboard}>
-          🏠 <strong>RentEasy</strong> <span style={s.navBenin}>Bénin</span>
+    <div className="min-h-screen bg-slate-50">
+      <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
+        <div className="cursor-pointer text-lg text-slate-900" onClick={retourDashboard}>
+          🏠 <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span>
         </div>
-        <div style={s.navMenu}>
-          <button style={s.navBtn} onClick={retourDashboard}>← Dashboard</button>
+        <div className="flex items-center gap-1.5">
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={retourDashboard}>← Dashboard</button>
           <ClocheNotifications />
-          <button style={s.navDeconnexion} onClick={deconnecter}>Déconnexion</button>
+          <button className="rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
         </div>
       </nav>
 
-      <div style={s.contenu}>
+      <div className="mx-auto max-w-4xl px-6 py-7">
         {chargement ? (
-          <div style={s.loading}><div style={s.spinner} /></div>
+          <div className="flex justify-center py-20"><div className="h-10 w-10 animate-spin rounded-full border-4 border-brand-100 border-t-brand-600" /></div>
         ) : (
-          <div style={s.layout}>
+          <div className="grid grid-cols-[280px_1fr] items-start gap-6">
             {/* Carte profil gauche */}
-            <div style={s.carteGauche}>
-              <div style={s.avatarGrand}>{profil?.nom?.charAt(0).toUpperCase()}</div>
-              <h2 style={s.profilNom}>{profil?.nom}</h2>
-              <p style={s.profilEmail}>{profil?.email}</p>
+            <div className="sticky top-[84px] flex flex-col items-center gap-3 rounded-2xl border border-slate-100 bg-white p-7 shadow-card">
+              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-brand-600 text-3xl font-extrabold text-white">{profil?.nom?.charAt(0).toUpperCase()}</div>
+              <h2 className="m-0 text-center text-xl font-extrabold text-slate-900">{profil?.nom}</h2>
+              <p className="m-0 text-center text-[13px] text-slate-400">{profil?.email}</p>
 
               {/* Rôles */}
-              <div style={s.rolesContainer}>
+              <div className="flex w-full flex-col gap-1.5">
                 {roles.map(r => {
-                  const rl = ROLES_LABELS[r] || { label: r, couleur: '#6b7280', icone: '👤' };
+                  const rl = ROLES_LABELS[r] || { label: r, cls: 'bg-slate-100 text-slate-500 border-slate-200', icone: '👤' };
                   return (
-                    <span key={r} style={{ ...s.roleBadge, background: `${rl.couleur}20`, color: rl.couleur, border: `1px solid ${rl.couleur}40` }}>
+                    <span key={r} className={`rounded-lg border px-3 py-1.5 text-center text-[13px] font-bold ${rl.cls}`}>
                       {rl.icone} {rl.label}
                     </span>
                   );
                 })}
               </div>
 
-              <div style={s.soldeCard}>
-                <p style={s.soldeLabel}>💰 Solde disponible</p>
-                <p style={s.soldeValeur}>{formaterMontant(solde)}</p>
-                <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
-                  <button style={s.btnSoldeMini} onClick={() => { setOnglet('solde'); ouvrirModalSolde('recharge'); }}>+ Recharger</button>
-                  <button style={{ ...s.btnSoldeMini, background: 'rgba(255,255,255,0.05)', color: '#9ca3af' }} onClick={() => { setOnglet('solde'); ouvrirModalSolde('retrait'); }}>↓ Retirer</button>
+              <div className="mt-1 w-full rounded-xl border border-brand-200 bg-brand-50 p-4">
+                <p className="m-0 text-xs font-semibold text-slate-500">💰 Solde disponible</p>
+                <p className="mt-1 text-xl font-extrabold text-brand-700">{formaterMontant(solde)}</p>
+                <div className="mt-2.5 flex gap-2">
+                  <button className="flex-1 rounded-lg bg-brand-600 px-2.5 py-1.5 text-xs font-bold text-white hover:bg-brand-700" onClick={() => { setOnglet('solde'); ouvrirModalSolde('recharge'); }}>+ Recharger</button>
+                  <button className="flex-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-bold text-slate-500 hover:bg-slate-50" onClick={() => { setOnglet('solde'); ouvrirModalSolde('retrait'); }}>↓ Retirer</button>
                 </div>
               </div>
 
-              <div style={s.infoStats}>
-                <div style={s.infoStatItem}>
-                  <span style={s.infoStatLabel}>Membre depuis</span>
-                  <span style={s.infoStatVal}>{formaterDate(profil?.created_at)}</span>
+              <div className="mt-2 flex w-full flex-col gap-2 border-t border-slate-100 pt-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-slate-400">Membre depuis</span>
+                  <span className="text-[13px] font-semibold text-slate-700">{formaterDate(profil?.created_at)}</span>
                 </div>
-                <div style={s.infoStatItem}>
-                  <span style={s.infoStatLabel}>Statut</span>
-                  <span style={{ ...s.infoStatVal, color: profil?.actif ? '#10b981' : '#ef4444' }}>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-slate-400">Statut</span>
+                  <span className={`text-[13px] font-semibold ${profil?.actif ? 'text-emerald-600' : 'text-red-600'}`}>
                     {profil?.actif ? '● Actif' : '○ Inactif'}
                   </span>
                 </div>
                 {profil?.ville && (
-                  <div style={s.infoStatItem}>
-                    <span style={s.infoStatLabel}>Ville</span>
-                    <span style={s.infoStatVal}>{profil.ville}</span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-slate-400">Ville</span>
+                    <span className="text-[13px] font-semibold text-slate-700">{profil.ville}</span>
                   </div>
                 )}
               </div>
             </div>
 
             {/* Panneau droite */}
-            <div style={s.carteDroite}>
+            <div className="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-card">
               {/* Onglets */}
-              <div style={s.onglets}>
+              <div className="flex border-b border-slate-100">
                 <button
-                  style={{ ...s.onglet, borderBottom: onglet === 'infos' ? '2px solid #7c3aed' : '2px solid transparent', color: onglet === 'infos' ? '#c4b5fd' : '#6b7280' }}
+                  className={`flex-1 border-b-2 p-4 text-sm font-semibold transition ${onglet === 'infos' ? 'border-brand-600 text-brand-700' : 'border-transparent text-slate-400'}`}
                   onClick={() => { setOnglet('infos'); setSucces(''); setErreur(''); }}
                 >
                   👤 Mes informations
                 </button>
                 <button
-                  style={{ ...s.onglet, borderBottom: onglet === 'securite' ? '2px solid #7c3aed' : '2px solid transparent', color: onglet === 'securite' ? '#c4b5fd' : '#6b7280' }}
+                  className={`flex-1 border-b-2 p-4 text-sm font-semibold transition ${onglet === 'securite' ? 'border-brand-600 text-brand-700' : 'border-transparent text-slate-400'}`}
                   onClick={() => { setOnglet('securite'); setSucces(''); setErreur(''); }}
                 >
                   🔒 Sécurité
                 </button>
                 <button
-                  style={{ ...s.onglet, borderBottom: onglet === 'solde' ? '2px solid #7c3aed' : '2px solid transparent', color: onglet === 'solde' ? '#c4b5fd' : '#6b7280' }}
+                  className={`flex-1 border-b-2 p-4 text-sm font-semibold transition ${onglet === 'solde' ? 'border-brand-600 text-brand-700' : 'border-transparent text-slate-400'}`}
                   onClick={() => { setOnglet('solde'); setSucces(''); setErreur(''); }}
                 >
                   💰 Mon solde
                 </button>
               </div>
 
-              {succes && <div style={s.succes}>{succes}</div>}
-              {erreur && <div style={s.erreurBox}>{erreur}</div>}
+              {succes && <div className="bg-brand-50 px-5 py-3 text-sm text-brand-800">{succes}</div>}
+              {erreur && <div className="bg-red-50 px-5 py-3 text-sm text-red-600">{erreur}</div>}
 
               {onglet === 'infos' && (
-                <div style={s.formSection}>
-                  <p style={s.formTitre}>Modifier mes informations</p>
-                  <p style={s.formNote}>⚠️ L'email ne peut pas être modifié. Contactez l'administration si nécessaire.</p>
+                <div className="p-6">
+                  <p className="mb-2 text-base font-bold text-slate-900">Modifier mes informations</p>
+                  <p className="mb-5 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2.5 text-xs text-slate-500">⚠️ L'email ne peut pas être modifié. Contactez l'administration si nécessaire.</p>
 
-                  <div style={s.formGrille}>
+                  <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label style={s.label}>Nom complet</label>
-                      <input style={s.input} value={form.nom} onChange={e => setForm({ ...form, nom: e.target.value })} />
+                      <label className={champLabel}>Nom complet</label>
+                      <input className={champInput} value={form.nom} onChange={e => setForm({ ...form, nom: e.target.value })} />
                     </div>
                     <div>
-                      <label style={s.label}>Téléphone</label>
-                      <input style={s.input} value={form.telephone} onChange={e => setForm({ ...form, telephone: e.target.value })} />
+                      <label className={champLabel}>Téléphone</label>
+                      <input className={champInput} value={form.telephone} onChange={e => setForm({ ...form, telephone: e.target.value })} />
                     </div>
                     <div>
-                      <label style={s.label}>Ville</label>
-                      <input style={s.input} placeholder="Cotonou" value={form.ville} onChange={e => setForm({ ...form, ville: e.target.value })} />
+                      <label className={champLabel}>Ville</label>
+                      <input className={champInput} placeholder="Cotonou" value={form.ville} onChange={e => setForm({ ...form, ville: e.target.value })} />
                     </div>
                     <div>
-                      <label style={s.label}>N° pièce d'identité</label>
-                      <input style={s.input} placeholder="CIP ou passeport" value={form.numero_piece_identite} onChange={e => setForm({ ...form, numero_piece_identite: e.target.value })} />
+                      <label className={champLabel}>N° pièce d'identité</label>
+                      <input className={champInput} placeholder="CIP ou passeport" value={form.numero_piece_identite} onChange={e => setForm({ ...form, numero_piece_identite: e.target.value })} />
                     </div>
                   </div>
 
                   {/* Email en lecture seule */}
-                  <div style={{ marginTop: '12px' }}>
-                    <label style={s.label}>Adresse email</label>
-                    <input style={{ ...s.input, opacity: 0.5, cursor: 'not-allowed' }} value={profil?.email || ''} readOnly />
+                  <div className="mt-3">
+                    <label className={champLabel}>Adresse email</label>
+                    <input className={`${champInput} cursor-not-allowed bg-slate-50 text-slate-400`} value={profil?.email || ''} readOnly />
                   </div>
 
-                  <button style={s.btnSauvegarder} onClick={sauvegarderProfil} disabled={envoi}>
+                  <button className="mt-5 w-full rounded-xl bg-brand-600 py-3 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-60" onClick={sauvegarderProfil} disabled={envoi}>
                     {envoi ? 'Sauvegarde...' : '✅ Sauvegarder les modifications'}
                   </button>
                 </div>
               )}
 
               {onglet === 'securite' && (
-                <div style={s.formSection}>
-                  <p style={s.formTitre}>Changer mon mot de passe</p>
+                <div className="p-6">
+                  <p className="mb-2 text-base font-bold text-slate-900">Changer mon mot de passe</p>
 
-                  <label style={s.label}>Mot de passe actuel</label>
-                  <input style={s.input} type="password" placeholder="••••••••" value={formMdp.ancien} onChange={e => setFormMdp({ ...formMdp, ancien: e.target.value })} />
+                  <label className={champLabel}>Mot de passe actuel</label>
+                  <input className={champInput} type="password" placeholder="••••••••" value={formMdp.ancien} onChange={e => setFormMdp({ ...formMdp, ancien: e.target.value })} />
 
-                  <label style={s.label}>Nouveau mot de passe</label>
-                  <input style={s.input} type="password" placeholder="8 caractères minimum" value={formMdp.nouveau} onChange={e => setFormMdp({ ...formMdp, nouveau: e.target.value })} />
+                  <label className={champLabel}>Nouveau mot de passe</label>
+                  <input className={champInput} type="password" placeholder="8 caractères minimum" value={formMdp.nouveau} onChange={e => setFormMdp({ ...formMdp, nouveau: e.target.value })} />
 
-                  <label style={s.label}>Confirmer le nouveau mot de passe</label>
-                  <input style={s.input} type="password" placeholder="••••••••" value={formMdp.confirmer} onChange={e => setFormMdp({ ...formMdp, confirmer: e.target.value })} />
+                  <label className={champLabel}>Confirmer le nouveau mot de passe</label>
+                  <input className={champInput} type="password" placeholder="••••••••" value={formMdp.confirmer} onChange={e => setFormMdp({ ...formMdp, confirmer: e.target.value })} />
 
-                  <button style={s.btnSauvegarder} onClick={changerMotDePasse} disabled={envoi}>
+                  <button className="mt-5 w-full rounded-xl bg-brand-600 py-3 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-60" onClick={changerMotDePasse} disabled={envoi}>
                     {envoi ? 'Modification...' : '🔒 Changer le mot de passe'}
                   </button>
 
-                  <div style={s.securiteInfo}>
-                    <p style={{ margin: '0 0 8px', color: '#a78bfa', fontWeight: '600', fontSize: '13px' }}>🔐 Conseils de sécurité</p>
-                    <ul style={{ color: '#6b7280', fontSize: '12px', margin: 0, paddingLeft: '16px', lineHeight: '1.8' }}>
+                  <div className="mt-6 rounded-xl border border-brand-200 bg-brand-50 p-4">
+                    <p className="mb-2 text-[13px] font-semibold text-brand-700">🔐 Conseils de sécurité</p>
+                    <ul className="m-0 list-disc space-y-1 pl-4 text-xs leading-relaxed text-slate-500">
                       <li>Utilisez au moins 8 caractères</li>
                       <li>Combinez majuscules, minuscules et chiffres</li>
                       <li>Ne partagez jamais votre mot de passe</li>
@@ -311,37 +314,37 @@ export default function Profil() {
                 </div>
               )}
               {onglet === 'solde' && (
-                <div style={s.formSection}>
-                  <p style={s.formTitre}>Mon portefeuille</p>
-                  <div style={s.soldeGrandCard}>
+                <div className="p-6">
+                  <p className="mb-2 text-base font-bold text-slate-900">Mon portefeuille</p>
+                  <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-brand-200 bg-brand-50 p-5">
                     <div>
-                      <p style={s.soldeGrandLabel}>Solde disponible</p>
-                      <p style={s.soldeGrandValeur}>{formaterMontant(solde)}</p>
+                      <p className="m-0 text-[13px] text-slate-500">Solde disponible</p>
+                      <p className="mt-1 text-2xl font-extrabold text-brand-700">{formaterMontant(solde)}</p>
                     </div>
-                    <div style={{ display: 'flex', gap: '10px' }}>
-                      <button style={{ ...s.btnSauvegarder, width: 'auto', marginTop: 0 }} onClick={() => ouvrirModalSolde('recharge')}>+ Recharger</button>
-                      <button style={{ ...s.btnSauvegarder, width: 'auto', marginTop: 0, background: 'rgba(255,255,255,0.05)', color: '#e2e8f0' }} onClick={() => ouvrirModalSolde('retrait')}>↓ Retirer</button>
+                    <div className="flex gap-2.5">
+                      <button className="rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700" onClick={() => ouvrirModalSolde('recharge')}>+ Recharger</button>
+                      <button className="rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50" onClick={() => ouvrirModalSolde('retrait')}>↓ Retirer</button>
                     </div>
                   </div>
 
-                  <p style={{ ...s.formTitre, marginTop: '28px', fontSize: '14px' }}>Historique des transactions</p>
+                  <p className="mb-3 mt-7 text-sm font-bold text-slate-900">Historique des transactions</p>
                   {transactions.length === 0 ? (
-                    <p style={{ color: '#6b7280', fontSize: '13px', textAlign: 'center', padding: '20px' }}>Aucune transaction pour le moment</p>
+                    <p className="py-5 text-center text-[13px] text-slate-400">Aucune transaction pour le moment</p>
                   ) : (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <div className="flex flex-col gap-2">
                       {transactions.map(t => (
-                        <div key={t.id} style={s.transactionLigne}>
+                        <div key={t.id} className="flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50 px-4 py-3">
                           <div>
-                            <div style={{ fontWeight: '600', color: '#e2e8f0', fontSize: '13px' }}>
+                            <div className="text-[13px] font-semibold text-slate-800">
                               {t.type === 'recharge' ? '⬆️ Recharge' : '⬇️ Retrait'} · {OPERATEURS.find(o => o.value === t.methode)?.label}
                             </div>
-                            <div style={{ color: '#6b7280', fontSize: '12px' }}>{new Date(t.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
+                            <div className="text-xs text-slate-400">{new Date(t.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
                           </div>
-                          <div style={{ textAlign: 'right' }}>
-                            <div style={{ fontWeight: '700', color: t.type === 'recharge' ? '#10b981' : '#ef4444' }}>
+                          <div className="text-right">
+                            <div className={`font-bold ${t.type === 'recharge' ? 'text-emerald-600' : 'text-red-600'}`}>
                               {t.type === 'recharge' ? '+' : '-'}{formaterMontant(t.montant)}
                             </div>
-                            <span style={{ ...s.transactionStatut, color: t.statut === 'reussi' ? '#10b981' : t.statut === 'echoue' ? '#ef4444' : '#f59e0b' }}>
+                            <span className={`text-[11px] font-semibold ${t.statut === 'reussi' ? 'text-emerald-600' : t.statut === 'echoue' ? 'text-red-600' : 'text-accent-600'}`}>
                               {t.statut === 'reussi' ? '✅ Réussi' : t.statut === 'echoue' ? '❌ Échoué' : '⏳ En cours'}
                             </span>
                           </div>
@@ -357,33 +360,33 @@ export default function Profil() {
       </div>
 
       {modalSolde && (
-        <div style={s.overlay}>
-          <div style={s.modal}>
-            <h3 style={{ margin: '0 0 4px', color: '#c4b5fd', fontSize: '20px' }}>
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-slate-900/50 p-5 backdrop-blur-sm">
+          <div className="w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-7 shadow-2xl">
+            <h3 className="mb-1 text-xl font-bold text-slate-900">
               {modalSolde === 'recharge' ? '⬆️ Recharger mon solde' : '⬇️ Retirer mon solde'}
             </h3>
-            <p style={{ color: '#6b7280', fontSize: '13px', marginBottom: '16px' }}>
+            <p className="mb-4 text-[13px] text-slate-400">
               {modalSolde === 'recharge'
                 ? 'Un prélèvement sera effectué sur le numéro renseigné.'
                 : 'Les fonds seront transférés sur le numéro renseigné.'}
             </p>
 
-            <label style={s.label}>Opérateur *</label>
-            <select style={s.input} value={formSolde.methode} onChange={e => setFormSolde({ ...formSolde, methode: e.target.value })}>
-              {OPERATEURS.map(o => <option key={o.value} value={o.value} style={s.option}>{o.label}</option>)}
+            <label className={champLabel}>Opérateur *</label>
+            <select className={champInput} value={formSolde.methode} onChange={e => setFormSolde({ ...formSolde, methode: e.target.value })}>
+              {OPERATEURS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
             </select>
 
-            <label style={s.label}>Numéro de téléphone *</label>
-            <input style={s.input} placeholder="+22997001122" value={formSolde.telephone} onChange={e => setFormSolde({ ...formSolde, telephone: e.target.value })} />
+            <label className={champLabel}>Numéro de téléphone *</label>
+            <input className={champInput} placeholder="+22997001122" value={formSolde.telephone} onChange={e => setFormSolde({ ...formSolde, telephone: e.target.value })} />
 
-            <label style={s.label}>Montant (FCFA) *</label>
-            <input style={s.input} type="number" placeholder="10000" value={formSolde.montant} onChange={e => setFormSolde({ ...formSolde, montant: e.target.value })} />
+            <label className={champLabel}>Montant (FCFA) *</label>
+            <input className={champInput} type="number" placeholder="10000" value={formSolde.montant} onChange={e => setFormSolde({ ...formSolde, montant: e.target.value })} />
 
-            {erreur && <p style={s.erreurBox2}>{erreur}</p>}
+            {erreur && <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-[13px] text-red-600">{erreur}</p>}
 
-            <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
-              <button style={s.btnAnnulerModal} onClick={() => setModalSolde(null)}>Annuler</button>
-              <button style={{ ...s.btnSauvegarder, marginTop: 0 }} onClick={lancerOperationSolde} disabled={envoi}>
+            <div className="mt-5 flex gap-3">
+              <button className="flex-1 rounded-xl border border-slate-200 px-5 py-3 text-sm text-slate-600 hover:bg-slate-50" onClick={() => setModalSolde(null)}>Annuler</button>
+              <button className="flex-1 rounded-xl bg-brand-600 py-3 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-60" onClick={lancerOperationSolde} disabled={envoi}>
                 {envoi ? 'Traitement...' : modalSolde === 'recharge' ? '✅ Lancer la recharge' : '✅ Lancer le retrait'}
               </button>
             </div>
@@ -393,54 +396,3 @@ export default function Profil() {
     </div>
   );
 }
-
-const s = {
-  page: { minHeight: '100vh', background: 'linear-gradient(135deg,#0a0a0f 0%,#0d1117 100%)', fontFamily: "'Segoe UI',sans-serif", color: '#e2e8f0' },
-  nav: { background: 'rgba(10,10,20,0.95)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(124,58,237,0.2)', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '60px', position: 'sticky', top: 0, zIndex: 100 },
-  navLogo: { color: '#e2e8f0', fontSize: '18px', cursor: 'pointer' },
-  navBenin: { color: '#f59e0b' },
-  navMenu: { display: 'flex', gap: '8px', alignItems: 'center' },
-  navBtn: { background: 'transparent', border: '1px solid rgba(255,255,255,0.08)', color: '#9ca3af', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px' },
-  navDeconnexion: { background: 'transparent', border: '1px solid rgba(239,68,68,0.4)', color: '#ef4444', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px' },
-  contenu: { padding: '28px 24px', maxWidth: '1000px', margin: '0 auto' },
-  loading: { display: 'flex', justifyContent: 'center', padding: '80px' },
-  spinner: { width: '40px', height: '40px', border: '3px solid rgba(124,58,237,0.2)', borderTop: '3px solid #7c3aed', borderRadius: '50%', animation: 'spin 1s linear infinite' },
-  layout: { display: 'grid', gridTemplateColumns: '280px 1fr', gap: '24px', alignItems: 'start' },
-  carteGauche: { background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '16px', padding: '28px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', position: 'sticky', top: '84px' },
-  avatarGrand: { width: '80px', height: '80px', borderRadius: '50%', background: 'linear-gradient(135deg,#7c3aed,#5b21b6)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '32px' },
-  profilNom: { margin: 0, fontSize: '20px', fontWeight: '800', color: '#e2e8f0', textAlign: 'center' },
-  profilEmail: { margin: 0, color: '#6b7280', fontSize: '13px', textAlign: 'center' },
-  rolesContainer: { display: 'flex', flexDirection: 'column', gap: '6px', width: '100%' },
-  roleBadge: { padding: '6px 12px', borderRadius: '8px', fontSize: '13px', fontWeight: '700', textAlign: 'center' },
-  infoStats: { width: '100%', display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '8px', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '16px' },
-  infoStatItem: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
-  infoStatLabel: { color: '#6b7280', fontSize: '12px' },
-  infoStatVal: { color: '#e2e8f0', fontSize: '13px', fontWeight: '600' },
-  carteDroite: { background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '16px', overflow: 'hidden' },
-  onglets: { display: 'flex', borderBottom: '1px solid rgba(255,255,255,0.08)' },
-  onglet: { flex: 1, padding: '16px', background: 'transparent', border: 'none', cursor: 'pointer', fontSize: '14px', fontWeight: '600', transition: 'all 0.2s' },
-  succes: { background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)', color: '#10b981', padding: '12px 20px', fontSize: '14px' },
-  erreurBox: { background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', color: '#ef4444', padding: '12px 20px', fontSize: '14px' },
-  formSection: { padding: '24px' },
-  formTitre: { color: '#c4b5fd', fontSize: '16px', fontWeight: '700', margin: '0 0 8px' },
-  formNote: { color: '#6b7280', fontSize: '12px', margin: '0 0 20px', background: 'rgba(255,255,255,0.03)', padding: '10px 12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.06)' },
-  formGrille: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' },
-  label: { fontSize: '12px', fontWeight: '600', color: '#9ca3af', display: 'block', marginBottom: '6px', marginTop: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' },
-  input: { width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#e2e8f0', padding: '10px 14px', borderRadius: '8px', fontSize: '14px', boxSizing: 'border-box', outline: 'none' },
-  btnSauvegarder: { background: 'linear-gradient(135deg,#7c3aed,#5b21b6)', color: '#fff', border: 'none', borderRadius: '8px', padding: '12px 24px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', marginTop: '20px', width: '100%' },
-  securiteInfo: { marginTop: '24px', background: 'rgba(124,58,237,0.06)', border: '1px solid rgba(124,58,237,0.2)', borderRadius: '10px', padding: '16px' },
-  soldeCard: { width: '100%', background: 'linear-gradient(135deg,rgba(16,185,129,0.12),rgba(5,150,105,0.06))', border: '1px solid rgba(16,185,129,0.3)', borderRadius: '12px', padding: '16px', marginTop: '4px' },
-  soldeLabel: { margin: 0, color: '#9ca3af', fontSize: '12px', fontWeight: '600' },
-  soldeValeur: { margin: '4px 0 0', color: '#10b981', fontSize: '20px', fontWeight: '800' },
-  btnSoldeMini: { flex: 1, background: 'linear-gradient(135deg,#10b981,#059669)', color: '#fff', border: 'none', borderRadius: '6px', padding: '7px 10px', fontSize: '12px', fontWeight: '700', cursor: 'pointer' },
-  soldeGrandCard: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', background: 'linear-gradient(135deg,rgba(16,185,129,0.1),rgba(5,150,105,0.04))', border: '1px solid rgba(16,185,129,0.3)', borderRadius: '12px', padding: '20px' },
-  soldeGrandLabel: { margin: 0, color: '#9ca3af', fontSize: '13px' },
-  soldeGrandValeur: { margin: '4px 0 0', color: '#10b981', fontSize: '28px', fontWeight: '800' },
-  transactionLigne: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px', padding: '12px 16px' },
-  transactionStatut: { fontSize: '11px', fontWeight: '600' },
-  option: { background: '#0f0a1e', color: '#e2e8f0' },
-  overlay: { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' },
-  modal: { background: '#0f0a1e', border: '1px solid rgba(124,58,237,0.4)', borderRadius: '16px', padding: '32px', width: '100%', maxWidth: '440px', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 25px 50px rgba(0,0,0,0.5)' },
-  erreurBox2: { color: '#ef4444', background: 'rgba(239,68,68,0.1)', padding: '10px', borderRadius: '6px', fontSize: '13px', marginTop: '12px', border: '1px solid rgba(239,68,68,0.2)' },
-  btnAnnulerModal: { flex: 1, background: 'rgba(255,255,255,0.05)', color: '#9ca3af', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '12px 20px', fontSize: '14px', cursor: 'pointer' },
-};

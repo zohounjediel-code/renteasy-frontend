@@ -33,6 +33,10 @@ const CHAMPS_OPERATEUR = {
 
 const NOMS_OPERATEUR = { mtn: '📱 MTN Mobile Money', moov: '📱 Moov Money', celtiis: '📱 Celtiis Pay', sms: '✉️ SMS (Africa\'s Talking)' };
 
+const navBtn = 'rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50';
+const navBtnActif = 'rounded-lg border border-brand-600 bg-brand-50 px-3.5 py-1.5 text-[13px] font-semibold text-brand-700';
+const champInput = 'w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30';
+
 export default function SuperAdminParametres() {
   const [plateforme, setPlateforme] = useState([]);
   const [operateurs, setOperateurs] = useState([]);
@@ -108,51 +112,51 @@ export default function SuperAdminParametres() {
   }
 
   if (chargement) {
-    return <div style={s.loading}><p style={{ color: '#a78bfa' }}>Chargement...</p></div>;
+    return <div className="flex min-h-screen items-center justify-center bg-slate-50"><p className="text-brand-700">Chargement...</p></div>;
   }
 
   return (
-    <div style={s.page}>
-      <nav style={s.nav} className="re-nav">
-        <div style={s.navLogo} onClick={() => navigate('/superadmin/dashboard')}>
-          ⚡ RentEasy <span style={s.navBenin}>Bénin</span>
-          <span style={s.superBadge}>SUPER ADMIN</span>
+    <div className="min-h-screen bg-slate-50">
+      <nav className="re-nav sticky top-0 z-[100] flex h-16 items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
+        <div className="flex cursor-pointer items-center gap-2.5 text-lg font-bold text-slate-900" onClick={() => navigate('/superadmin/dashboard')}>
+          ⚡ RentEasy <span className="text-accent-600">Bénin</span>
+          <span className="rounded-full bg-purple-600 px-2.5 py-0.5 text-[10px] font-extrabold tracking-wide text-white">SUPER ADMIN</span>
         </div>
-        <div style={s.navMenu}>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/dashboard')}>Dashboard</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/utilisateurs')}>Utilisateurs</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/contrats')}>Contrats</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/biens')}>Biens</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/locataires')}>Locataires</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/journal')}>Journal</button>
-          <button style={{ ...s.navBtn, ...s.navBtnActif }}>Paramètres</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/moderation')}>Modération</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/rapport-financier')}>Rapport financier</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/rappels')}>Rappels</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/erreurs')}>Erreurs</button>
-          <button style={s.navDeconnexion} onClick={deconnecter}>Déconnexion</button>
+        <div className="flex flex-wrap items-center gap-1.5">
+          <button className={navBtn} onClick={() => navigate('/superadmin/dashboard')}>Dashboard</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/utilisateurs')}>Utilisateurs</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/contrats')}>Contrats</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/biens')}>Biens</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/locataires')}>Locataires</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/journal')}>Journal</button>
+          <button className={navBtnActif}>Paramètres</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/moderation')}>Modération</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/rapport-financier')}>Rapport financier</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/rappels')}>Rappels</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/erreurs')}>Erreurs</button>
+          <button className="rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
         </div>
       </nav>
 
-      <div style={s.contenu}>
-        <div style={s.entete}>
-          <h2 style={s.titre}>Paramètres de la plateforme</h2>
+      <div className="mx-auto max-w-3xl px-6 py-8">
+        <div className="mb-6">
+          <h2 className="text-2xl font-extrabold text-slate-900">Paramètres de la plateforme</h2>
         </div>
 
         {message && (
-          <div style={{ ...s.bandeau, background: message.succes ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)', color: message.succes ? '#10b981' : '#ef4444', border: `1px solid ${message.succes ? 'rgba(16,185,129,0.3)' : 'rgba(239,68,68,0.3)'}` }}>
+          <div className={`mb-5 rounded-xl px-4 py-3 text-sm font-semibold ${message.succes ? 'border border-brand-200 bg-brand-50 text-brand-800' : 'border border-red-200 bg-red-50 text-red-600'}`}>
             {message.texte}
           </div>
         )}
 
         {/* Commission */}
-        <div style={s.carte}>
-          <h3 style={s.carteTitre}>💰 Commission RentEasy</h3>
-          <p style={s.carteSousTitre}>Pourcentage prélevé sur chaque paiement de loyer, quel que soit le mode de paiement.</p>
-          <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginTop: '16px' }}>
-            <div style={s.inputGroupe}>
+        <div className="mb-4 rounded-2xl border border-slate-100 bg-white p-5 shadow-card">
+          <h3 className="text-base font-bold text-slate-900">💰 Commission RentEasy</h3>
+          <p className="mt-1.5 text-[13px] text-slate-500">Pourcentage prélevé sur chaque paiement de loyer, quel que soit le mode de paiement.</p>
+          <div className="mt-4 flex items-center gap-3">
+            <div className="relative flex flex-1 items-center">
               <input
-                style={s.input}
+                className={champInput}
                 type="number"
                 min="0"
                 max="100"
@@ -160,41 +164,42 @@ export default function SuperAdminParametres() {
                 value={tauxCommission}
                 onChange={e => setTauxCommission(e.target.value)}
               />
-              <span style={s.suffixe}>%</span>
+              <span className="pointer-events-none absolute right-3.5 text-sm text-slate-400">%</span>
             </div>
-            <button style={s.btnValider} onClick={enregistrerCommission} disabled={envoiCommission}>
+            <button className="whitespace-nowrap rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-60" onClick={enregistrerCommission} disabled={envoiCommission}>
               {envoiCommission ? 'Enregistrement...' : 'Enregistrer'}
             </button>
           </div>
         </div>
 
         {/* Opérateurs Mobile Money */}
-        <p style={s.sectionTitre}>🔑 Opérateurs Mobile Money</p>
+        <p className="my-6 text-xs font-bold uppercase tracking-wide text-purple-600">🔑 Opérateurs Mobile Money</p>
         {operateurs.map(o => (
-          <div key={o.operateur} style={s.carte}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h3 style={s.carteTitre}>{NOMS_OPERATEUR[o.operateur] || o.operateur}</h3>
-              <label style={s.toggleLigne}>
+          <div key={o.operateur} className="mb-4 rounded-2xl border border-slate-100 bg-white p-5 shadow-card">
+            <div className="flex items-center justify-between">
+              <h3 className="text-base font-bold text-slate-900">{NOMS_OPERATEUR[o.operateur] || o.operateur}</h3>
+              <label className="flex cursor-pointer items-center gap-2">
                 <input
                   type="checkbox"
+                  className="accent-brand-600"
                   checked={o.actif}
                   onChange={e => enregistrerOperateur(o.operateur, e.target.checked)}
                   disabled={envoiOperateur === o.operateur}
                 />
-                <span style={{ color: o.actif ? '#10b981' : '#6b7280', fontSize: '13px', fontWeight: '600' }}>
+                <span className={`text-[13px] font-semibold ${o.actif ? 'text-brand-700' : 'text-slate-400'}`}>
                   {o.actif ? 'Actif' : 'Inactif'}
                 </span>
               </label>
             </div>
-            <p style={s.carteSousTitre}>
+            <p className="mt-1.5 text-[13px] text-slate-500">
               Une valeur masquée (••••) n'est jamais modifiée tant que tu ne la remplaces pas explicitement.
             </p>
-            <div style={s.grilleChamps}>
+            <div className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-3.5">
               {(CHAMPS_OPERATEUR[o.operateur] || []).map(champ => (
-                <div key={champ.cle} style={s.champGroupe}>
-                  <label style={s.champLabel}>{champ.label}</label>
+                <div key={champ.cle} className="flex flex-col gap-1.5">
+                  <label className="text-xs font-semibold text-slate-500">{champ.label}</label>
                   <input
-                    style={s.input}
+                    className={champInput}
                     type={champ.secret ? 'password' : 'text'}
                     placeholder={champ.placeholder || ''}
                     value={editCles[o.operateur]?.[champ.cle] || ''}
@@ -204,7 +209,7 @@ export default function SuperAdminParametres() {
               ))}
             </div>
             <button
-              style={{ ...s.btnValider, marginTop: '16px' }}
+              className="mt-4 rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-60"
               onClick={() => enregistrerOperateur(o.operateur, o.actif)}
               disabled={envoiOperateur === o.operateur}
             >
@@ -216,32 +221,3 @@ export default function SuperAdminParametres() {
     </div>
   );
 }
-
-const s = {
-  page: { minHeight: '100vh', background: 'linear-gradient(135deg,#0a0a0f 0%,#0f0a1e 50%,#0a0f0a 100%)', fontFamily: "'Segoe UI',sans-serif", color: '#e2e8f0' },
-  loading: { minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0a0a0f' },
-  nav: { background: 'rgba(10,10,20,0.95)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(124,58,237,0.3)', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' },
-  navLogo: { display: 'flex', alignItems: 'center', gap: '10px', color: '#e2e8f0', fontSize: '18px', fontWeight: '700', cursor: 'pointer' },
-  navBenin: { color: '#f59e0b' },
-  superBadge: { background: 'linear-gradient(135deg,#7c3aed,#5b21b6)', color: '#fff', fontSize: '10px', padding: '3px 10px', borderRadius: '20px', fontWeight: '800', letterSpacing: '1px' },
-  navMenu: { display: 'flex', gap: '8px', alignItems: 'center' },
-  navBtn: { background: 'transparent', border: '1px solid rgba(124,58,237,0.3)', color: '#a78bfa', cursor: 'pointer', padding: '7px 14px', borderRadius: '6px', fontSize: '13px' },
-  navBtnActif: { background: 'rgba(124,58,237,0.2)', border: '1px solid #7c3aed', color: '#c4b5fd' },
-  navDeconnexion: { background: 'transparent', border: '1px solid rgba(239,68,68,0.4)', color: '#ef4444', cursor: 'pointer', padding: '7px 14px', borderRadius: '6px', fontSize: '13px' },
-  contenu: { padding: '32px 24px', maxWidth: '900px', margin: '0 auto' },
-  entete: { marginBottom: '24px' },
-  titre: { margin: 0, fontSize: '24px', fontWeight: '800', background: 'linear-gradient(135deg,#c4b5fd,#f59e0b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' },
-  bandeau: { padding: '12px 16px', borderRadius: '8px', fontSize: '14px', marginBottom: '20px', fontWeight: '600' },
-  sectionTitre: { color: '#a78bfa', fontSize: '13px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '1px', margin: '32px 0 12px' },
-  carte: { background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '20px', marginBottom: '16px' },
-  carteTitre: { margin: 0, fontSize: '16px', fontWeight: '700', color: '#e2e8f0' },
-  carteSousTitre: { color: '#6b7280', fontSize: '13px', margin: '6px 0 0' },
-  inputGroupe: { position: 'relative', display: 'flex', alignItems: 'center' },
-  input: { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.15)', color: '#e2e8f0', padding: '10px 14px', borderRadius: '8px', fontSize: '14px', width: '100%', outline: 'none', boxSizing: 'border-box' },
-  suffixe: { position: 'absolute', right: '14px', color: '#6b7280', fontSize: '14px', pointerEvents: 'none' },
-  btnValider: { background: 'linear-gradient(135deg,#7c3aed,#5b21b6)', color: '#fff', border: 'none', borderRadius: '8px', padding: '10px 20px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', whiteSpace: 'nowrap' },
-  toggleLigne: { display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' },
-  grilleChamps: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: '14px', marginTop: '16px' },
-  champGroupe: { display: 'flex', flexDirection: 'column', gap: '6px' },
-  champLabel: { fontSize: '12px', color: '#9ca3af', fontWeight: '600' },
-};

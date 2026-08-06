@@ -5,11 +5,11 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../services/api';
 
 const STATUT_COULEURS = {
-  payee: { bg: '#e8f5e9', color: '#2e7d32', label: '✅ Payée' },
-  en_attente: { bg: '#fff3e0', color: '#e65100', label: '⏳ En attente' },
-  impayee: { bg: '#ffebee', color: '#c62828', label: '❌ Impayée' },
-  partielle: { bg: '#e3f2fd', color: '#1565c0', label: '⚡ Partielle' },
-  en_recouvrement: { bg: '#f3e5f5', color: '#6a1b9a', label: '🔄 En recouvrement' },
+  payee: { cls: 'bg-emerald-50 text-emerald-700', label: '✅ Payée' },
+  en_attente: { cls: 'bg-accent-50 text-accent-700', label: '⏳ En attente' },
+  impayee: { cls: 'bg-red-50 text-red-600', label: '❌ Impayée' },
+  partielle: { cls: 'bg-blue-50 text-blue-700', label: '⚡ Partielle' },
+  en_recouvrement: { cls: 'bg-purple-50 text-purple-700', label: '🔄 En recouvrement' },
 };
 
 export default function Paiements() {
@@ -93,45 +93,45 @@ export default function Paiements() {
   });
 
   return (
-    <div style={styles.page}>
-      <nav style={styles.nav} className="re-nav">
-        <div style={styles.navLogo} onClick={() => navigate(lienConsultation('/dashboard'))}>🏠 <strong>RentEasy</strong> <span style={styles.navBenin}>Bénin</span></div>
-        <div style={styles.navMenu}>
-          <button style={styles.navBtn} onClick={() => navigate(lienConsultation('/biens'))}>Mes biens</button>
-          <button style={styles.navBtn} onClick={() => navigate(lienConsultation('/locataires'))}>Locataires</button>
-          <button style={styles.navBtnActif}>Paiements</button>
+    <div className="min-h-screen bg-slate-50">
+      <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
+        <div className="cursor-pointer text-lg text-slate-900" onClick={() => navigate(lienConsultation('/dashboard'))}>🏠 <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span></div>
+        <div className="flex items-center gap-1.5">
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate(lienConsultation('/biens'))}>Mes biens</button>
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate(lienConsultation('/locataires'))}>Locataires</button>
+          <button className="rounded-lg border border-brand-600 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700">Paiements</button>
           {estAussiLocataire && !enConsultationAdmin && (
-            <button style={styles.navBtnBasculer} onClick={() => navigate('/locataire/dashboard')}>🔄 Espace locataire</button>
+            <button className="rounded-lg bg-accent-500 px-3 py-1.5 text-sm font-bold text-white hover:bg-accent-600" onClick={() => navigate('/locataire/dashboard')}>🔄 Espace locataire</button>
           )}
-          <button style={styles.navBtnProfil} onClick={() => navigate('/profil')}>👤 Mon profil</button>
+          <button className="rounded-lg border border-brand-200 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700 hover:bg-brand-100" onClick={() => navigate('/profil')}>👤 Mon profil</button>
           <ClocheNotifications />
-          <button style={styles.navBtn} onClick={() => navigate(lienConsultation('/dashboard'))}>Dashboard</button>
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate(lienConsultation('/dashboard'))}>Dashboard</button>
         </div>
       </nav>
 
-      <div style={styles.contenu}>
+      <div className="mx-auto max-w-6xl px-6 py-6">
         {enConsultationAdmin && (
-          <div style={styles.bandeauConsultation}>
+          <div className="mb-5 rounded-xl border border-accent-200 bg-accent-50 px-4 py-2.5 text-sm text-accent-800">
             🛡️ Vous consultez le compte de <strong>{proprietaireNomConsulte || 'ce propriétaire'}</strong> en tant qu'administrateur.
           </div>
         )}
-        <div style={styles.entete}>
-          <h2 style={styles.titre}>Échéances & Paiements</h2>
+        <div className="mb-6">
+          <h2 className="text-2xl font-extrabold text-slate-900">Échéances &amp; Paiements</h2>
         </div>
 
         {/* Filtres */}
-        <div style={styles.filtres}>
+        <div className="mb-4 flex flex-wrap gap-2">
           {['tous', 'en_attente', 'payee', 'impayee', 'partielle', 'en_recouvrement'].map(f => (
             <button
               key={f}
-              style={{ ...styles.filtreBouton, background: filtre === f ? '#1a3a5c' : '#fff', color: filtre === f ? '#fff' : '#555' }}
+              className={`rounded-full border-[1.5px] px-4 py-1.5 text-[13px] font-medium ${filtre === f ? 'border-brand-600 bg-brand-600 text-white' : 'border-slate-200 bg-white text-slate-600'}`}
               onClick={() => setFiltre(f)}
             >
               {f === 'tous' ? 'Toutes' : STATUT_COULEURS[f]?.label || f}
             </button>
           ))}
         </div>
-        <p style={{ color: '#6b7280', fontSize: '12px', margin: '-8px 0 16px' }}>
+        <p className="-mt-2 mb-4 text-xs text-slate-400">
           {filtre === 'impayee' || filtre === 'partielle' || filtre === 'en_recouvrement'
             ? 'Échéances de cette catégorie, mois en cours et passés.'
             : 'Échéances du mois en cours uniquement.'}
@@ -139,14 +139,14 @@ export default function Paiements() {
 
         {/* Liste des échéances */}
         {chargement ? (
-          <p style={styles.vide}>Chargement...</p>
+          <p className="py-10 text-center text-slate-400">Chargement...</p>
         ) : echeancesFiltrees.length === 0 ? (
-          <div style={styles.vide}>
+          <div className="rounded-2xl border border-slate-100 bg-white p-10 text-center text-slate-400 shadow-card">
             <p>Aucune échéance trouvée pour ce filtre.</p>
           </div>
         ) : (
-          <div style={styles.tableau}>
-            <div style={{ ...styles.tableauEntete, gridTemplateColumns: '1.2fr 1.5fr 2fr 1.3fr 1.5fr', minWidth: '640px' }}>
+          <div className="overflow-x-auto rounded-2xl border border-slate-100 bg-white shadow-card">
+            <div className="grid min-w-[640px] grid-cols-[1.2fr_1.5fr_2fr_1.3fr_1.5fr] bg-slate-50 px-5 py-3 text-xs font-bold uppercase tracking-wide text-slate-400">
               <span>Période</span>
               <span>Locataire</span>
               <span>Bien</span>
@@ -154,18 +154,18 @@ export default function Paiements() {
               <span>Statut</span>
             </div>
             {echeancesFiltrees.map(e => {
-              const statutInfo = STATUT_COULEURS[e.statut] || { bg: '#f5f5f5', color: '#9ca3af', label: e.statut };
+              const statutInfo = STATUT_COULEURS[e.statut] || { cls: 'bg-slate-100 text-slate-500', label: e.statut };
               return (
-                <div key={e.id} style={{ ...styles.tableauLigne, gridTemplateColumns: '1.2fr 1.5fr 2fr 1.3fr 1.5fr', minWidth: '640px' }}>
-                  <span style={styles.mois}>{formaterDate(e.mois_concerne)}</span>
-                  <span>{e.locataire_nom}</span>
-                  <span style={{ color: '#6b7280', fontSize: '13px' }}>{e.adresse}</span>
-                  <span style={{ fontWeight: '700', color: '#c4b5fd' }}>
+                <div key={e.id} className="grid min-w-[640px] grid-cols-[1.2fr_1.5fr_2fr_1.3fr_1.5fr] items-center border-t border-slate-50 px-5 py-3.5 text-sm">
+                  <span className="font-semibold capitalize text-slate-800">{formaterDate(e.mois_concerne)}</span>
+                  <span className="text-slate-700">{e.locataire_nom}</span>
+                  <span className="text-[13px] text-slate-400">{e.adresse}</span>
+                  <span className="font-bold text-brand-700">
                     {formaterMontant(e.statut === 'partielle' ? e.montant_restant : e.montant_du)}
-                    {e.statut === 'partielle' && <span style={{ fontSize: '11px', color: '#6b7280', display: 'block', fontWeight: '400' }}>reste sur {formaterMontant(e.montant_du)}</span>}
+                    {e.statut === 'partielle' && <span className="block text-[11px] font-normal text-slate-400">reste sur {formaterMontant(e.montant_du)}</span>}
                   </span>
                   <span>
-                    <span style={{ ...styles.statutBadge, background: statutInfo.bg, color: statutInfo.color }}>
+                    <span className={`inline-block rounded-full px-2.5 py-1 text-xs font-semibold ${statutInfo.cls}`}>
                       {statutInfo.label}
                     </span>
                   </span>
@@ -178,38 +178,3 @@ export default function Paiements() {
     </div>
   );
 }
-
-const styles = {
-    page: { minHeight: '100vh', background: 'linear-gradient(135deg,#0a0a0f 0%,#0d1117 100%)', fontFamily: "'Segoe UI',sans-serif", color: '#e2e8f0' },
-    nav: { background: 'rgba(10,10,20,0.95)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(124,58,237,0.2)', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '60px', position: 'sticky', top: 0, zIndex: 100 },
-    navLogo: { color: '#e2e8f0', fontSize: '18px', cursor: 'pointer' },
-    navBenin: { color: '#f59e0b' },
-  navMenu: { display: 'flex', gap: '8px', alignItems: 'center' },
-    navBtn: { background: 'transparent', border: '1px solid rgba(255,255,255,0.08)', color: '#9ca3af', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px' },
-    navBtnProfil: { background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.3)', color: '#a78bfa', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px', fontWeight: '600' },
-  navBtnActif: { background: 'rgba(124,58,237,0.2)', border: '1px solid #7c3aed', color: '#c4b5fd', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px', fontWeight: '600' },
-  contenu: { padding: '24px', maxWidth: '1200px', margin: '0 auto' },
-  bandeauConsultation: { background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.35)', color: '#f59e0b', padding: '10px 16px', borderRadius: '8px', fontSize: '13px', marginBottom: '20px' },
-  entete: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' },
-    titre: { margin: 0, fontSize: '24px', fontWeight: '800', background: 'linear-gradient(135deg,#c4b5fd,#f59e0b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' },
-    boutonPrimaire: { background: 'linear-gradient(135deg,#7c3aed,#5b21b6)', color: '#fff', border: 'none', borderRadius: '8px', padding: '10px 20px', fontSize: '14px', fontWeight: '600', cursor: 'pointer' },
-  boutonAnnuler: { background: 'rgba(255,255,255,0.05)', color: '#9ca3af', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 20px', fontSize: '14px', cursor: 'pointer', flex: 1 },
-    succes: { background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)', color: '#10b981', padding: '12px 16px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' },
-  filtres: { display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' },
-  filtreBouton: { border: '1.5px solid #ddd', borderRadius: '20px', padding: '6px 16px', fontSize: '13px', cursor: 'pointer', fontWeight: '500' },
-    vide: { textAlign: 'center', color: '#6b7280', padding: '40px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px' },
-    tableau: { background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', overflow: 'hidden', overflowX: 'auto' },
-  tableauEntete: { display: 'grid', gridTemplateColumns: '1.2fr 1.5fr 2fr 1.3fr 1.5fr 1fr', padding: '12px 20px', background: 'rgba(255,255,255,0.03)', fontSize: '12px', fontWeight: '700', color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.5px' },
-  tableauLigne: { display: 'grid', gridTemplateColumns: '1.2fr 1.5fr 2fr 1.3fr 1.5fr 1fr', padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.05)', fontSize: '14px', alignItems: 'center' },
-  mois: { fontWeight: '600', color: '#e2e8f0', textTransform: 'capitalize' },
-  statutBadge: { fontSize: '12px', fontWeight: '600', padding: '4px 10px', borderRadius: '20px' },
-  boutonPayer: { background: '#1a3a5c', color: '#fff', border: 'none', borderRadius: '6px', padding: '6px 12px', fontSize: '12px', cursor: 'pointer', fontWeight: '600' },
-    overlay: { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 },
-    modal: { background: '#0f0a1e', border: '1px solid rgba(124,58,237,0.4)', borderRadius: '16px', padding: '32px', width: '100%', maxWidth: '460px', boxShadow: '0 25px 50px rgba(0,0,0,0.5)', maxHeight: '90vh', overflowY: 'auto' },
-  modalTitre: { margin: '0 0 4px', color: '#c4b5fd', fontSize: '20px' },
-  modalSous: { color: '#6b7280', fontSize: '14px', marginBottom: '20px' },
-    label: { fontSize: '13px', fontWeight: '600', color: '#9ca3af', display: 'block', marginBottom: '4px', marginTop: '12px' },
-    input: { width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', fontSize: '14px', boxSizing: 'border-box', background: 'rgba(255,255,255,0.05)', color: '#e2e8f0', outline: 'none' },
-    option: { background: '#0f0a1e', color: '#e2e8f0' },
-    erreur: { color: '#ef4444', background: 'rgba(239,68,68,0.1)', padding: '10px', borderRadius: '6px', fontSize: '13px', marginTop: '8px', border: '1px solid rgba(239,68,68,0.2)' },
-};

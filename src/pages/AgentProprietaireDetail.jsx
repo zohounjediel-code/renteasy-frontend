@@ -10,22 +10,22 @@ const LABELS_TYPE_BIEN = {
 };
 const LABELS_LOYER = { journalier: 'Journalier', hebdomadaire: 'Hebdomadaire', mensuel: 'Mensuel', annuel: 'Annuel' };
 const LABELS_STATUT_BIEN = {
-  libre: { label: '🟢 Libre', color: '#2e7d32' },
-  occupe: { label: '🔴 Occupé', color: '#c62828' },
+  libre: { label: '🟢 Libre', cls: 'text-emerald-600' },
+  occupe: { label: '🔴 Occupé', cls: 'text-red-600' },
 };
 const LABELS_STATUT_CONTRAT = {
-  actif: { label: '✅ Actif', color: '#2e7d32' },
-  en_attente_signature: { label: '✍️ En attente de signature', color: '#e65100' },
-  demande_locataire: { label: '📨 Demande en cours', color: '#1565c0' },
-  resilie: { label: '⛔ Résilié', color: '#6b7280' },
-  termine: { label: '⏹️ Terminé', color: '#6b7280' },
+  actif: { label: '✅ Actif', cls: 'text-emerald-600' },
+  en_attente_signature: { label: '✍️ En attente de signature', cls: 'text-accent-600' },
+  demande_locataire: { label: '📨 Demande en cours', cls: 'text-blue-600' },
+  resilie: { label: '⛔ Résilié', cls: 'text-slate-400' },
+  termine: { label: '⏹️ Terminé', cls: 'text-slate-400' },
 };
 const STATUT_ECHEANCE = {
-  payee: { color: '#2e7d32', label: '✅ Payée' },
-  en_attente: { color: '#e65100', label: '⏳ En attente' },
-  impayee: { color: '#c62828', label: '❌ Impayée' },
-  partielle: { color: '#1565c0', label: '⚡ Partielle' },
-  en_recouvrement: { color: '#6a1b9a', label: '🔄 En recouvrement' },
+  payee: { cls: 'text-emerald-600', label: '✅ Payée' },
+  en_attente: { cls: 'text-accent-600', label: '⏳ En attente' },
+  impayee: { cls: 'text-red-600', label: '❌ Impayée' },
+  partielle: { cls: 'text-blue-600', label: '⚡ Partielle' },
+  en_recouvrement: { cls: 'text-purple-600', label: '🔄 En recouvrement' },
 };
 
 const TYPES_LOYER_LISTE = [
@@ -67,14 +67,22 @@ const LABELS_LOYER_LONG = {
   mensuel: 'Mensuel (par mois)', annuel: 'Annuel (par an)',
 };
 
+const champLabel = 'mt-3 mb-1.5 block text-xs font-semibold text-slate-500';
+const champInput = 'w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30';
+const btnAction = 'mb-4 rounded-xl bg-brand-600 px-4 py-2.5 text-[13px] font-semibold text-white hover:bg-brand-700';
+const btnAnnuler = 'flex-1 rounded-xl border border-slate-200 px-5 py-2.5 text-sm text-slate-600 hover:bg-slate-50 disabled:opacity-60';
+const boutonPrim = 'rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-60';
+const overlay = 'fixed inset-0 z-[1000] flex items-center justify-center bg-slate-900/50 p-5 backdrop-blur-sm';
+const modal = 'w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-7 shadow-2xl';
+
 function ChampBoolean({ label, valeur, onChange }) {
   return (
     <div>
-      <label style={s.label}>{label}</label>
-      <select style={s.input} value={valeur} onChange={e => onChange(e.target.value)}>
-        <option value="" style={s.option}>Non spécifié</option>
-        <option value="oui" style={s.option}>Oui</option>
-        <option value="non" style={s.option}>Non</option>
+      <label className={champLabel}>{label}</label>
+      <select className={champInput} value={valeur} onChange={e => onChange(e.target.value)}>
+        <option value="">Non spécifié</option>
+        <option value="oui">Oui</option>
+        <option value="non">Non</option>
       </select>
     </div>
   );
@@ -82,16 +90,16 @@ function ChampBoolean({ label, valeur, onChange }) {
 function ChampNombre({ label, valeur, onChange, placeholder }) {
   return (
     <div>
-      <label style={s.label}>{label}</label>
-      <input style={s.input} type="number" min="0" placeholder={placeholder || '0'} value={valeur} onChange={e => onChange(e.target.value)} />
+      <label className={champLabel}>{label}</label>
+      <input className={champInput} type="number" min="0" placeholder={placeholder || '0'} value={valeur} onChange={e => onChange(e.target.value)} />
     </div>
   );
 }
 function ChampTexte({ label, valeur, onChange, placeholder }) {
   return (
     <div>
-      <label style={s.label}>{label}</label>
-      <input style={s.input} type="text" placeholder={placeholder || ''} value={valeur} onChange={e => onChange(e.target.value)} />
+      <label className={champLabel}>{label}</label>
+      <input className={champInput} type="text" placeholder={placeholder || ''} value={valeur} onChange={e => onChange(e.target.value)} />
     </div>
   );
 }
@@ -101,10 +109,11 @@ function ChampTexte({ label, valeur, onChange, placeholder }) {
 function CaracteristiquesFormAgent({ typeBien, caracteristiques, setCaracteristiques }) {
   function set(key, val) { setCaracteristiques(prev => ({ ...prev, [key]: val })); }
   const c = caracteristiques;
+  const grille = 'grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4';
 
   if (['appartement', 'studio', 'chambre'].includes(typeBien)) {
     return (
-      <div style={s.grille2}>
+      <div className={grille}>
         <ChampNombre label="Nombre de chambres" valeur={c.nb_chambres || ''} onChange={v => set('nb_chambres', v)} placeholder="2" />
         <ChampBoolean label="Salon" valeur={c.salon || ''} onChange={v => set('salon', v)} />
         <ChampBoolean label="Cuisine" valeur={c.cuisine || ''} onChange={v => set('cuisine', v)} />
@@ -118,7 +127,7 @@ function CaracteristiquesFormAgent({ typeBien, caracteristiques, setCaracteristi
   }
   if (['maison', 'villa'].includes(typeBien)) {
     return (
-      <div style={s.grille2}>
+      <div className={grille}>
         <ChampNombre label="Nombre d'étages" valeur={c.nb_etages || ''} onChange={v => set('nb_etages', v)} placeholder="1" />
         <ChampNombre label="Superficie (m²)" valeur={c.superficie || ''} onChange={v => set('superficie', v)} placeholder="200" />
         <ChampNombre label="Nombre de chambres" valeur={c.nb_chambres || ''} onChange={v => set('nb_chambres', v)} placeholder="3" />
@@ -134,7 +143,7 @@ function CaracteristiquesFormAgent({ typeBien, caracteristiques, setCaracteristi
   }
   if (typeBien === 'commerce') {
     return (
-      <div style={s.grille2}>
+      <div className={grille}>
         <ChampNombre label="Superficie (m²)" valeur={c.superficie || ''} onChange={v => set('superficie', v)} placeholder="30" />
         <ChampTexte label="Type d'activité possible" valeur={c.type_activite || ''} onChange={v => set('type_activite', v)} placeholder="Boutique, bureau, restaurant..." />
         <ChampBoolean label="Climatisé" valeur={c.climatise || ''} onChange={v => set('climatise', v)} />
@@ -146,16 +155,16 @@ function CaracteristiquesFormAgent({ typeBien, caracteristiques, setCaracteristi
   }
   if (typeBien === 'vehicule') {
     return (
-      <div style={s.grille2}>
+      <div className={grille}>
         <div>
-          <label style={s.label}>Type de véhicule</label>
-          <select style={s.input} value={c.type_vehicule || ''} onChange={e => set('type_vehicule', e.target.value)}>
-            <option value="" style={s.option}>Sélectionner...</option>
-            <option value="voiture" style={s.option}>Voiture</option>
-            <option value="moto" style={s.option}>Moto</option>
-            <option value="camion" style={s.option}>Camion</option>
-            <option value="bus" style={s.option}>Bus / Minibus</option>
-            <option value="autre" style={s.option}>Autre</option>
+          <label className={champLabel}>Type de véhicule</label>
+          <select className={champInput} value={c.type_vehicule || ''} onChange={e => set('type_vehicule', e.target.value)}>
+            <option value="">Sélectionner...</option>
+            <option value="voiture">Voiture</option>
+            <option value="moto">Moto</option>
+            <option value="camion">Camion</option>
+            <option value="bus">Bus / Minibus</option>
+            <option value="autre">Autre</option>
           </select>
         </div>
         <ChampTexte label="Marque" valeur={c.marque || ''} onChange={v => set('marque', v)} placeholder="Toyota, Honda..." />
@@ -509,14 +518,14 @@ export default function AgentProprietaireDetail() {
   }
 
   if (chargement) {
-    return <div style={{ ...s.page, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><p style={{ color: '#6b7280' }}>Chargement...</p></div>;
+    return <div className="flex min-h-screen items-center justify-center bg-slate-50"><p className="text-slate-400">Chargement...</p></div>;
   }
 
   if (erreur) {
     return (
-      <div style={{ ...s.page, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
-        <p style={{ color: '#ef4444' }}>{erreur}</p>
-        <button style={s.navBtn} onClick={() => navigate('/agent/proprietaires')}>← Retour à mes propriétaires</button>
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-slate-50">
+        <p className="text-red-600">{erreur}</p>
+        <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/agent/proprietaires')}>← Retour à mes propriétaires</button>
       </div>
     );
   }
@@ -524,29 +533,29 @@ export default function AgentProprietaireDetail() {
   const p = dashboard?.proprietaire;
 
   return (
-    <div style={s.page}>
-      <nav style={s.nav} className="re-nav">
-        <div style={s.navLogo}>
-          ⚡ <strong>RentEasy</strong> <span style={s.navBenin}>Bénin</span>
-          <span style={s.agentBadge}>Agent · Lecture seule</span>
+    <div className="min-h-screen bg-slate-50">
+      <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
+        <div className="flex items-center gap-2 text-lg text-slate-900">
+          ⚡ <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span>
+          <span className="rounded-full bg-accent-500 px-2.5 py-0.5 text-[11px] font-extrabold text-white">Agent · Lecture seule</span>
         </div>
-        <div style={s.navMenu}>
-          <button style={s.navBtn} onClick={() => navigate('/agent/proprietaires')}>← Mes propriétaires</button>
+        <div className="flex items-center gap-1.5">
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/agent/proprietaires')}>← Mes propriétaires</button>
           <ClocheNotifications />
-          <button style={s.navDeconnexion} onClick={deconnecter}>Déconnexion</button>
+          <button className="rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
         </div>
       </nav>
 
-      <div style={s.contenu}>
-        <div style={s.entete}>
-          <div style={s.avatar}>{p?.nom?.charAt(0).toUpperCase()}</div>
+      <div className="mx-auto max-w-5xl px-6 py-7">
+        <div className="mb-5 flex items-center gap-4">
+          <div className="flex h-[54px] w-[54px] shrink-0 items-center justify-center rounded-full bg-brand-600 text-xl font-bold text-white">{p?.nom?.charAt(0).toUpperCase()}</div>
           <div>
-            <h2 style={s.titre}>{p?.nom}</h2>
-            <p style={s.sousTitre}>{p?.telephone}{p?.email ? ` · ${p.email}` : ''}{p?.ville ? ` · 📍 ${p.ville}` : ''}</p>
+            <h2 className="text-xl font-extrabold text-slate-900">{p?.nom}</h2>
+            <p className="mt-1 text-[13px] text-slate-500">{p?.telephone}{p?.email ? ` · ${p.email}` : ''}{p?.ville ? ` · 📍 ${p.ville}` : ''}</p>
           </div>
           {estAdmin && (
             <button
-              style={s.boutonVuePropio}
+              className="ml-auto whitespace-nowrap rounded-xl border border-brand-300 bg-brand-50 px-3.5 py-2 text-[13px] font-semibold text-brand-700 hover:bg-brand-100"
               onClick={() => navigate(`/dashboard?proprietaire_id=${proprietaireId}&proprietaire_nom=${encodeURIComponent(p?.nom || '')}`)}
             >
               Ouvrir comme le propriétaire →
@@ -554,7 +563,7 @@ export default function AgentProprietaireDetail() {
           )}
         </div>
 
-        <div style={{ ...s.delegationBanniere, borderColor: delegationActive ? 'rgba(16,185,129,0.35)' : 'rgba(255,255,255,0.08)' }}>
+        <div className={`mb-5 rounded-xl border p-3.5 text-[13px] leading-relaxed ${delegationActive ? 'border-brand-200 bg-brand-50 text-brand-800' : 'border-slate-200 bg-slate-50 text-slate-500'}`}>
           {estAdmin ? (
             <span>🛡️ <strong>Accès superviseur</strong> — en tant qu'admin, vous pouvez consulter et agir sur ce compte (support technique). Toute action est tracée à votre nom.</span>
           ) : delegationActive ? (
@@ -564,9 +573,9 @@ export default function AgentProprietaireDetail() {
           )}
         </div>
 
-        <div style={s.onglets}>
+        <div className="mb-6 flex flex-wrap gap-1 border-b border-slate-200">
           {[['apercu', "Vue d'ensemble"], ['biens', 'Biens'], ['contrats', 'Contrats'], ['paiements', 'Paiements & échéances'], ['journal', "Journal d'activité"]].map(([id, label]) => (
-            <button key={id} style={{ ...s.onglet, ...(onglet === id ? s.ongletActif : {}) }} onClick={() => ouvrirOnglet(id)}>
+            <button key={id} className={`mr-5 border-b-2 px-1 py-2.5 text-sm ${onglet === id ? 'border-brand-600 font-semibold text-brand-700' : 'border-transparent text-slate-500'}`} onClick={() => ouvrirOnglet(id)}>
               {label}
             </button>
           ))}
@@ -574,50 +583,50 @@ export default function AgentProprietaireDetail() {
 
         {onglet === 'apercu' && dashboard && (
           <div>
-            <div style={s.grilleStats}>
-              <div style={s.carteStat}>
-                <p style={s.statLabel}>Biens</p>
-                <p style={s.statVal}>{dashboard.biens.total_biens}</p>
-                <p style={s.statSous}>{dashboard.biens.biens_occupes} occupé(s) · {dashboard.biens.biens_libres} libre(s)</p>
+            <div className="mb-3 grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4">
+              <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-card">
+                <p className="m-0 text-xs text-slate-400">Biens</p>
+                <p className="my-1.5 text-xl font-bold text-slate-900">{dashboard.biens.total_biens}</p>
+                <p className="m-0 text-xs text-slate-400">{dashboard.biens.biens_occupes} occupé(s) · {dashboard.biens.biens_libres} libre(s)</p>
               </div>
-              <div style={s.carteStat}>
-                <p style={s.statLabel}>Échéances — {dashboard.mois_en_cours.mois}</p>
-                <p style={s.statVal}>{dashboard.mois_en_cours.echeances_payees} / {dashboard.mois_en_cours.total_echeances} payées</p>
-                <p style={s.statSous}>Taux de recouvrement : {dashboard.mois_en_cours.taux_recouvrement}%</p>
+              <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-card">
+                <p className="m-0 text-xs text-slate-400">Échéances — {dashboard.mois_en_cours.mois}</p>
+                <p className="my-1.5 text-xl font-bold text-slate-900">{dashboard.mois_en_cours.echeances_payees} / {dashboard.mois_en_cours.total_echeances} payées</p>
+                <p className="m-0 text-xs text-slate-400">Taux de recouvrement : {dashboard.mois_en_cours.taux_recouvrement}%</p>
               </div>
-              <div style={s.carteStat}>
-                <p style={s.statLabel}>Montant collecté ce mois</p>
-                <p style={s.statVal}>{formaterMontant(dashboard.mois_en_cours.montant_total_collecte)}</p>
-                <p style={s.statSous}>Sur {formaterMontant(dashboard.mois_en_cours.montant_total_du)} dû</p>
+              <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-card">
+                <p className="m-0 text-xs text-slate-400">Montant collecté ce mois</p>
+                <p className="my-1.5 text-xl font-bold text-slate-900">{formaterMontant(dashboard.mois_en_cours.montant_total_collecte)}</p>
+                <p className="m-0 text-xs text-slate-400">Sur {formaterMontant(dashboard.mois_en_cours.montant_total_du)} dû</p>
               </div>
             </div>
 
-            <h3 style={s.sousTitreSection}>⚠️ Échéances en retard</h3>
+            <h3 className="my-7 text-[15px] font-bold text-brand-700">⚠️ Échéances en retard</h3>
             {dashboard.impayes.length === 0 ? (
-              <p style={{ color: '#6b7280', fontSize: '13px' }}>Aucune échéance en retard.</p>
+              <p className="text-[13px] text-slate-400">Aucune échéance en retard.</p>
             ) : (
-              <div style={s.tableau}>
+              <div className="flex flex-col gap-1.5">
                 {dashboard.impayes.map(e => (
-                  <div key={e.id} style={s.ligneTableau}>
+                  <div key={e.id} className="grid grid-cols-[1fr_1fr_auto_auto] items-center gap-3 rounded-lg border border-slate-100 bg-white px-3.5 py-2.5 text-[13px] text-slate-700 shadow-card">
                     <span>{e.adresse}, {e.ville}</span>
                     <span>{e.locataire_nom}</span>
                     <span>{formaterMontant(e.montant_du)}</span>
-                    <span style={{ color: '#c62828' }}>Depuis le {formaterDate(e.date_limite)}</span>
+                    <span className="text-red-600">Depuis le {formaterDate(e.date_limite)}</span>
                   </div>
                 ))}
               </div>
             )}
 
-            <h3 style={s.sousTitreSection}>💰 Derniers paiements reçus</h3>
+            <h3 className="my-7 text-[15px] font-bold text-brand-700">💰 Derniers paiements reçus</h3>
             {dashboard.derniers_paiements.length === 0 ? (
-              <p style={{ color: '#6b7280', fontSize: '13px' }}>Aucun paiement pour l'instant.</p>
+              <p className="text-[13px] text-slate-400">Aucun paiement pour l'instant.</p>
             ) : (
-              <div style={s.tableau}>
+              <div className="flex flex-col gap-1.5">
                 {dashboard.derniers_paiements.map(pa => (
-                  <div key={pa.id} style={s.ligneTableau}>
+                  <div key={pa.id} className="grid grid-cols-[1fr_1fr_auto_auto] items-center gap-3 rounded-lg border border-slate-100 bg-white px-3.5 py-2.5 text-[13px] text-slate-700 shadow-card">
                     <span>{pa.adresse}</span>
                     <span>{pa.locataire_nom}</span>
-                    <span style={{ color: '#2e7d32' }}>{formaterMontant(pa.montant)}</span>
+                    <span className="text-emerald-600">{formaterMontant(pa.montant)}</span>
                     <span>{formaterDate(pa.date_paiement)}</span>
                   </div>
                 ))}
@@ -629,27 +638,27 @@ export default function AgentProprietaireDetail() {
         {onglet === 'biens' && (
           <div>
             {delegationActive && (
-              <button style={s.btnAction} onClick={ouvrirAjouterBien}>+ Ajouter un bien</button>
+              <button className={btnAction} onClick={ouvrirAjouterBien}>+ Ajouter un bien</button>
             )}
             {!biens ? (
-              <p style={{ color: '#6b7280' }}>Chargement...</p>
+              <p className="text-slate-400">Chargement...</p>
             ) : biens.length === 0 ? (
-              <p style={{ color: '#6b7280' }}>Aucun bien enregistré.</p>
+              <p className="text-slate-400">Aucun bien enregistré.</p>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div className="flex flex-col gap-3">
                 {biens.map(b => (
-                  <div key={b.id} style={s.carteBien}>
+                  <div key={b.id} className="flex items-center justify-between gap-3 rounded-2xl border border-slate-100 bg-white p-4 shadow-card">
                     <div>
-                      <div style={{ fontWeight: '700', color: '#e2e8f0' }}>🔖 {b.numero_bien} — {LABELS_TYPE_BIEN[b.type_bien] || b.type_bien}</div>
-                      <div style={{ color: '#9ca3af', fontSize: '13px', marginTop: '2px' }}>{b.adresse}, {b.ville}{b.quartier ? ` (${b.quartier})` : ''}</div>
+                      <div className="font-bold text-slate-900">🔖 {b.numero_bien} — {LABELS_TYPE_BIEN[b.type_bien] || b.type_bien}</div>
+                      <div className="mt-0.5 text-[13px] text-slate-400">{b.adresse}, {b.ville}{b.quartier ? ` (${b.quartier})` : ''}</div>
                       {b.tarifs && (
-                        <div style={{ color: '#9ca3af', fontSize: '12px', marginTop: '6px' }}>
+                        <div className="mt-1.5 text-xs text-slate-400">
                           {Object.entries(b.tarifs).map(([k, v]) => `${LABELS_LOYER[k] || k} : ${formaterMontant(v)}`).join(' · ')}
                         </div>
                       )}
-                      {b.effectue_par_agent_id && <span style={s.badgeAgent}>🤝 Ajouté par vous (agent)</span>}
+                      {b.effectue_par_agent_id && <span className="mt-2 inline-block rounded-full border border-accent-200 bg-accent-50 px-2.5 py-0.5 text-[11px] font-bold text-accent-700">🤝 Ajouté par vous (agent)</span>}
                     </div>
-                    <span style={{ color: LABELS_STATUT_BIEN[b.statut]?.color, fontWeight: '600', fontSize: '13px' }}>
+                    <span className={`text-[13px] font-semibold ${LABELS_STATUT_BIEN[b.statut]?.cls}`}>
                       {LABELS_STATUT_BIEN[b.statut]?.label || b.statut}
                     </span>
                   </div>
@@ -662,27 +671,27 @@ export default function AgentProprietaireDetail() {
         {onglet === 'contrats' && (
           <div>
             {delegationActive && (
-              <div style={{ display: 'flex', gap: '10px', marginBottom: '16px' }}>
-                <button style={s.btnAction} onClick={ouvrirAjouterLocataire}>+ Ajouter un locataire</button>
-                <button style={s.btnAction} onClick={ouvrirCreerContrat}>+ Créer un contrat</button>
+              <div className="mb-4 flex gap-2.5">
+                <button className="rounded-xl bg-brand-600 px-4 py-2.5 text-[13px] font-semibold text-white hover:bg-brand-700" onClick={ouvrirAjouterLocataire}>+ Ajouter un locataire</button>
+                <button className="rounded-xl bg-brand-600 px-4 py-2.5 text-[13px] font-semibold text-white hover:bg-brand-700" onClick={ouvrirCreerContrat}>+ Créer un contrat</button>
               </div>
             )}
             {!contrats ? (
-              <p style={{ color: '#6b7280' }}>Chargement...</p>
+              <p className="text-slate-400">Chargement...</p>
             ) : contrats.length === 0 ? (
-              <p style={{ color: '#6b7280' }}>Aucun contrat.</p>
+              <p className="text-slate-400">Aucun contrat.</p>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div className="flex flex-col gap-3">
                 {contrats.map(c => (
-                  <div key={c.id} style={s.carteBien} onClick={() => voirContrat(c.id)} role="button">
+                  <div key={c.id} className="flex cursor-pointer items-center justify-between gap-3 rounded-2xl border border-slate-100 bg-white p-4 shadow-card" onClick={() => voirContrat(c.id)} role="button">
                     <div>
-                      <div style={{ fontWeight: '700', color: '#e2e8f0' }}>🔖 {c.numero_bien} — {c.locataire_nom}</div>
-                      <div style={{ color: '#9ca3af', fontSize: '13px', marginTop: '2px' }}>
+                      <div className="font-bold text-slate-900">🔖 {c.numero_bien} — {c.locataire_nom}</div>
+                      <div className="mt-0.5 text-[13px] text-slate-400">
                         {LABELS_LOYER[c.type_loyer] || c.type_loyer} · {formaterMontant(c.loyer_mensuel)} · du {formaterDate(c.date_debut)}{c.date_fin ? ` au ${formaterDate(c.date_fin)}` : ''}
                       </div>
-                      {c.effectue_par_agent_id && <span style={s.badgeAgent}>🤝 Créé et signé par vous (agent)</span>}
+                      {c.effectue_par_agent_id && <span className="mt-2 inline-block rounded-full border border-accent-200 bg-accent-50 px-2.5 py-0.5 text-[11px] font-bold text-accent-700">🤝 Créé et signé par vous (agent)</span>}
                     </div>
-                    <span style={{ color: LABELS_STATUT_CONTRAT[c.statut]?.color || '#9ca3af', fontWeight: '600', fontSize: '13px' }}>
+                    <span className={`text-[13px] font-semibold ${LABELS_STATUT_CONTRAT[c.statut]?.cls || 'text-slate-400'}`}>
                       {LABELS_STATUT_CONTRAT[c.statut]?.label || c.statut}
                     </span>
                   </div>
@@ -695,16 +704,16 @@ export default function AgentProprietaireDetail() {
         {onglet === 'paiements' && (
           <div>
             {!paiements ? (
-              <p style={{ color: '#6b7280' }}>Chargement...</p>
+              <p className="text-slate-400">Chargement...</p>
             ) : paiements.length === 0 ? (
-              <p style={{ color: '#6b7280' }}>Aucun paiement enregistré.</p>
+              <p className="text-slate-400">Aucun paiement enregistré.</p>
             ) : (
-              <div style={s.tableau}>
+              <div className="flex flex-col gap-1.5">
                 {paiements.map(pa => (
-                  <div key={pa.id} style={s.ligneTableau}>
+                  <div key={pa.id} className="grid grid-cols-[1fr_1fr_auto_auto_auto] items-center gap-3 rounded-lg border border-slate-100 bg-white px-3.5 py-2.5 text-[13px] text-slate-700 shadow-card">
                     <span>{pa.adresse}</span>
                     <span>{pa.locataire_nom}</span>
-                    <span style={{ color: '#2e7d32' }}>{formaterMontant(pa.montant)}</span>
+                    <span className="text-emerald-600">{formaterMontant(pa.montant)}</span>
                     <span>{pa.methode}</span>
                     <span>{formaterDate(pa.date_paiement)}</span>
                   </div>
@@ -716,21 +725,21 @@ export default function AgentProprietaireDetail() {
 
         {onglet === 'journal' && (
           <div>
-            <p style={{ color: '#6b7280', fontSize: '12px', margin: '0 0 16px' }}>
+            <p className="mb-4 text-xs text-slate-400">
               Historique de tout ce que vous avez fait pour le compte de {p?.nom}.
             </p>
             {!journal ? (
-              <p style={{ color: '#6b7280' }}>Chargement...</p>
+              <p className="text-slate-400">Chargement...</p>
             ) : journal.length === 0 ? (
-              <p style={{ color: '#6b7280' }}>Aucune action enregistrée pour l'instant.</p>
+              <p className="text-slate-400">Aucune action enregistrée pour l'instant.</p>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div className="flex flex-col gap-2">
                 {journal.map(j => (
-                  <div key={j.id} style={s.journalLigne}>
-                    <span style={s.journalIcone}>{ICONES_ACTION[j.type_action] || '🤝'}</span>
-                    <div style={{ flex: 1 }}>
-                      <p style={{ margin: 0, color: '#e2e8f0', fontSize: '13px' }}>{j.description}</p>
-                      <p style={{ margin: '2px 0 0', color: '#6b7280', fontSize: '11px' }}>
+                  <div key={j.id} className="flex items-start gap-3 rounded-lg border border-slate-100 bg-white px-3.5 py-2.5 shadow-card">
+                    <span className="shrink-0 text-base">{ICONES_ACTION[j.type_action] || '🤝'}</span>
+                    <div className="flex-1">
+                      <p className="m-0 text-[13px] text-slate-800">{j.description}</p>
+                      <p className="mt-0.5 text-[11px] text-slate-400">
                         {new Date(j.created_at).toLocaleString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </p>
                     </div>
@@ -743,107 +752,107 @@ export default function AgentProprietaireDetail() {
       </div>
 
       {modalAjouterBien && (
-        <div style={s.overlay} onClick={() => !envoiBien && !envoiPhotos && setModalAjouterBien(false)}>
-          <div style={{ ...s.modal, maxWidth: '640px', maxHeight: '85vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
+        <div className={overlay} onClick={() => !envoiBien && !envoiPhotos && setModalAjouterBien(false)}>
+          <div className={modal} onClick={e => e.stopPropagation()}>
             {!bienCree ? (
               <>
-                <h3 style={{ margin: '0 0 4px', color: '#c4b5fd', fontSize: '20px' }}>+ Ajouter un bien</h3>
-                <p style={{ color: '#9ca3af', fontSize: '12px', marginBottom: '16px' }}>Pour le compte de {p?.nom} — action tracée à votre nom.</p>
+                <h3 className="mb-1 text-xl font-bold text-slate-900">+ Ajouter un bien</h3>
+                <p className="mb-4 text-xs text-slate-400">Pour le compte de {p?.nom} — action tracée à votre nom.</p>
 
-                <label style={s.label}>Type de bien *</label>
-                <div style={s.typeGrid}>
+                <label className={champLabel}>Type de bien *</label>
+                <div className="mb-2 grid grid-cols-[repeat(auto-fill,minmax(140px,1fr))] gap-2.5">
                   {TYPES_BIEN_LISTE.map(t => (
                     <div
                       key={t.value}
-                      style={{ ...s.typeCard, border: typeBienForm === t.value ? '2px solid #e8a020' : '1px solid rgba(255,255,255,0.08)', background: typeBienForm === t.value ? 'rgba(245,158,11,0.08)' : 'rgba(255,255,255,0.03)' }}
+                      className={`cursor-pointer rounded-xl border-2 p-3 transition ${typeBienForm === t.value ? 'border-brand-500 bg-brand-50' : 'border-slate-200 bg-white'}`}
                       onClick={() => changerTypeBienForm(t.value)}
                     >
-                      <div style={s.typeCardLabel}>{t.label}</div>
-                      <div style={s.typeCardDesc}>{t.description}</div>
+                      <div className="mb-1 text-sm font-bold text-slate-900">{t.label}</div>
+                      <div className="text-[11px] leading-snug text-slate-400">{t.description}</div>
                     </div>
                   ))}
                 </div>
 
-                <div style={{ ...s.grille2, marginTop: '16px' }}>
+                <div className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4">
                   {typeBienForm !== 'vehicule' && (
                     <div>
-                      <label style={s.label}>Adresse *</label>
-                      <input style={s.input} placeholder="Rue 123, Quartier..." value={formBien.adresse} onChange={e => setFormBien({ ...formBien, adresse: e.target.value })} />
+                      <label className={champLabel}>Adresse *</label>
+                      <input className={champInput} placeholder="Rue 123, Quartier..." value={formBien.adresse} onChange={e => setFormBien({ ...formBien, adresse: e.target.value })} />
                     </div>
                   )}
                   <div>
-                    <label style={s.label}>Ville *</label>
-                    <input style={s.input} placeholder="Cotonou" value={formBien.ville} onChange={e => setFormBien({ ...formBien, ville: e.target.value })} />
+                    <label className={champLabel}>Ville *</label>
+                    <input className={champInput} placeholder="Cotonou" value={formBien.ville} onChange={e => setFormBien({ ...formBien, ville: e.target.value })} />
                   </div>
                   {typeBienForm !== 'vehicule' ? (
                     <div>
-                      <label style={s.label}>Quartier</label>
-                      <input style={s.input} placeholder="Fidjrosse" value={formBien.quartier} onChange={e => setFormBien({ ...formBien, quartier: e.target.value })} />
+                      <label className={champLabel}>Quartier</label>
+                      <input className={champInput} placeholder="Fidjrosse" value={formBien.quartier} onChange={e => setFormBien({ ...formBien, quartier: e.target.value })} />
                     </div>
                   ) : (
                     <div>
-                      <label style={s.label}>Lieu de dépôt / stationnement</label>
-                      <input style={s.input} placeholder="Ex: Carrefour Cadjèhoun" value={formBien.lieu_depot} onChange={e => setFormBien({ ...formBien, lieu_depot: e.target.value })} />
+                      <label className={champLabel}>Lieu de dépôt / stationnement</label>
+                      <input className={champInput} placeholder="Ex: Carrefour Cadjèhoun" value={formBien.lieu_depot} onChange={e => setFormBien({ ...formBien, lieu_depot: e.target.value })} />
                     </div>
                   )}
                 </div>
 
-                <div style={{ marginTop: '16px' }}>
-                  <label style={{ ...s.label, fontSize: '14px', color: '#c4b5fd', marginBottom: '12px', display: 'block' }}>
+                <div className="mt-4">
+                  <label className="mb-3 block text-sm font-bold text-brand-700">
                     Caractéristiques du {TYPES_BIEN_LISTE.find(t => t.value === typeBienForm)?.label}
                   </label>
                   <CaracteristiquesFormAgent typeBien={typeBienForm} caracteristiques={caracteristiquesBien} setCaracteristiques={setCaracteristiquesBien} />
                 </div>
 
-                <div style={{ marginTop: '16px' }}>
-                  <label style={{ ...s.label, fontSize: '14px', color: '#c4b5fd', marginBottom: '12px', display: 'block' }}>
-                    💰 Tarifs du loyer * <span style={{ color: '#6b7280', fontWeight: '400', fontSize: '12px' }}>(renseignez les périodicités proposées)</span>
+                <div className="mt-4">
+                  <label className="mb-3 block text-sm font-bold text-brand-700">
+                    💰 Tarifs du loyer * <span className="text-xs font-normal text-slate-400">(renseignez les périodicités proposées)</span>
                   </label>
-                  <div style={s.grille2}>
+                  <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4">
                     {(TYPES_LOYER_PAR_BIEN[typeBienForm] || []).map(t => (
                       <div key={t}>
-                        <label style={s.label}>{LABELS_LOYER_LONG[t]}</label>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <label className={champLabel}>{LABELS_LOYER_LONG[t]}</label>
+                        <div className="flex items-center gap-2">
                           <input
-                            style={{ ...s.input, borderColor: tarifsBien[t] ? '#e8a020' : undefined }}
+                            className={`${champInput} ${tarifsBien[t] ? 'border-accent-400' : ''}`}
                             type="number"
                             placeholder="Laisser vide si non proposé"
                             value={tarifsBien[t] || ''}
                             onChange={e => setTarifsBien({ ...tarifsBien, [t]: e.target.value })}
                           />
-                          <span style={{ color: '#6b7280', fontSize: '13px', whiteSpace: 'nowrap' }}>FCFA</span>
+                          <span className="whitespace-nowrap text-[13px] text-slate-400">FCFA</span>
                         </div>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {erreurBien && <p style={{ color: '#ef4444', fontSize: '13px', marginTop: '10px' }}>{erreurBien}</p>}
+                {erreurBien && <p className="mt-2.5 text-[13px] text-red-600">{erreurBien}</p>}
 
-                <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
-                  <button style={s.btnAnnuler} onClick={() => setModalAjouterBien(false)} disabled={envoiBien}>Annuler</button>
-                  <button style={{ ...s.boutonPrim, flex: 1 }} onClick={soumettreBien} disabled={envoiBien}>{envoiBien ? 'Enregistrement...' : 'Enregistrer le bien'}</button>
+                <div className="mt-5 flex gap-3">
+                  <button className={btnAnnuler} onClick={() => setModalAjouterBien(false)} disabled={envoiBien}>Annuler</button>
+                  <button className={`${boutonPrim} flex-1`} onClick={soumettreBien} disabled={envoiBien}>{envoiBien ? 'Enregistrement...' : 'Enregistrer le bien'}</button>
                 </div>
               </>
             ) : (
               <>
-                <h3 style={{ margin: '0 0 4px', color: '#2e7d32', fontSize: '20px' }}>✅ Bien enregistré — 🔖 {bienCree.numero_bien}</h3>
-                <p style={{ color: '#9ca3af', fontSize: '12px', marginBottom: '16px' }}>Vous pouvez ajouter des photos maintenant, ou le faire plus tard depuis cette fiche.</p>
+                <h3 className="mb-1 text-xl font-bold text-brand-700">✅ Bien enregistré — 🔖 {bienCree.numero_bien}</h3>
+                <p className="mb-4 text-xs text-slate-400">Vous pouvez ajouter des photos maintenant, ou le faire plus tard depuis cette fiche.</p>
 
-                <label style={s.label}>Ajouter des photos</label>
+                <label className={champLabel}>Ajouter des photos</label>
                 <input type="file" accept="image/*,video/*" multiple onChange={e => setPhotosSelectionnees(Array.from(e.target.files))} />
-                {photosSelectionnees.length > 0 && <p style={{ color: '#9ca3af', fontSize: '12px', margin: '6px 0' }}>{photosSelectionnees.length} fichier(s) sélectionné(s)</p>}
-                {erreurPhotos && <p style={{ color: '#ef4444', fontSize: '13px', marginTop: '6px' }}>{erreurPhotos}</p>}
-                <button style={{ ...s.btnAction, marginTop: '10px' }} onClick={ajouterPhotosBienForm} disabled={envoiPhotos || photosSelectionnees.length === 0}>
+                {photosSelectionnees.length > 0 && <p className="my-1.5 text-xs text-slate-400">{photosSelectionnees.length} fichier(s) sélectionné(s)</p>}
+                {erreurPhotos && <p className="mt-1.5 text-[13px] text-red-600">{erreurPhotos}</p>}
+                <button className={`${btnAction} mt-2.5`} onClick={ajouterPhotosBienForm} disabled={envoiPhotos || photosSelectionnees.length === 0}>
                   {envoiPhotos ? 'Envoi...' : '📷 Envoyer les photos'}
                 </button>
 
                 {bienCree.photos && bienCree.photos.length > 0 && (
-                  <p style={{ color: '#2e7d32', fontSize: '13px', marginTop: '10px' }}>{bienCree.photos.length} photo(s) déjà ajoutée(s) à ce bien.</p>
+                  <p className="mt-2.5 text-[13px] text-brand-700">{bienCree.photos.length} photo(s) déjà ajoutée(s) à ce bien.</p>
                 )}
 
-                <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
-                  <button style={{ ...s.boutonPrim, flex: 1 }} onClick={terminerAjoutBien}>Terminé</button>
+                <div className="mt-5 flex gap-3">
+                  <button className={`${boutonPrim} flex-1`} onClick={terminerAjoutBien}>Terminé</button>
                 </div>
               </>
             )}
@@ -852,32 +861,32 @@ export default function AgentProprietaireDetail() {
       )}
 
       {modalAjouterLocataire && (
-        <div style={s.overlay} onClick={() => setModalAjouterLocataire(false)}>
-          <div style={s.modal} onClick={e => e.stopPropagation()}>
-            <h3 style={{ margin: '0 0 4px', color: '#c4b5fd', fontSize: '20px' }}>+ Ajouter un locataire</h3>
-            <p style={{ color: '#9ca3af', fontSize: '12px', marginBottom: '16px' }}>Pour le compte de {p?.nom} — action tracée à votre nom. Le locataire doit déjà avoir un compte RentEasy et devra accepter la demande.</p>
+        <div className={overlay} onClick={() => setModalAjouterLocataire(false)}>
+          <div className={modal} onClick={e => e.stopPropagation()}>
+            <h3 className="mb-1 text-xl font-bold text-slate-900">+ Ajouter un locataire</h3>
+            <p className="mb-4 text-xs text-slate-400">Pour le compte de {p?.nom} — action tracée à votre nom. Le locataire doit déjà avoir un compte RentEasy et devra accepter la demande.</p>
 
             {succesLocataire ? (
-              <p style={{ color: '#2e7d32', fontSize: '14px' }}>✅ {succesLocataire}</p>
+              <p className="text-sm text-brand-700">✅ {succesLocataire}</p>
             ) : (
               <>
-                <label style={s.label}>Téléphone ou email du locataire</label>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <input style={{ ...s.input, flex: 1 }} value={contactRecherche} onChange={e => setContactRecherche(e.target.value)} placeholder="+229... ou email" />
-                  <button style={s.btnAction} onClick={rechercherLocataireAgent}>🔍</button>
+                <label className={champLabel}>Téléphone ou email du locataire</label>
+                <div className="flex gap-2">
+                  <input className={`${champInput} flex-1`} value={contactRecherche} onChange={e => setContactRecherche(e.target.value)} placeholder="+229... ou email" />
+                  <button className={btnAction} onClick={rechercherLocataireAgent}>🔍</button>
                 </div>
 
                 {rechercheEffectuee && resultatRecherche && (
-                  <div style={{ background: 'rgba(46,125,50,0.1)', border: '1px solid rgba(46,125,50,0.3)', borderRadius: '8px', padding: '12px', marginTop: '12px' }}>
-                    <p style={{ margin: 0, color: '#e2e8f0', fontSize: '14px' }}>✅ {resultatRecherche.nom} — {resultatRecherche.telephone}</p>
+                  <div className="mt-3 rounded-xl border border-brand-200 bg-brand-50 p-3">
+                    <p className="m-0 text-sm text-slate-800">✅ {resultatRecherche.nom} — {resultatRecherche.telephone}</p>
                   </div>
                 )}
 
-                {erreurLocataire && <p style={{ color: '#ef4444', fontSize: '13px', marginTop: '10px' }}>{erreurLocataire}</p>}
+                {erreurLocataire && <p className="mt-2.5 text-[13px] text-red-600">{erreurLocataire}</p>}
 
-                <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
-                  <button style={s.btnAnnuler} onClick={() => setModalAjouterLocataire(false)}>Fermer</button>
-                  <button style={{ ...s.boutonPrim, flex: 1 }} onClick={envoyerDemandeLocataire} disabled={!resultatRecherche || envoiLocataire}>
+                <div className="mt-5 flex gap-3">
+                  <button className={btnAnnuler} onClick={() => setModalAjouterLocataire(false)}>Fermer</button>
+                  <button className={`${boutonPrim} flex-1`} onClick={envoyerDemandeLocataire} disabled={!resultatRecherche || envoiLocataire}>
                     {envoiLocataire ? 'Envoi...' : "Envoyer la demande d'ajout"}
                   </button>
                 </div>
@@ -888,111 +897,111 @@ export default function AgentProprietaireDetail() {
       )}
 
       {modalCreerContrat && (
-        <div style={s.overlay} onClick={() => !envoiContrat && setModalCreerContrat(false)}>
-          <div style={{ ...s.modal, maxWidth: '560px' }} onClick={e => e.stopPropagation()}>
-            <h3 style={{ margin: '0 0 4px', color: '#c4b5fd', fontSize: '20px' }}>+ Créer un contrat</h3>
-            <p style={{ color: '#9ca3af', fontSize: '12px', marginBottom: '16px' }}>Pour le compte de {p?.nom} — vous signez électroniquement pour son compte, action tracée à votre nom.</p>
+        <div className={overlay} onClick={() => !envoiContrat && setModalCreerContrat(false)}>
+          <div className={modal} onClick={e => e.stopPropagation()}>
+            <h3 className="mb-1 text-xl font-bold text-slate-900">+ Créer un contrat</h3>
+            <p className="mb-4 text-xs text-slate-400">Pour le compte de {p?.nom} — vous signez électroniquement pour son compte, action tracée à votre nom.</p>
 
-            <label style={s.label}>Bien *</label>
-            <select style={s.input} value={formContrat.numero_bien} onChange={e => choisirBienPourContrat(e.target.value)}>
-              <option value="" style={s.option}>— Choisir un bien libre —</option>
+            <label className={champLabel}>Bien *</label>
+            <select className={champInput} value={formContrat.numero_bien} onChange={e => choisirBienPourContrat(e.target.value)}>
+              <option value="">— Choisir un bien libre —</option>
               {(biens || []).filter(b => b.statut === 'libre').map(b => (
-                <option key={b.id} value={b.numero_bien} style={s.option}>🔖 {b.numero_bien} — {b.adresse}, {b.ville}</option>
+                <option key={b.id} value={b.numero_bien}>🔖 {b.numero_bien} — {b.adresse}, {b.ville}</option>
               ))}
             </select>
 
-            <label style={s.label}>Locataire *</label>
-            <select style={s.input} value={formContrat.locataire_id} onChange={e => setFormContrat({ ...formContrat, locataire_id: e.target.value })}>
-              <option value="" style={s.option}>— Choisir un locataire —</option>
+            <label className={champLabel}>Locataire *</label>
+            <select className={champInput} value={formContrat.locataire_id} onChange={e => setFormContrat({ ...formContrat, locataire_id: e.target.value })}>
+              <option value="">— Choisir un locataire —</option>
               {(locataires || []).map(l => (
-                <option key={l.id} value={l.id} style={s.option}>{l.nom} — {l.telephone}</option>
+                <option key={l.id} value={l.id}>{l.nom} — {l.telephone}</option>
               ))}
             </select>
 
-            <label style={s.label}>Date de début *</label>
-            <input style={s.input} type="date" value={formContrat.date_debut} onChange={e => setFormContrat({ ...formContrat, date_debut: e.target.value })} />
+            <label className={champLabel}>Date de début *</label>
+            <input className={champInput} type="date" value={formContrat.date_debut} onChange={e => setFormContrat({ ...formContrat, date_debut: e.target.value })} />
 
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <div style={{ flex: 1 }}>
-                <label style={s.label}>Durée</label>
-                <input style={s.input} type="number" min="1" placeholder="Vide = indéterminée" value={formContrat.duree_valeur} onChange={e => setFormContrat({ ...formContrat, duree_valeur: e.target.value })} />
+            <div className="flex gap-2.5">
+              <div className="flex-1">
+                <label className={champLabel}>Durée</label>
+                <input className={champInput} type="number" min="1" placeholder="Vide = indéterminée" value={formContrat.duree_valeur} onChange={e => setFormContrat({ ...formContrat, duree_valeur: e.target.value })} />
               </div>
-              <div style={{ flex: 1 }}>
-                <label style={s.label}>&nbsp;</label>
-                <select style={s.input} value={formContrat.duree_unite} onChange={e => setFormContrat({ ...formContrat, duree_unite: e.target.value })}>
-                  <option value="jours" style={s.option}>Jour(s)</option>
-                  <option value="semaines" style={s.option}>Semaine(s)</option>
-                  <option value="mois" style={s.option}>Mois</option>
-                  <option value="annees" style={s.option}>Année(s)</option>
+              <div className="flex-1">
+                <label className={champLabel}>&nbsp;</label>
+                <select className={champInput} value={formContrat.duree_unite} onChange={e => setFormContrat({ ...formContrat, duree_unite: e.target.value })}>
+                  <option value="jours">Jour(s)</option>
+                  <option value="semaines">Semaine(s)</option>
+                  <option value="mois">Mois</option>
+                  <option value="annees">Année(s)</option>
                 </select>
               </div>
             </div>
 
-            <label style={s.label}>Type de loyer *</label>
-            <select style={s.input} value={formContrat.type_loyer} onChange={e => choisirTypeLoyerContrat(e.target.value)}>
-              {TYPES_LOYER_LISTE.map(t => <option key={t.value} value={t.value} style={s.option}>{t.label}</option>)}
+            <label className={champLabel}>Type de loyer *</label>
+            <select className={champInput} value={formContrat.type_loyer} onChange={e => choisirTypeLoyerContrat(e.target.value)}>
+              {TYPES_LOYER_LISTE.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
             </select>
             {formContrat.date_debut && formContrat.type_loyer && (
-              <p style={{ color: '#9ca3af', fontSize: '12px', margin: '4px 0 0' }}>📅 L'échéance sera calculée automatiquement à partir de la date de début.</p>
+              <p className="mt-1 text-xs text-slate-400">📅 L'échéance sera calculée automatiquement à partir de la date de début.</p>
             )}
 
-            <label style={s.label}>Loyer ({TYPES_LOYER_LISTE.find(t => t.value === formContrat.type_loyer)?.label?.toLowerCase()}) *</label>
-            <input style={s.input} type="number" value={formContrat.loyer_mensuel} onChange={e => setFormContrat({ ...formContrat, loyer_mensuel: e.target.value })} />
+            <label className={champLabel}>Loyer ({TYPES_LOYER_LISTE.find(t => t.value === formContrat.type_loyer)?.label?.toLowerCase()}) *</label>
+            <input className={champInput} type="number" value={formContrat.loyer_mensuel} onChange={e => setFormContrat({ ...formContrat, loyer_mensuel: e.target.value })} />
 
-            <label style={s.label}>Caution (FCFA)</label>
-            <input style={s.input} type="number" value={formContrat.caution} onChange={e => setFormContrat({ ...formContrat, caution: e.target.value })} />
+            <label className={champLabel}>Caution (FCFA)</label>
+            <input className={champInput} type="number" value={formContrat.caution} onChange={e => setFormContrat({ ...formContrat, caution: e.target.value })} />
 
-            <label style={s.label}>Votre signature (pour le compte du propriétaire) *</label>
-            <input style={s.input} value={formContrat.signature_agent} onChange={e => setFormContrat({ ...formContrat, signature_agent: e.target.value })} placeholder="Votre nom complet" />
+            <label className={champLabel}>Votre signature (pour le compte du propriétaire) *</label>
+            <input className={champInput} value={formContrat.signature_agent} onChange={e => setFormContrat({ ...formContrat, signature_agent: e.target.value })} placeholder="Votre nom complet" />
 
-            {erreurContrat && <p style={{ color: '#ef4444', fontSize: '13px', marginTop: '10px' }}>{erreurContrat}</p>}
+            {erreurContrat && <p className="mt-2.5 text-[13px] text-red-600">{erreurContrat}</p>}
 
-            <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
-              <button style={s.btnAnnuler} onClick={() => setModalCreerContrat(false)} disabled={envoiContrat}>Annuler</button>
-              <button style={{ ...s.boutonPrim, flex: 1 }} onClick={soumettreContrat} disabled={envoiContrat}>{envoiContrat ? 'Envoi...' : 'Signer pour le compte du propriétaire'}</button>
+            <div className="mt-5 flex gap-3">
+              <button className={btnAnnuler} onClick={() => setModalCreerContrat(false)} disabled={envoiContrat}>Annuler</button>
+              <button className={`${boutonPrim} flex-1`} onClick={soumettreContrat} disabled={envoiContrat}>{envoiContrat ? 'Envoi...' : 'Signer pour le compte du propriétaire'}</button>
             </div>
           </div>
         </div>
       )}
 
       {contratDetail && (
-        <div style={s.overlay} onClick={() => setContratDetail(null)}>
-          <div style={s.modal} onClick={e => e.stopPropagation()}>
+        <div className={overlay} onClick={() => setContratDetail(null)}>
+          <div className={modal} onClick={e => e.stopPropagation()}>
             {chargementDetail || !contratDetail.echeances ? (
-              <p style={{ color: '#6b7280' }}>Chargement...</p>
+              <p className="text-slate-400">Chargement...</p>
             ) : (
               <>
-                <h3 style={{ margin: '0 0 4px', color: '#c4b5fd', fontSize: '20px' }}>🔖 {contratDetail.numero_bien}</h3>
-                <p style={{ color: '#9ca3af', fontSize: '13px', marginBottom: '16px' }}>
+                <h3 className="mb-1 text-xl font-bold text-slate-900">🔖 {contratDetail.numero_bien}</h3>
+                <p className="mb-4 text-[13px] text-slate-400">
                   {contratDetail.adresse}, {contratDetail.ville} · {contratDetail.locataire_nom} · {LABELS_LOYER[contratDetail.type_loyer] || contratDetail.type_loyer} · {formaterMontant(contratDetail.loyer_mensuel)}
                 </p>
 
                 {contratDetail.statut === 'demande_locataire' && delegationActive && (
-                  <div style={{ background: 'rgba(21,101,192,0.1)', border: '1px solid rgba(21,101,192,0.3)', borderRadius: '10px', padding: '14px', marginBottom: '16px' }}>
-                    <p style={{ margin: '0 0 10px', color: '#c4b5fd', fontSize: '13px', fontWeight: '700' }}>📨 Demande en attente — traiter pour le compte de {p?.nom}</p>
-                    <label style={s.label}>Votre signature (pour approuver)</label>
-                    <input style={s.input} value={signatureDemandeAgent} onChange={e => setSignatureDemandeAgent(e.target.value)} placeholder="Votre nom complet" />
-                    {erreurTraitement && <p style={{ color: '#ef4444', fontSize: '13px', margin: '8px 0 0' }}>{erreurTraitement}</p>}
-                    <div style={{ display: 'flex', gap: '10px', marginTop: '12px' }}>
-                      <button style={{ ...s.btnAnnuler, flex: 1 }} onClick={refuserDemandeAgent} disabled={envoiTraitement}>✕ Refuser</button>
-                      <button style={{ ...s.boutonPrim, flex: 1 }} onClick={approuverDemandeAgent} disabled={envoiTraitement}>
+                  <div className="mb-4 rounded-xl border border-blue-200 bg-blue-50 p-3.5">
+                    <p className="mb-2.5 text-[13px] font-bold text-blue-700">📨 Demande en attente — traiter pour le compte de {p?.nom}</p>
+                    <label className={champLabel}>Votre signature (pour approuver)</label>
+                    <input className={champInput} value={signatureDemandeAgent} onChange={e => setSignatureDemandeAgent(e.target.value)} placeholder="Votre nom complet" />
+                    {erreurTraitement && <p className="mt-2 text-[13px] text-red-600">{erreurTraitement}</p>}
+                    <div className="mt-3 flex gap-2.5">
+                      <button className={`${btnAnnuler} flex-1`} onClick={refuserDemandeAgent} disabled={envoiTraitement}>✕ Refuser</button>
+                      <button className={`${boutonPrim} flex-1`} onClick={approuverDemandeAgent} disabled={envoiTraitement}>
                         {envoiTraitement ? 'Envoi...' : '✍️ Approuver et signer'}
                       </button>
                     </div>
                   </div>
                 )}
 
-                <h4 style={{ color: '#e2e8f0', fontSize: '14px', margin: '0 0 8px' }}>Historique des échéances</h4>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '320px', overflowY: 'auto' }}>
+                <h4 className="mb-2 text-sm font-bold text-slate-900">Historique des échéances</h4>
+                <div className="flex max-h-[320px] flex-col gap-2 overflow-y-auto">
                   {contratDetail.echeances.map(e => (
-                    <div key={e.id} style={s.ligneEcheance}>
+                    <div key={e.id} className="grid grid-cols-[1fr_auto_auto] items-center gap-2.5 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2 text-[13px]">
                       <span>{formaterDate(e.mois_concerne)}</span>
                       <span>{formaterMontant(e.montant_du)}</span>
-                      <span style={{ color: STATUT_ECHEANCE[e.statut]?.color }}>{STATUT_ECHEANCE[e.statut]?.label || e.statut}</span>
+                      <span className={STATUT_ECHEANCE[e.statut]?.cls}>{STATUT_ECHEANCE[e.statut]?.label || e.statut}</span>
                     </div>
                   ))}
                 </div>
-                <button style={{ ...s.navBtn, marginTop: '16px', width: '100%' }} onClick={() => setContratDetail(null)}>Fermer</button>
+                <button className="mt-4 w-full rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => setContratDetail(null)}>Fermer</button>
               </>
             )}
           </div>
@@ -1001,50 +1010,3 @@ export default function AgentProprietaireDetail() {
     </div>
   );
 }
-
-const s = {
-  page: { minHeight: '100vh', background: 'linear-gradient(135deg,#0a0a0f 0%,#0d1117 100%)', fontFamily: "'Segoe UI',sans-serif", color: '#e2e8f0' },
-  nav: { background: 'rgba(10,10,20,0.95)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(124,58,237,0.2)', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '60px', position: 'sticky', top: 0, zIndex: 100 },
-  navLogo: { color: '#e2e8f0', fontSize: '18px', display: 'flex', alignItems: 'center', gap: '8px' },
-  navBenin: { color: '#f59e0b' },
-  agentBadge: { background: 'linear-gradient(135deg,#f59e0b,#d97706)', color: '#000', fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '800' },
-  navMenu: { display: 'flex', gap: '8px', alignItems: 'center' },
-  navBtn: { background: 'transparent', border: '1px solid rgba(255,255,255,0.08)', color: '#9ca3af', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px' },
-  navDeconnexion: { background: 'transparent', border: '1px solid rgba(239,68,68,0.4)', color: '#ef4444', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px' },
-  contenu: { padding: '28px 24px', maxWidth: '1100px', margin: '0 auto' },
-  entete: { display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px' },
-  boutonVuePropio: { marginLeft: 'auto', background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.4)', color: '#a78bfa', cursor: 'pointer', padding: '8px 14px', borderRadius: '8px', fontSize: '13px', fontWeight: '600', whiteSpace: 'nowrap' },
-  avatar: { width: '54px', height: '54px', borderRadius: '50%', background: 'linear-gradient(135deg,#7c3aed,#5b21b6)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '700', fontSize: '22px', flexShrink: 0 },
-  titre: { margin: 0, fontSize: '22px', fontWeight: '800', color: '#e2e8f0' },
-  sousTitre: { color: '#6b7280', margin: '4px 0 0', fontSize: '13px' },
-  sousTitreSection: { color: '#c4b5fd', fontSize: '15px', margin: '28px 0 12px' },
-  onglets: { display: 'flex', gap: '8px', borderBottom: '1px solid rgba(255,255,255,0.08)', marginBottom: '24px', flexWrap: 'wrap' },
-  onglet: { background: 'transparent', border: 'none', borderBottom: '2px solid transparent', color: '#9ca3af', cursor: 'pointer', padding: '10px 4px', fontSize: '14px', marginRight: '20px' },
-  ongletActif: { color: '#c4b5fd', borderBottom: '2px solid #7c3aed', fontWeight: '600' },
-  grilleStats: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px', marginBottom: '12px' },
-  carteStat: { background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '16px' },
-  statLabel: { color: '#9ca3af', fontSize: '12px', margin: 0 },
-  statVal: { color: '#e2e8f0', fontSize: '22px', fontWeight: '700', margin: '6px 0' },
-  statSous: { color: '#6b7280', fontSize: '12px', margin: 0 },
-  tableau: { display: 'flex', flexDirection: 'column', gap: '6px' },
-  ligneTableau: { display: 'grid', gridTemplateColumns: '1fr 1fr auto auto', gap: '12px', alignItems: 'center', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px', padding: '10px 14px', fontSize: '13px', color: '#e2e8f0' },
-  carteBien: { background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '14px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', cursor: 'pointer' },
-  overlay: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' },
-  modal: { background: '#12121a', border: '1px solid rgba(124,58,237,0.3)', borderRadius: '16px', padding: '24px', width: '100%', maxWidth: '520px', maxHeight: '90vh', overflowY: 'auto' },
-  ligneEcheance: { display: 'grid', gridTemplateColumns: '1fr auto auto', gap: '10px', alignItems: 'center', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px', padding: '8px 12px', fontSize: '13px' },
-  delegationBanniere: { border: '1px solid', borderRadius: '10px', padding: '12px 16px', fontSize: '13px', color: '#c4b5fd', marginBottom: '20px', background: 'rgba(255,255,255,0.02)', lineHeight: '1.5' },
-  badgeAgent: { display: 'inline-block', marginTop: '8px', background: 'rgba(245,158,11,0.15)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.3)', borderRadius: '20px', padding: '3px 10px', fontSize: '11px', fontWeight: '700' },
-  btnAction: { background: 'linear-gradient(135deg,#7c3aed,#5b21b6)', color: '#fff', border: 'none', borderRadius: '8px', padding: '9px 16px', fontSize: '13px', fontWeight: '600', cursor: 'pointer', marginBottom: '16px' },
-  label: { display: 'block', color: '#9ca3af', fontSize: '12px', fontWeight: '600', margin: '12px 0 6px' },
-  input: { width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', fontSize: '14px', boxSizing: 'border-box', background: 'rgba(255,255,255,0.05)', color: '#e2e8f0', outline: 'none' },
-  option: { background: '#12121a', color: '#e2e8f0' },
-  boutonPrim: { background: 'linear-gradient(135deg,#7c3aed,#5b21b6)', color: '#fff', border: 'none', borderRadius: '8px', padding: '10px 20px', fontSize: '14px', fontWeight: '600', cursor: 'pointer' },
-  btnAnnuler: { background: 'rgba(255,255,255,0.05)', color: '#9ca3af', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 20px', fontSize: '14px', cursor: 'pointer', flex: 1 },
-  grille2: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' },
-  typeGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '10px', marginBottom: '8px' },
-  typeCard: { borderRadius: '8px', padding: '12px', cursor: 'pointer', transition: 'all 0.2s' },
-  typeCardLabel: { fontWeight: '700', fontSize: '13px', color: '#c4b5fd', marginBottom: '4px' },
-  typeCardDesc: { fontSize: '11px', color: '#6b7280', lineHeight: '1.3' },
-  journalLigne: { display: 'flex', gap: '12px', alignItems: 'flex-start', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px', padding: '10px 14px' },
-  journalIcone: { fontSize: '16px', flexShrink: 0 },
-};

@@ -39,26 +39,18 @@ export default function BoutonActiverRole({ roleActuel }) {
   }
 
   return (
-    <div style={s.conteneur}>
-      {succes && <p style={s.succes}>{succes}</p>}
-      {erreur && <p style={s.erreur}>{erreur}</p>}
-      <button style={s.bouton} onClick={activerRole} disabled={chargement}>
+    <div className="mt-4 flex flex-col gap-2 rounded-2xl border border-accent-200 bg-accent-50 px-5 py-4">
+      {succes && <p className="text-sm text-brand-700">{succes}</p>}
+      {erreur && <p className="text-sm text-red-600">{erreur}</p>}
+      <button className="self-start rounded-xl bg-accent-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-accent-600 disabled:opacity-60" onClick={activerRole} disabled={chargement}>
         {chargement ? 'Activation...' : roleACiver === 'proprietaire'
           ? '🏘️ Activer mon espace propriétaire'
           : '🏠 Activer mon espace locataire'
         }
       </button>
-      <p style={s.info}>
+      <p className="m-0 text-xs text-accent-800">
         Activez votre espace {roleACiver} pour gérer vos {roleACiver === 'proprietaire' ? 'biens et locataires' : 'échéances et paiements'}.
       </p>
     </div>
   );
 }
-
-const s = {
-  conteneur: { background: 'rgba(124,58,237,0.06)', border: '1px solid rgba(124,58,237,0.2)', borderRadius: '12px', padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: '8px' },
-  bouton: { background: 'linear-gradient(135deg,#7c3aed,#5b21b6)', color: '#fff', border: 'none', borderRadius: '8px', padding: '12px 20px', fontSize: '14px', fontWeight: '700', cursor: 'pointer' },
-  info: { color: '#9ca3af', fontSize: '12px', margin: 0 },
-  succes: { color: '#10b981', fontSize: '13px', margin: 0 },
-  erreur: { color: '#ef4444', fontSize: '13px', margin: 0 },
-};

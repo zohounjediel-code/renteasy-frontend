@@ -42,78 +42,78 @@ export default function Inscription() {
   }
 
   return (
-    <div style={s.page} className="re-auth-page">
-      <div style={s.card} className="re-auth-card">
-        <div style={s.logo}>
-          <span style={{ fontSize: '32px' }}>🏠</span>
-          <h1 style={s.logoText}>RentEasy <span style={s.logoBenin}>Bénin</span></h1>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-900 via-brand-800 to-slate-900 px-4 py-10">
+      <div className="w-full max-w-lg rounded-3xl bg-white p-8 sm:p-10 shadow-2xl">
+        <div className="flex items-center gap-3">
+          <span className="text-3xl">🏠</span>
+          <h1 className="text-2xl font-extrabold text-slate-900">RentEasy <span className="text-accent-600">Bénin</span></h1>
         </div>
-        <p style={s.sousTitre}>Créer un compte</p>
+        <p className="mt-1 mb-5 text-sm text-slate-500">Créer un compte</p>
 
         {/* Choix du rôle */}
-        <div style={s.roleGrid} className="re-role-grid">
+        <div className="grid grid-cols-2 gap-3">
           <div
-            style={{ ...s.roleCard, border: role === 'proprietaire' ? '2px solid #e8a020' : '2px solid #eee', background: role === 'proprietaire' ? '#fff8ee' : '#fff' }}
+            className={`cursor-pointer rounded-2xl border-2 p-4 text-center transition ${role === 'proprietaire' ? 'border-brand-500 bg-brand-50' : 'border-slate-200 bg-white'}`}
             onClick={() => setRole('proprietaire')}
           >
-            <div style={s.roleIcone}>🏘️</div>
-            <div style={s.roleLabel}>Propriétaire</div>
-            <div style={s.roleDesc}>Je gère des biens en location</div>
+            <div className="text-2xl">🏘️</div>
+            <div className="mt-1 text-sm font-bold text-slate-900">Propriétaire</div>
+            <div className="mt-1 text-xs text-slate-500">Je gère des biens en location</div>
           </div>
           <div
-            style={{ ...s.roleCard, border: role === 'locataire' ? '2px solid #1a3a5c' : '2px solid #eee', background: role === 'locataire' ? '#f0f4ff' : '#fff' }}
+            className={`cursor-pointer rounded-2xl border-2 p-4 text-center transition ${role === 'locataire' ? 'border-brand-500 bg-brand-50' : 'border-slate-200 bg-white'}`}
             onClick={() => setRole('locataire')}
           >
-            <div style={s.roleIcone}>🏠</div>
-            <div style={s.roleLabel}>Locataire</div>
-            <div style={s.roleDesc}>Je loue un bien immobilier</div>
+            <div className="text-2xl">🏠</div>
+            <div className="mt-1 text-sm font-bold text-slate-900">Locataire</div>
+            <div className="mt-1 text-xs text-slate-500">Je loue un bien immobilier</div>
           </div>
         </div>
 
-        <div style={s.form}>
-          <label style={s.label}>Nom complet *</label>
-          <input style={s.input} placeholder="Jean Koffi" value={form.nom} onChange={e => setForm({ ...form, nom: e.target.value })} />
+        <div className="mt-2 flex flex-col gap-1">
+          <label className="mt-2 text-sm font-semibold text-slate-700">Nom complet *</label>
+          <input className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" placeholder="Jean Koffi" value={form.nom} onChange={e => setForm({ ...form, nom: e.target.value })} />
 
-          <label style={s.label}>Email *</label>
-          <input style={s.input} type="email" placeholder="votre@email.com" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} />
+          <label className="mt-2 text-sm font-semibold text-slate-700">Email *</label>
+          <input className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" type="email" placeholder="votre@email.com" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} />
 
-          <label style={s.label}>Téléphone *</label>
-          <input style={s.input} placeholder="+22997001122" value={form.telephone} onChange={e => setForm({ ...form, telephone: e.target.value })} />
+          <label className="mt-2 text-sm font-semibold text-slate-700">Téléphone *</label>
+          <input className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" placeholder="+22997001122" value={form.telephone} onChange={e => setForm({ ...form, telephone: e.target.value })} />
 
-          <label style={s.label}>Ville</label>
-          <input style={s.input} placeholder="Cotonou" value={form.ville} onChange={e => setForm({ ...form, ville: e.target.value })} />
+          <label className="mt-2 text-sm font-semibold text-slate-700">Ville</label>
+          <input className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" placeholder="Cotonou" value={form.ville} onChange={e => setForm({ ...form, ville: e.target.value })} />
 
-          <label style={s.label}>Mot de passe *</label>
-          <input style={s.input} type="password" placeholder="••••••••" value={form.mot_de_passe} onChange={e => setForm({ ...form, mot_de_passe: e.target.value })} />
+          <label className="mt-2 text-sm font-semibold text-slate-700">Mot de passe *</label>
+          <input className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" type="password" placeholder="••••••••" value={form.mot_de_passe} onChange={e => setForm({ ...form, mot_de_passe: e.target.value })} />
 
-          <label style={s.label}>Confirmer le mot de passe *</label>
-          <input style={s.input} type="password" placeholder="••••••••" value={form.confirmer_mot_de_passe} onChange={e => setForm({ ...form, confirmer_mot_de_passe: e.target.value })} onKeyDown={e => e.key === 'Enter' && handleInscription()} />
+          <label className="mt-2 text-sm font-semibold text-slate-700">Confirmer le mot de passe *</label>
+          <input className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" type="password" placeholder="••••••••" value={form.confirmer_mot_de_passe} onChange={e => setForm({ ...form, confirmer_mot_de_passe: e.target.value })} onKeyDown={e => e.key === 'Enter' && handleInscription()} />
 
-          {erreur && <p style={s.erreur}>{erreur}</p>}
+          {erreur && <p className="mt-2 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{erreur}</p>}
 
-          <label style={s.cguLigne}>
+          <label className="mt-3 flex cursor-pointer items-start gap-2 text-xs leading-relaxed text-slate-600">
             <input
               type="checkbox"
               checked={cguAcceptees}
               onChange={e => setCguAcceptees(e.target.checked)}
-              style={s.cguCase}
+              className="mt-0.5 shrink-0 cursor-pointer accent-brand-600"
             />
             <span>
               J'accepte les{' '}
-              <span style={s.lien} onClick={(e) => { e.preventDefault(); window.open('/cgu', '_blank'); }}>
+              <span className="font-semibold text-accent-600 hover:text-accent-700" onClick={(e) => { e.preventDefault(); window.open('/cgu', '_blank'); }}>
                 conditions générales d'utilisation et la politique de confidentialité
               </span>
             </span>
           </label>
 
-          <button style={{ ...s.bouton, opacity: chargement ? 0.7 : 1 }} onClick={handleInscription} disabled={chargement || !cguAcceptees}>
+          <button className="mt-3 rounded-xl bg-brand-600 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 disabled:opacity-60" onClick={handleInscription} disabled={chargement || !cguAcceptees}>
             {chargement ? 'Inscription...' : 'Créer mon compte'}
           </button>
         </div>
 
-        <p style={s.lienConnexion}>
+        <p className="mt-5 text-center text-sm text-slate-500">
           Déjà un compte ?{' '}
-          <span style={s.lien} onClick={() => navigate('/connexion')}>Se connecter</span>
+          <span className="cursor-pointer font-semibold text-accent-600 hover:text-accent-700" onClick={() => navigate('/connexion')}>Se connecter</span>
         </p>
       </div>
     </div>
@@ -139,26 +139,3 @@ export function redirigerSelonRole(role, navigate) {
   if (roles.includes('locataire')) return navigate('/locataire/dashboard');
   return navigate('/connexion');
 }
-
-const s = {
-  page: { minHeight: '100vh', background: 'linear-gradient(135deg,#1a3a5c 0%,#0d2137 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Segoe UI',sans-serif", padding: '20px' },
-  card: { background: '#fff', borderRadius: '16px', padding: '40px', width: '100%', maxWidth: '460px', boxShadow: '0 20px 60px rgba(0,0,0,0.3)' },
-  logo: { display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' },
-  logoText: { fontSize: '26px', fontWeight: '700', color: '#1a3a5c', margin: 0 },
-  logoBenin: { color: '#e8a020' },
-  sousTitre: { color: '#666', fontSize: '14px', marginBottom: '20px', marginTop: '4px' },
-  roleGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '20px' },
-  roleCard: { borderRadius: '10px', padding: '16px', cursor: 'pointer', textAlign: 'center', transition: 'all 0.2s' },
-  roleIcone: { fontSize: '28px', marginBottom: '6px' },
-  roleLabel: { fontWeight: '700', fontSize: '14px', color: '#1a3a5c' },
-  roleDesc: { fontSize: '11px', color: '#888', marginTop: '4px' },
-  form: { display: 'flex', flexDirection: 'column', gap: '4px' },
-  label: { fontSize: '13px', fontWeight: '600', color: '#333', marginTop: '8px' },
-  input: { padding: '11px 14px', borderRadius: '8px', border: '1.5px solid #ddd', fontSize: '14px', outline: 'none' },
-  erreur: { color: '#e03131', fontSize: '13px', background: '#fff5f5', padding: '10px', borderRadius: '6px' },
-  cguLigne: { display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '12px', color: '#555', marginTop: '10px', cursor: 'pointer', lineHeight: '1.4' },
-  cguCase: { marginTop: '2px', cursor: 'pointer', flexShrink: 0 },
-  bouton: { background: 'linear-gradient(135deg,#e8a020,#c47f10)', color: '#fff', border: 'none', borderRadius: '8px', padding: '14px', fontSize: '15px', fontWeight: '600', cursor: 'pointer', marginTop: '12px' },
-  lienConnexion: { textAlign: 'center', color: '#888', fontSize: '13px', marginTop: '20px', marginBottom: 0 },
-  lien: { color: '#e8a020', fontWeight: '600', cursor: 'pointer' },
-};

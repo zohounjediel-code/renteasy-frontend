@@ -34,42 +34,42 @@ export default function ReinitialiserMotDePasse() {
   }
 
   return (
-    <div style={styles.page} className="re-auth-page">
-      <div style={styles.card} className="re-auth-card">
-        <div style={styles.logo}>
-          <span style={styles.logoIcon}>🏠</span>
-          <h1 style={styles.logoText}>RentEasy <span style={styles.logoBenin}>Bénin</span></h1>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-900 via-brand-800 to-slate-900 px-4 py-10">
+      <div className="w-full max-w-md rounded-3xl bg-white p-8 sm:p-10 shadow-2xl">
+        <div className="flex items-center gap-3">
+          <span className="text-3xl">🏠</span>
+          <h1 className="text-2xl font-extrabold text-slate-900">RentEasy <span className="text-accent-600">Bénin</span></h1>
         </div>
 
         {!token ? (
           <>
-            <p style={styles.sousTitre}>Lien invalide</p>
-            <p style={{ color: '#666', fontSize: '14px' }}>Ce lien de réinitialisation est incomplet. Redemandez-en un nouveau.</p>
-            <button style={styles.bouton} onClick={() => navigate('/mot-de-passe-oublie')}>Redemander un lien</button>
+            <p className="mt-5 text-lg font-bold text-slate-900">Lien invalide</p>
+            <p className="mt-2 text-sm text-slate-600">Ce lien de réinitialisation est incomplet. Redemandez-en un nouveau.</p>
+            <button className="mt-5 w-full rounded-xl bg-brand-600 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700" onClick={() => navigate('/mot-de-passe-oublie')}>Redemander un lien</button>
           </>
         ) : succes ? (
           <>
-            <p style={styles.sousTitre}>Mot de passe mis à jour</p>
-            <p style={{ color: '#333', fontSize: '14px' }}>Vous pouvez désormais vous connecter avec votre nouveau mot de passe.</p>
-            <button style={styles.bouton} onClick={() => navigate('/connexion')}>Se connecter</button>
+            <p className="mt-5 text-lg font-bold text-slate-900">Mot de passe mis à jour</p>
+            <p className="mt-2 text-sm text-slate-600">Vous pouvez désormais vous connecter avec votre nouveau mot de passe.</p>
+            <button className="mt-5 w-full rounded-xl bg-brand-600 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700" onClick={() => navigate('/connexion')}>Se connecter</button>
           </>
         ) : (
           <>
-            <p style={styles.sousTitre}>Choisir un nouveau mot de passe</p>
+            <p className="mt-5 text-lg font-bold text-slate-900">Choisir un nouveau mot de passe</p>
 
-            <div style={styles.form}>
-              <label style={styles.label}>Nouveau mot de passe</label>
+            <div className="mt-4 flex flex-col gap-1">
+              <label className="text-sm font-semibold text-slate-700">Nouveau mot de passe</label>
               <input
-                style={styles.input}
+                className="rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
                 type="password"
                 placeholder="8 caractères minimum"
                 value={motDePasse}
                 onChange={(e) => setMotDePasse(e.target.value)}
               />
 
-              <label style={styles.label}>Confirmer le mot de passe</label>
+              <label className="mt-2 text-sm font-semibold text-slate-700">Confirmer le mot de passe</label>
               <input
-                style={styles.input}
+                className="rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
                 type="password"
                 placeholder="••••••••"
                 value={confirmation}
@@ -77,10 +77,10 @@ export default function ReinitialiserMotDePasse() {
                 onKeyDown={(e) => e.key === 'Enter' && handleReinitialisation()}
               />
 
-              {erreur && <p style={styles.erreur}>{erreur}</p>}
+              {erreur && <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{erreur}</p>}
 
               <button
-                style={{ ...styles.bouton, opacity: chargement ? 0.7 : 1 }}
+                className="mt-2 rounded-xl bg-brand-600 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 disabled:opacity-60"
                 onClick={handleReinitialisation}
                 disabled={chargement || !motDePasse || !confirmation}
               >
@@ -93,18 +93,3 @@ export default function ReinitialiserMotDePasse() {
     </div>
   );
 }
-
-const styles = {
-  page: { minHeight: '100vh', background: 'linear-gradient(135deg, #1a3a5c 0%, #0d2137 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Segoe UI', sans-serif", padding: '20px' },
-  card: { background: '#fff', borderRadius: '16px', padding: '40px', width: '100%', maxWidth: '420px', boxShadow: '0 20px 60px rgba(0,0,0,0.3)' },
-  logo: { display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' },
-  logoIcon: { fontSize: '32px' },
-  logoText: { fontSize: '26px', fontWeight: '700', color: '#1a3a5c', margin: 0 },
-  logoBenin: { color: '#e8a020' },
-  sousTitre: { color: '#666', fontSize: '14px', marginBottom: '16px', marginTop: '20px', fontWeight: '600' },
-  form: { display: 'flex', flexDirection: 'column', gap: '8px' },
-  label: { fontSize: '13px', fontWeight: '600', color: '#333' },
-  input: { padding: '12px 16px', borderRadius: '8px', border: '1.5px solid #ddd', fontSize: '15px', outline: 'none', marginBottom: '8px' },
-  erreur: { color: '#e03131', fontSize: '13px', background: '#fff5f5', padding: '10px', borderRadius: '6px', margin: '4px 0' },
-  bouton: { background: 'linear-gradient(135deg, #e8a020, #c47f10)', color: '#fff', border: 'none', borderRadius: '8px', padding: '14px', fontSize: '15px', fontWeight: '600', cursor: 'pointer', marginTop: '8px', width: '100%' },
-};

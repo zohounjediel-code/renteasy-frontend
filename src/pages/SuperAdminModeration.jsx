@@ -12,6 +12,9 @@ const LABELS_MOTIFS = {
   autre: 'Autre',
 };
 
+const navBtn = 'rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50';
+const navBtnActif = 'rounded-lg border border-brand-600 bg-brand-50 px-3.5 py-1.5 text-[13px] font-semibold text-brand-700';
+
 export default function SuperAdminModeration() {
   const [annonces, setAnnonces] = useState([]);
   const [signalements, setSignalements] = useState([]);
@@ -101,38 +104,38 @@ export default function SuperAdminModeration() {
   });
 
   return (
-    <div style={s.page}>
-      <nav style={s.nav} className="re-nav">
-        <div style={s.navLogo} onClick={() => navigate('/superadmin/dashboard')}>
-          ⚡ RentEasy <span style={s.navBenin}>Bénin</span>
-          <span style={s.superBadge}>SUPER ADMIN</span>
+    <div className="min-h-screen bg-slate-50">
+      <nav className="re-nav sticky top-0 z-[100] flex h-16 flex-wrap items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
+        <div className="flex cursor-pointer items-center gap-2.5 text-lg font-bold text-slate-900" onClick={() => navigate('/superadmin/dashboard')}>
+          ⚡ RentEasy <span className="text-accent-600">Bénin</span>
+          <span className="rounded-full bg-purple-600 px-2.5 py-0.5 text-[10px] font-extrabold tracking-wide text-white">SUPER ADMIN</span>
         </div>
-        <div style={s.navMenu}>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/dashboard')}>Dashboard</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/utilisateurs')}>Utilisateurs</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/contrats')}>Contrats</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/biens')}>Biens</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/locataires')}>Locataires</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/journal')}>Journal</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/parametres')}>Paramètres</button>
-          <button style={{ ...s.navBtn, ...s.navBtnActif }}>Modération</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/rapport-financier')}>Rapport financier</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/rappels')}>Rappels</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/erreurs')}>Erreurs</button>
-          <button style={s.navDeconnexion} onClick={deconnecter}>Déconnexion</button>
+        <div className="flex flex-wrap items-center gap-1.5">
+          <button className={navBtn} onClick={() => navigate('/superadmin/dashboard')}>Dashboard</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/utilisateurs')}>Utilisateurs</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/contrats')}>Contrats</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/biens')}>Biens</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/locataires')}>Locataires</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/journal')}>Journal</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/parametres')}>Paramètres</button>
+          <button className={navBtnActif}>Modération</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/rapport-financier')}>Rapport financier</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/rappels')}>Rappels</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/erreurs')}>Erreurs</button>
+          <button className="rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
         </div>
       </nav>
 
-      <div style={s.contenu}>
-        <div style={s.entete}>
+      <div className="mx-auto max-w-6xl px-6 py-8">
+        <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h2 style={s.titre}>Modération du marché</h2>
-            <p style={s.sousTitre}>Signalements des utilisateurs et annonces publiées par les propriétaires — retire une annonce inappropriée avec un motif, ou remets-en une en ligne.</p>
+            <h2 className="text-2xl font-extrabold text-slate-900">Modération du marché</h2>
+            <p className="mt-1.5 max-w-xl text-[13px] text-slate-500">Signalements des utilisateurs et annonces publiées par les propriétaires — retire une annonce inappropriée avec un motif, ou remets-en une en ligne.</p>
           </div>
-          <span style={s.compteur}>{filtre === 'signalements' ? `${signalements.length} signalement(s)` : `${annoncesFiltrees.length} annonce(s)`}</span>
+          <span className="rounded-full border border-purple-200 bg-purple-50 px-4 py-1.5 text-sm font-semibold text-purple-700">{filtre === 'signalements' ? `${signalements.length} signalement(s)` : `${annoncesFiltrees.length} annonce(s)`}</span>
         </div>
 
-        <div style={s.filtres}>
+        <div className="mb-5 flex gap-2">
           {[
             { valeur: 'signalements', label: `🚩 Signalements${signalements.length > 0 ? ` (${signalements.length})` : ''}` },
             { valeur: 'publiees', label: '✅ En ligne' },
@@ -141,7 +144,7 @@ export default function SuperAdminModeration() {
           ].map(f => (
             <button
               key={f.valeur}
-              style={{ ...s.filtreBouton, background: filtre === f.valeur ? '#7c3aed' : 'rgba(255,255,255,0.05)', color: filtre === f.valeur ? '#fff' : '#9ca3af', border: filtre === f.valeur ? '1px solid #7c3aed' : '1px solid rgba(255,255,255,0.1)' }}
+              className={`rounded-full border px-4 py-1.5 text-[13px] font-semibold ${filtre === f.valeur ? 'border-brand-600 bg-brand-600 text-white' : 'border-slate-200 bg-white text-slate-500'}`}
               onClick={() => setFiltre(f.valeur)}
             >
               {f.label}
@@ -151,31 +154,31 @@ export default function SuperAdminModeration() {
 
         {filtre === 'signalements' ? (
           chargement ? (
-            <p style={{ color: '#6b7280', textAlign: 'center', padding: '40px' }}>Chargement...</p>
+            <p className="py-10 text-center text-slate-400">Chargement...</p>
           ) : signalements.length === 0 ? (
-            <div style={s.vide}>Aucun signalement en attente 🎉</div>
+            <div className="rounded-2xl border border-slate-100 bg-white py-16 text-center text-slate-400 shadow-card">Aucun signalement en attente 🎉</div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div className="flex flex-col gap-3">
               {signalements.map(sig => (
-                <div key={sig.id} style={s.carteSignalement}>
-                  <div style={{ flex: 1 }}>
-                    <div style={s.carteAdresse}>{sig.adresse} <span style={s.carteSous}>· {sig.ville} · N° {sig.numero_bien}</span></div>
-                    <div style={{ marginTop: '6px' }}>
-                      <span style={s.badgeMotif}>{LABELS_MOTIFS[sig.motif] || sig.motif}</span>
-                      {sig.moderation_masque && <span style={{ ...s.badgeMasque, marginLeft: '8px' }}>🚫 Déjà retirée</span>}
+                <div key={sig.id} className="flex items-start justify-between gap-4 rounded-2xl border border-red-100 bg-white p-5 shadow-card">
+                  <div className="flex-1">
+                    <div className="text-[15px] font-bold text-slate-900">{sig.adresse} <span className="text-xs font-normal text-slate-400">· {sig.ville} · N° {sig.numero_bien}</span></div>
+                    <div className="mt-1.5">
+                      <span className="rounded-full bg-accent-50 px-2.5 py-1 text-[11px] font-bold text-accent-700">{LABELS_MOTIFS[sig.motif] || sig.motif}</span>
+                      {sig.moderation_masque && <span className="ml-2 rounded-full bg-red-50 px-2.5 py-1 text-[11px] font-bold text-red-600 whitespace-nowrap">🚫 Déjà retirée</span>}
                     </div>
-                    {sig.description && <p style={s.descriptionSignalement}>« {sig.description} »</p>}
-                    <div style={s.carteSous}>
+                    {sig.description && <p className="my-2 text-[13px] italic text-slate-400">« {sig.description} »</p>}
+                    <div className="text-xs text-slate-400">
                       Signalé par {sig.signale_par_nom} ({sig.signale_par_role}) le {formaterDate(sig.created_at)}
                     </div>
                   </div>
-                  <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+                  <div className="flex shrink-0 gap-2">
                     {!sig.moderation_masque && (
-                      <button style={s.btnRetirer} onClick={() => ouvrirRetraitDepuisSignalement(sig)}>
+                      <button className="whitespace-nowrap rounded-xl border border-red-200 bg-red-50 px-3.5 py-2 text-[13px] font-semibold text-red-600" onClick={() => ouvrirRetraitDepuisSignalement(sig)}>
                         🚫 Retirer l'annonce
                       </button>
                     )}
-                    <button style={s.btnRejeter} onClick={() => rejeterSignalement(sig.id)} disabled={envoi === sig.id}>
+                    <button className="whitespace-nowrap rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-[13px] font-semibold text-slate-500" onClick={() => rejeterSignalement(sig.id)} disabled={envoi === sig.id}>
                       {envoi === sig.id ? '...' : 'Rejeter'}
                     </button>
                   </div>
@@ -184,41 +187,41 @@ export default function SuperAdminModeration() {
             </div>
           )
         ) : chargement ? (
-          <p style={{ color: '#6b7280', textAlign: 'center', padding: '40px' }}>Chargement...</p>
+          <p className="py-10 text-center text-slate-400">Chargement...</p>
         ) : annoncesFiltrees.length === 0 ? (
-          <div style={s.vide}>Aucune annonce trouvée</div>
+          <div className="rounded-2xl border border-slate-100 bg-white py-16 text-center text-slate-400 shadow-card">Aucune annonce trouvée</div>
         ) : (
-          <div style={s.grille}>
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-4">
             {annoncesFiltrees.map(a => (
-              <div key={a.id} style={{ ...s.carte, borderColor: a.moderation_masque ? 'rgba(239,68,68,0.4)' : 'rgba(255,255,255,0.08)' }}>
-                {a.photos?.[0] && <img src={a.photos[0]} alt="" style={s.photo} />}
-                <div style={s.carteCorps}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px' }}>
+              <div key={a.id} className={`overflow-hidden rounded-2xl border bg-white shadow-card ${a.moderation_masque ? 'border-red-300' : 'border-slate-100'}`}>
+                {a.photos?.[0] && <img src={a.photos[0]} alt="" className="h-40 w-full object-cover" />}
+                <div className="p-4">
+                  <div className="flex items-start justify-between gap-2">
                     <div>
-                      <div style={s.carteAdresse}>{a.adresse}</div>
-                      <div style={s.carteSous}>{a.ville} · {a.quartier} · N° {a.numero_bien}</div>
+                      <div className="text-[15px] font-bold text-slate-900">{a.adresse}</div>
+                      <div className="mt-0.5 text-xs text-slate-400">{a.ville} · {a.quartier} · N° {a.numero_bien}</div>
                     </div>
-                    {a.moderation_masque && <span style={s.badgeMasque}>🚫 Retirée</span>}
+                    {a.moderation_masque && <span className="whitespace-nowrap rounded-full bg-red-50 px-2.5 py-1 text-[11px] font-bold text-red-600">🚫 Retirée</span>}
                   </div>
-                  <div style={s.cartePrix}>{formaterMontant(a.loyer_mensuel)}</div>
-                  <div style={s.carteProprio}>👤 {a.proprietaire_nom} · {a.proprietaire_telephone}</div>
-                  {a.description_marche && <p style={s.carteDescription}>{a.description_marche}</p>}
-                  <div style={s.carteDate}>Publiée le {formaterDate(a.created_at)}</div>
+                  <div className="mt-2.5 text-base font-bold text-accent-600">{formaterMontant(a.loyer_mensuel)}</div>
+                  <div className="mt-1.5 text-[13px] text-brand-600">👤 {a.proprietaire_nom} · {a.proprietaire_telephone}</div>
+                  {a.description_marche && <p className="mt-2.5 text-[13px] leading-relaxed text-slate-400">{a.description_marche}</p>}
+                  <div className="mt-2.5 text-[11px] text-slate-400">Publiée le {formaterDate(a.created_at)}</div>
 
                   {a.moderation_masque && (
-                    <div style={s.encartMotif}>
-                      <div style={s.encartMotifTitre}>Motif du retrait ({a.moderation_par_nom}, {formaterDate(a.moderation_le)})</div>
+                    <div className="mt-3 rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-xs text-red-700">
+                      <div className="mb-1 font-bold text-red-600">Motif du retrait ({a.moderation_par_nom}, {formaterDate(a.moderation_le)})</div>
                       <div>{a.moderation_raison}</div>
                     </div>
                   )}
 
-                  <div style={{ marginTop: '14px' }}>
+                  <div className="mt-3.5">
                     {a.moderation_masque ? (
-                      <button style={s.btnRepublier} onClick={() => republier(a.id)} disabled={envoi === a.id}>
+                      <button className="w-full rounded-xl border border-brand-300 bg-brand-50 px-3 py-2.5 text-[13px] font-semibold text-brand-700" onClick={() => republier(a.id)} disabled={envoi === a.id}>
                         {envoi === a.id ? 'En cours...' : '↩️ Remettre en ligne'}
                       </button>
                     ) : (
-                      <button style={{ ...s.btnRetirer, width: '100%' }} onClick={() => setModalRetrait(a)} disabled={envoi === a.id}>
+                      <button className="w-full rounded-xl border border-red-200 bg-red-50 px-3.5 py-2 text-[13px] font-semibold text-red-600" onClick={() => setModalRetrait(a)} disabled={envoi === a.id}>
                         🚫 Retirer du marché
                       </button>
                     )}
@@ -231,22 +234,22 @@ export default function SuperAdminModeration() {
       </div>
 
       {modalRetrait && (
-        <div style={s.overlay} onClick={() => setModalRetrait(null)}>
-          <div style={s.modal} onClick={e => e.stopPropagation()}>
-            <h3 style={{ margin: '0 0 8px' }}>Retirer cette annonce</h3>
-            <p style={{ color: '#9ca3af', fontSize: '14px', margin: '0 0 16px' }}>
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-slate-900/50 p-5 backdrop-blur-sm" onClick={() => setModalRetrait(null)}>
+          <div className="w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
+            <h3 className="mb-2 text-lg font-bold text-slate-900">Retirer cette annonce</h3>
+            <p className="mb-4 text-sm text-slate-400">
               {modalRetrait.adresse} — {modalRetrait.proprietaire_nom} sera notifié par email avec le motif ci-dessous.
             </p>
             <textarea
-              style={s.textarea}
+              className="w-full rounded-xl border border-slate-200 p-3 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
               rows={4}
               placeholder="Motif du retrait (obligatoire) — ex : photos non conformes au bien, coordonnées trompeuses, annonce en doublon..."
               value={raison}
               onChange={e => setRaison(e.target.value)}
             />
-            <div style={{ display: 'flex', gap: '10px', marginTop: '16px' }}>
-              <button style={s.btnAnnuler} onClick={() => { setModalRetrait(null); setRaison(''); }}>Annuler</button>
-              <button style={s.btnConfirmerRetrait} onClick={confirmerRetrait} disabled={!raison.trim() || envoi === modalRetrait.id}>
+            <div className="mt-4 flex gap-2.5">
+              <button className="flex-1 rounded-xl border border-slate-200 py-2.5 text-sm text-slate-500 hover:bg-slate-50" onClick={() => { setModalRetrait(null); setRaison(''); }}>Annuler</button>
+              <button className="flex-1 rounded-xl bg-red-600 py-2.5 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-60" onClick={confirmerRetrait} disabled={!raison.trim() || envoi === modalRetrait.id}>
                 {envoi === modalRetrait.id ? 'Retrait...' : 'Confirmer le retrait'}
               </button>
             </div>
@@ -256,47 +259,3 @@ export default function SuperAdminModeration() {
     </div>
   );
 }
-
-const s = {
-  page: { minHeight: '100vh', background: 'linear-gradient(135deg,#0a0a0f 0%,#0f0a1e 50%,#0a0f0a 100%)', fontFamily: "'Segoe UI',sans-serif", color: '#e2e8f0' },
-  nav: { background: 'rgba(10,10,20,0.95)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(124,58,237,0.3)', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' },
-  navLogo: { display: 'flex', alignItems: 'center', gap: '10px', color: '#e2e8f0', fontSize: '18px', fontWeight: '700', cursor: 'pointer' },
-  navBenin: { color: '#f59e0b' },
-  superBadge: { background: 'linear-gradient(135deg,#7c3aed,#5b21b6)', color: '#fff', fontSize: '10px', padding: '3px 10px', borderRadius: '20px', fontWeight: '800', letterSpacing: '1px' },
-  navMenu: { display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' },
-  navBtn: { background: 'transparent', border: '1px solid rgba(124,58,237,0.3)', color: '#a78bfa', cursor: 'pointer', padding: '7px 14px', borderRadius: '6px', fontSize: '13px' },
-  navBtnActif: { background: 'rgba(124,58,237,0.2)', border: '1px solid #7c3aed', color: '#c4b5fd' },
-  navDeconnexion: { background: 'transparent', border: '1px solid rgba(239,68,68,0.4)', color: '#ef4444', cursor: 'pointer', padding: '7px 14px', borderRadius: '6px', fontSize: '13px' },
-  contenu: { padding: '32px 24px', maxWidth: '1300px', margin: '0 auto' },
-  entete: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' },
-  titre: { margin: 0, fontSize: '24px', fontWeight: '800', background: 'linear-gradient(135deg,#c4b5fd,#f59e0b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' },
-  sousTitre: { color: '#6b7280', margin: '6px 0 0', fontSize: '13px', maxWidth: '560px' },
-  compteur: { background: 'rgba(124,58,237,0.2)', color: '#a78bfa', padding: '6px 16px', borderRadius: '20px', fontSize: '14px', fontWeight: '600', border: '1px solid rgba(124,58,237,0.3)' },
-  filtres: { display: 'flex', gap: '8px', marginBottom: '20px' },
-  filtreBouton: { padding: '6px 16px', borderRadius: '20px', fontSize: '13px', cursor: 'pointer', fontWeight: '600' },
-  vide: { textAlign: 'center', color: '#6b7280', padding: '60px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)' },
-  grille: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(320px,1fr))', gap: '16px' },
-  carte: { background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', overflow: 'hidden' },
-  photo: { width: '100%', height: '160px', objectFit: 'cover' },
-  carteCorps: { padding: '16px' },
-  carteAdresse: { fontWeight: '700', fontSize: '15px', color: '#e2e8f0' },
-  carteSous: { color: '#6b7280', fontSize: '12px', marginTop: '2px' },
-  cartePrix: { color: '#f59e0b', fontWeight: '700', fontSize: '16px', marginTop: '10px' },
-  carteProprio: { color: '#a78bfa', fontSize: '13px', marginTop: '6px' },
-  carteDescription: { color: '#9ca3af', fontSize: '13px', margin: '10px 0 0', lineHeight: '1.4' },
-  carteDate: { color: '#6b7280', fontSize: '11px', marginTop: '10px' },
-  badgeMasque: { background: 'rgba(239,68,68,0.15)', color: '#ef4444', padding: '4px 10px', borderRadius: '20px', fontSize: '11px', fontWeight: '700', whiteSpace: 'nowrap' },
-  encartMotif: { background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)', borderRadius: '8px', padding: '10px 12px', marginTop: '12px', fontSize: '12px', color: '#fca5a5' },
-  encartMotifTitre: { fontWeight: '700', marginBottom: '4px', color: '#ef4444' },
-  btnRetirer: { background: 'rgba(239,68,68,0.15)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.4)', borderRadius: '8px', padding: '9px 14px', fontSize: '13px', fontWeight: '600', cursor: 'pointer', whiteSpace: 'nowrap' },
-  btnRejeter: { background: 'rgba(255,255,255,0.05)', color: '#9ca3af', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '8px', padding: '9px 14px', fontSize: '13px', fontWeight: '600', cursor: 'pointer', whiteSpace: 'nowrap' },
-  carteSignalement: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(239,68,68,0.25)', borderRadius: '12px', padding: '16px 20px' },
-  badgeMotif: { background: 'rgba(245,158,11,0.15)', color: '#f59e0b', padding: '3px 10px', borderRadius: '20px', fontSize: '11px', fontWeight: '700' },
-  descriptionSignalement: { color: '#9ca3af', fontSize: '13px', fontStyle: 'italic', margin: '8px 0' },
-  btnRepublier: { width: '100%', background: 'rgba(16,185,129,0.15)', color: '#10b981', border: '1px solid rgba(16,185,129,0.4)', borderRadius: '8px', padding: '9px', fontSize: '13px', fontWeight: '600', cursor: 'pointer' },
-  overlay: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' },
-  modal: { background: '#14121f', border: '1px solid rgba(124,58,237,0.3)', borderRadius: '12px', padding: '24px', maxWidth: '440px', width: '100%', maxHeight: '90vh', overflowY: 'auto', color: '#e2e8f0' },
-  textarea: { width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.15)', color: '#e2e8f0', padding: '10px', borderRadius: '8px', fontSize: '14px', resize: 'vertical', outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit' },
-  btnAnnuler: { flex: 1, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.15)', color: '#9ca3af', borderRadius: '8px', padding: '10px', fontSize: '14px', cursor: 'pointer' },
-  btnConfirmerRetrait: { flex: 1, background: 'linear-gradient(135deg,#ef4444,#b91c1c)', color: '#fff', border: 'none', borderRadius: '8px', padding: '10px', fontSize: '14px', fontWeight: '600', cursor: 'pointer' },
-};

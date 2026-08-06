@@ -8,12 +8,19 @@ const TYPES_ACTION = ['appel', 'visite', 'mise_en_demeure', 'autre'];
 const RESULTATS = ['promesse_paiement', 'paiement_partiel', 'refus', 'absent', 'paiement_complet'];
 
 const RESULTAT_LABELS = {
-  promesse_paiement: { label: '🤝 Promesse de paiement', couleur: '#f59e0b' },
-  paiement_partiel: { label: '⚡ Paiement partiel', couleur: '#06b6d4' },
-  refus: { label: '❌ Refus', couleur: '#ef4444' },
-  absent: { label: '🚪 Absent', couleur: '#6b7280' },
-  paiement_complet: { label: '✅ Paiement complet', couleur: '#10b981' },
+  promesse_paiement: { label: '🤝 Promesse de paiement', cls: 'text-accent-600' },
+  paiement_partiel: { label: '⚡ Paiement partiel', cls: 'text-cyan-600' },
+  refus: { label: '❌ Refus', cls: 'text-red-600' },
+  absent: { label: '🚪 Absent', cls: 'text-slate-500' },
+  paiement_complet: { label: '✅ Paiement complet', cls: 'text-emerald-600' },
 };
+
+const champLabel = 'mt-3.5 mb-1 block text-xs font-bold uppercase tracking-wide text-slate-500';
+const champInput = 'w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30';
+const overlay = 'fixed inset-0 z-[1000] flex items-center justify-center bg-slate-900/50 p-5 backdrop-blur-sm';
+const modal = 'w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-7 shadow-2xl';
+const btnAnnuler = 'flex-1 rounded-xl border border-slate-200 px-5 py-2.5 text-sm text-slate-600 hover:bg-slate-50 disabled:opacity-60';
+const btnValider = 'flex-1 rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-60';
 
 export default function AgentRecouvrements() {
   const [impayes, setImpayes] = useState([]);
@@ -150,96 +157,95 @@ export default function AgentRecouvrements() {
   }
 
   return (
-    <div style={s.page}>
-      <nav style={s.nav} className="re-nav">
-        <div style={s.navLogo}>
-          ⚡ <strong>RentEasy</strong> <span style={s.navBenin}>Bénin</span>
-          <span style={s.agentBadge}>Agent</span>
+    <div className="min-h-screen bg-slate-50">
+      <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
+        <div className="flex items-center gap-2 text-lg text-slate-900">
+          ⚡ <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span>
+          <span className="rounded-full bg-accent-500 px-2.5 py-0.5 text-[11px] font-extrabold text-white">Agent</span>
         </div>
-        <div style={s.navMenu}>
-          <button style={s.navBtn} onClick={() => navigate('/agent/dashboard')}>Tableau de bord</button>
-          <button style={s.navBtn} onClick={() => navigate('/agent/demandes')}>Demandes</button>
-          <button style={s.navBtn} onClick={() => navigate('/agent/recouvrements')}>Recouvrements</button>
-          <button style={s.navBtn} onClick={() => navigate('/agent/proprietaires')}>Mes propriétaires</button>
-          <button style={{ ...s.navBtn, ...s.navBtnActif }}>Recouvrements</button>
-          <button style={s.navBtnProfil} onClick={() => navigate('/profil')}>👤 Mon profil</button>
+        <div className="flex items-center gap-1.5">
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/agent/dashboard')}>Tableau de bord</button>
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/agent/demandes')}>Demandes</button>
+          <button className="rounded-lg border border-brand-600 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700">Recouvrements</button>
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/agent/proprietaires')}>Mes propriétaires</button>
+          <button className="rounded-lg border border-brand-200 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700 hover:bg-brand-100" onClick={() => navigate('/profil')}>👤 Mon profil</button>
           <ClocheNotifications />
-          <button style={s.navDeconnexion} onClick={deconnecter}>Déconnexion</button>
+          <button className="rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
         </div>
       </nav>
 
-      <div style={s.contenu}>
-        <div style={s.entete}>
+      <div className="mx-auto max-w-5xl px-6 py-7">
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h2 style={s.titre}>Recouvrement terrain</h2>
-            <p style={s.sousTitre}>{impayes.length} échéance(s) impayée(s) à traiter</p>
+            <h2 className="text-2xl font-extrabold text-slate-900">Recouvrement terrain</h2>
+            <p className="mt-1 text-sm text-slate-500">{impayes.length} échéance(s) impayée(s) à traiter</p>
           </div>
-          <div style={s.soldeBox}>
-            <p style={s.soldeLabel}>💰 Mon solde</p>
-            <p style={s.soldeValeur}>{soldeAgent.toLocaleString('fr-FR')} FCFA</p>
-            <button style={s.btnRecharger} onClick={() => navigate('/profil')}>+ Recharger</button>
+          <div className="rounded-2xl border border-brand-200 bg-brand-50 px-5 py-3 text-right">
+            <p className="m-0 text-[11px] font-semibold text-slate-500">💰 Mon solde</p>
+            <p className="mb-2 mt-0.5 text-lg font-extrabold text-brand-700">{soldeAgent.toLocaleString('fr-FR')} FCFA</p>
+            <button className="rounded-lg border border-brand-300 bg-white px-3 py-1 text-xs font-semibold text-brand-700 hover:bg-brand-100" onClick={() => navigate('/profil')}>+ Recharger</button>
           </div>
         </div>
 
-        {succes && <div style={s.succes}>{succes}</div>}
+        {succes && <div className="mb-4 rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm text-brand-800">{succes}</div>}
 
         {/* Stats rapides */}
-        <div style={s.statsGrid}>
-          <div style={s.statCard}>
-            <div style={s.statIcone}>⚠️</div>
-            <div style={{ ...s.statVal, color: '#ef4444' }}>{impayes.length}</div>
-            <div style={s.statLabel}>Impayés à traiter</div>
+        <div className="mb-7 grid grid-cols-3 gap-4">
+          <div className="rounded-2xl border border-slate-100 bg-white p-5 text-center shadow-card">
+            <div className="mb-2 text-2xl">⚠️</div>
+            <div className="mb-1 text-3xl font-extrabold text-red-600">{impayes.length}</div>
+            <div className="text-[13px] text-slate-400">Impayés à traiter</div>
           </div>
-          <div style={s.statCard}>
-            <div style={s.statIcone}>📋</div>
-            <div style={{ ...s.statVal, color: '#7c3aed' }}>{recouvrements.length}</div>
-            <div style={s.statLabel}>Interventions totales</div>
+          <div className="rounded-2xl border border-slate-100 bg-white p-5 text-center shadow-card">
+            <div className="mb-2 text-2xl">📋</div>
+            <div className="mb-1 text-3xl font-extrabold text-brand-700">{recouvrements.length}</div>
+            <div className="text-[13px] text-slate-400">Interventions totales</div>
           </div>
-          <div style={s.statCard}>
-            <div style={s.statIcone}>✅</div>
-            <div style={{ ...s.statVal, color: '#10b981' }}>
+          <div className="rounded-2xl border border-slate-100 bg-white p-5 text-center shadow-card">
+            <div className="mb-2 text-2xl">✅</div>
+            <div className="mb-1 text-3xl font-extrabold text-emerald-600">
               {recouvrements.filter(r => r.resultat === 'paiement_complet').length}
             </div>
-            <div style={s.statLabel}>Paiements obtenus</div>
+            <div className="text-[13px] text-slate-400">Paiements obtenus</div>
           </div>
         </div>
 
         {/* Liste des impayés */}
-        <p style={s.sectionTitre}>📋 Échéances à recouvrer</p>
+        <p className="mb-3 text-xs font-bold uppercase tracking-wide text-brand-700">📋 Échéances à recouvrer</p>
 
         {chargement ? (
-          <p style={{ color: '#6b7280', textAlign: 'center', padding: '40px' }}>Chargement...</p>
+          <p className="py-10 text-center text-slate-400">Chargement...</p>
         ) : impayes.length === 0 ? (
-          <div style={s.vide}>
-            <p style={{ fontSize: '32px', margin: '0 0 8px' }}>🎉</p>
+          <div className="rounded-2xl border border-slate-100 bg-white p-14 text-center text-slate-400 shadow-card">
+            <p className="mb-2 text-3xl">🎉</p>
             <p>Aucune échéance impayée en retard !</p>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div className="flex flex-col gap-3">
             {impayes.map(e => {
               const retard = joursRetard(e.date_limite);
               return (
-                <div key={e.id} style={s.impayeCard}>
-                  <div style={s.impayeInfo}>
-                    <div style={s.impayeEntete}>
-                      <span style={s.locataireNom}>{e.locataire_nom}</span>
-                      <span style={{ ...s.retardBadge, background: retard > 30 ? 'rgba(239,68,68,0.15)' : 'rgba(245,158,11,0.15)', color: retard > 30 ? '#ef4444' : '#f59e0b', border: `1px solid ${retard > 30 ? 'rgba(239,68,68,0.3)' : 'rgba(245,158,11,0.3)'}` }}>
+                <div key={e.id} className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-red-100 bg-white p-5 shadow-card">
+                  <div className="flex-1">
+                    <div className="mb-2 flex flex-wrap items-center gap-3">
+                      <span className="text-base font-bold text-slate-900">{e.locataire_nom}</span>
+                      <span className={`rounded-full px-3 py-1 text-xs font-bold ${retard > 30 ? 'bg-red-50 text-red-600' : 'bg-accent-50 text-accent-700'}`}>
                         {retard} jour(s) de retard
                       </span>
                     </div>
-                    <div style={s.impayeDetail}>📍 {e.adresse}, {e.ville}</div>
-                    <div style={s.impayeDetail}>📞 {e.locataire_telephone}</div>
-                    <div style={s.impayeDetail}>📅 Échéance : {formaterDate(e.date_limite)}</div>
+                    <div className="mb-1 text-[13px] text-slate-500">📍 {e.adresse}, {e.ville}</div>
+                    <div className="mb-1 text-[13px] text-slate-500">📞 {e.locataire_telephone}</div>
+                    <div className="mb-1 text-[13px] text-slate-500">📅 Échéance : {formaterDate(e.date_limite)}</div>
                   </div>
-                  <div style={s.impayeDroite}>
-                    <div style={s.montantImpaye}>{formaterMontant(e.montant_du)}</div>
-                    <button style={s.btnPayer} onClick={() => ouvrirModalPaiement(e)}>
+                  <div className="flex flex-col items-end gap-2.5">
+                    <div className="text-xl font-extrabold text-red-600">{formaterMontant(e.montant_du)}</div>
+                    <button className="rounded-xl bg-brand-600 px-4 py-2.5 text-[13px] font-semibold text-white hover:bg-brand-700" onClick={() => ouvrirModalPaiement(e)}>
                       💰 Payer avec mon solde
                     </button>
-                    <button style={s.btnPaiementManuel} onClick={() => ouvrirModalPaiementManuel(e)}>
+                    <button className="rounded-xl border border-brand-300 px-4 py-2.5 text-[13px] font-semibold text-brand-700 hover:bg-brand-50" onClick={() => ouvrirModalPaiementManuel(e)}>
                       ✅ Enregistrer un paiement reçu
                     </button>
-                    <button style={s.btnIntervenir} onClick={() => { setModalIntervention(e); setErreur(''); }}>
+                    <button className="rounded-xl bg-accent-500 px-4 py-2.5 text-[13px] font-semibold text-white hover:bg-accent-600" onClick={() => { setModalIntervention(e); setErreur(''); }}>
                       📝 Enregistrer intervention
                     </button>
                   </div>
@@ -252,9 +258,9 @@ export default function AgentRecouvrements() {
         {/* Historique des interventions */}
         {recouvrements.length > 0 && (
           <>
-            <p style={{ ...s.sectionTitre, marginTop: '32px' }}>📜 Historique des interventions</p>
-            <div style={s.tableau}>
-              <div style={s.tableauEntete}>
+            <p className="mb-3 mt-8 text-xs font-bold uppercase tracking-wide text-brand-700">📜 Historique des interventions</p>
+            <div className="overflow-x-auto rounded-2xl border border-slate-100 bg-white shadow-card">
+              <div className="grid min-w-[640px] grid-cols-[1.5fr_1fr_1.5fr_1fr_2fr] bg-slate-50 px-5 py-3 text-[11px] font-bold uppercase tracking-wide text-slate-400">
                 <span>Locataire</span>
                 <span>Type</span>
                 <span>Résultat</span>
@@ -262,14 +268,14 @@ export default function AgentRecouvrements() {
                 <span>Notes</span>
               </div>
               {recouvrements.slice(0, 20).map(r => {
-                const res = RESULTAT_LABELS[r.resultat] || { label: r.resultat, couleur: '#6b7280' };
+                const res = RESULTAT_LABELS[r.resultat] || { label: r.resultat, cls: 'text-slate-500' };
                 return (
-                  <div key={r.id} style={s.tableauLigne}>
-                    <span style={{ color: '#e2e8f0', fontWeight: '600' }}>{r.locataire_nom || '—'}</span>
-                    <span style={{ color: '#9ca3af', textTransform: 'capitalize' }}>{r.type_action?.replace('_', ' ')}</span>
-                    <span style={{ color: res.couleur, fontWeight: '600', fontSize: '13px' }}>{res.label}</span>
-                    <span style={{ color: '#6b7280', fontSize: '13px' }}>{formaterDate(r.date_intervention || r.created_at)}</span>
-                    <span style={{ color: '#6b7280', fontSize: '12px' }}>{r.notes || '—'}</span>
+                  <div key={r.id} className="grid min-w-[640px] grid-cols-[1.5fr_1fr_1.5fr_1fr_2fr] items-center border-t border-slate-50 px-5 py-3 text-[13px]">
+                    <span className="font-semibold text-slate-800">{r.locataire_nom || '—'}</span>
+                    <span className="capitalize text-slate-400">{r.type_action?.replace('_', ' ')}</span>
+                    <span className={`text-[13px] font-semibold ${res.cls}`}>{res.label}</span>
+                    <span className="text-[13px] text-slate-400">{formaterDate(r.date_intervention || r.created_at)}</span>
+                    <span className="text-xs text-slate-400">{r.notes || '—'}</span>
                   </div>
                 );
               })}
@@ -280,39 +286,39 @@ export default function AgentRecouvrements() {
 
       {/* Modal paiement avec le solde de l'agent */}
       {modalPaiement && (
-        <div style={s.overlay}>
-          <div style={s.modal}>
-            <h3 style={s.modalTitre}>💰 Payer avec mon solde</h3>
-            <p style={s.modalSous}>{modalPaiement.locataire_nom} · {modalPaiement.adresse}</p>
-            <p style={{ color: '#ef4444', fontWeight: '700', fontSize: '16px', marginBottom: '8px' }}>
+        <div className={overlay}>
+          <div className={modal}>
+            <h3 className="mb-1 text-xl font-bold text-slate-900">💰 Payer avec mon solde</h3>
+            <p className="mb-1 text-sm text-slate-400">{modalPaiement.locataire_nom} · {modalPaiement.adresse}</p>
+            <p className="mb-2 text-base font-bold text-red-600">
               {formaterMontant(modalPaiement.montant_du)} dû
             </p>
-            <p style={{ color: '#6b7280', fontSize: '12px', marginBottom: '16px' }}>
+            <p className="mb-4 text-xs text-slate-400">
               À utiliser si vous avez déjà encaissé cet argent (espèces, etc.) sur le terrain. Le montant sera
-              débité de <strong style={{ color: '#10b981' }}>votre</strong> solde RentEasy et crédité au propriétaire.
+              débité de <strong className="text-brand-700">votre</strong> solde RentEasy et crédité au propriétaire.
             </p>
 
-            <label style={s.label}>Montant à payer (FCFA)</label>
+            <label className={champLabel}>Montant à payer (FCFA)</label>
             <input
-              style={s.input}
+              className={champInput}
               type="number"
               min="1"
               max={modalPaiement.montant_du}
               value={montantPaiement}
               onChange={e => setMontantPaiement(e.target.value)}
             />
-            <p style={{ color: '#6b7280', fontSize: '11px', margin: '6px 0 0' }}>
+            <p className="mt-1.5 text-[11px] text-slate-400">
               Laissez le montant complet pour un paiement total, ou réduisez-le pour un paiement en tranche.
             </p>
-            <p style={{ color: '#9ca3af', fontSize: '12px', margin: '10px 0 0' }}>
+            <p className="mt-2.5 text-xs text-slate-500">
               Votre solde disponible : <strong>{soldeAgent.toLocaleString('fr-FR')} FCFA</strong>
             </p>
 
-            {erreurPaiement && <p style={{ color: '#ef4444', fontSize: '13px', marginTop: '10px' }}>{erreurPaiement}</p>}
+            {erreurPaiement && <p className="mt-2.5 text-[13px] text-red-600">{erreurPaiement}</p>}
 
-            <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
-              <button style={s.btnAnnuler} onClick={() => setModalPaiement(null)} disabled={envoiPaiement}>Annuler</button>
-              <button style={s.btnValider} onClick={payerAvecSolde} disabled={envoiPaiement}>
+            <div className="mt-5 flex gap-3">
+              <button className={btnAnnuler} onClick={() => setModalPaiement(null)} disabled={envoiPaiement}>Annuler</button>
+              <button className={btnValider} onClick={payerAvecSolde} disabled={envoiPaiement}>
                 {envoiPaiement ? 'Paiement...' : '💰 Confirmer le paiement'}
               </button>
             </div>
@@ -322,50 +328,50 @@ export default function AgentRecouvrements() {
 
       {/* Modal enregistrement manuel d'un paiement déjà reçu (espèces, virement, mobile money confirmé à la main) */}
       {modalPaiementManuel && (
-        <div style={s.overlay}>
-          <div style={s.modal}>
-            <h3 style={s.modalTitre}>✅ Enregistrer un paiement reçu</h3>
-            <p style={s.modalSous}>{modalPaiementManuel.locataire_nom} · {modalPaiementManuel.adresse}</p>
-            <p style={{ color: '#ef4444', fontWeight: '700', fontSize: '16px', marginBottom: '8px' }}>
+        <div className={overlay}>
+          <div className={modal}>
+            <h3 className="mb-1 text-xl font-bold text-slate-900">✅ Enregistrer un paiement reçu</h3>
+            <p className="mb-1 text-sm text-slate-400">{modalPaiementManuel.locataire_nom} · {modalPaiementManuel.adresse}</p>
+            <p className="mb-2 text-base font-bold text-red-600">
               {formaterMontant(modalPaiementManuel.resteDu)} dû
               {modalPaiementManuel.statut === 'partielle' && (
-                <span style={{ fontSize: '11px', color: '#6b7280', display: 'block', fontWeight: '400' }}>
+                <span className="block text-[11px] font-normal text-slate-400">
                   reste sur {formaterMontant(modalPaiementManuel.montant_du)} — déjà partiellement réglé
                 </span>
               )}
             </p>
-            <p style={{ color: '#6b7280', fontSize: '12px', marginBottom: '16px' }}>
+            <p className="mb-4 text-xs text-slate-400">
               À utiliser quand le paiement est déjà arrivé par un autre moyen que le solde RentEasy
               (espèces, virement bancaire, ou mobile money confirmé directement avec le locataire). Aucun
               montant n'est débité de votre solde ici — vous déclarez simplement un paiement déjà reçu.
             </p>
 
-            <label style={s.label}>Montant reçu (FCFA)</label>
+            <label className={champLabel}>Montant reçu (FCFA)</label>
             <input
-              style={s.input}
+              className={champInput}
               type="number"
               min="1"
               max={modalPaiementManuel.resteDu}
               value={formPaiementManuel.montant}
               onChange={e => setFormPaiementManuel({ ...formPaiementManuel, montant: e.target.value })}
             />
-            <p style={{ color: '#6b7280', fontSize: '11px', margin: '6px 0 0' }}>
+            <p className="mt-1.5 text-[11px] text-slate-400">
               Laissez le montant complet pour un paiement total, ou réduisez-le pour un paiement en tranche.
             </p>
 
-            <label style={s.label}>Moyen de paiement</label>
-            <select style={s.input} value={formPaiementManuel.methode} onChange={e => setFormPaiementManuel({ ...formPaiementManuel, methode: e.target.value })}>
-              <option value="especes" style={s.option}>💵 Espèces</option>
-              <option value="virement" style={s.option}>🏦 Virement bancaire</option>
-              <option value="mtn_momo" style={s.option}>📱 MTN Mobile Money</option>
-              <option value="moov_money" style={s.option}>📱 Moov Money</option>
+            <label className={champLabel}>Moyen de paiement</label>
+            <select className={champInput} value={formPaiementManuel.methode} onChange={e => setFormPaiementManuel({ ...formPaiementManuel, methode: e.target.value })}>
+              <option value="especes">💵 Espèces</option>
+              <option value="virement">🏦 Virement bancaire</option>
+              <option value="mtn_momo">📱 MTN Mobile Money</option>
+              <option value="moov_money">📱 Moov Money</option>
             </select>
 
             {formPaiementManuel.methode !== 'especes' && (
               <>
-                <label style={s.label}>Référence de transaction (optionnel)</label>
+                <label className={champLabel}>Référence de transaction (optionnel)</label>
                 <input
-                  style={s.input}
+                  className={champInput}
                   type="text"
                   placeholder="Ex: numéro de la transaction mobile money"
                   value={formPaiementManuel.reference_transaction}
@@ -374,11 +380,11 @@ export default function AgentRecouvrements() {
               </>
             )}
 
-            {erreurPaiementManuel && <p style={{ color: '#ef4444', fontSize: '13px', marginTop: '10px' }}>{erreurPaiementManuel}</p>}
+            {erreurPaiementManuel && <p className="mt-2.5 text-[13px] text-red-600">{erreurPaiementManuel}</p>}
 
-            <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
-              <button style={s.btnAnnuler} onClick={() => setModalPaiementManuel(null)} disabled={envoiPaiementManuel}>Annuler</button>
-              <button style={s.btnValider} onClick={enregistrerPaiementManuel} disabled={envoiPaiementManuel}>
+            <div className="mt-5 flex gap-3">
+              <button className={btnAnnuler} onClick={() => setModalPaiementManuel(null)} disabled={envoiPaiementManuel}>Annuler</button>
+              <button className={btnValider} onClick={enregistrerPaiementManuel} disabled={envoiPaiementManuel}>
                 {envoiPaiementManuel ? 'Enregistrement...' : '✅ Confirmer'}
               </button>
             </div>
@@ -388,41 +394,41 @@ export default function AgentRecouvrements() {
 
       {/* Modal intervention */}
       {modalIntervention && (
-        <div style={s.overlay}>
-          <div style={s.modal}>
-            <h3 style={s.modalTitre}>📝 Enregistrer une intervention</h3>
-            <p style={s.modalSous}>{modalIntervention.locataire_nom} · {modalIntervention.adresse}</p>
-            <p style={{ color: '#ef4444', fontWeight: '700', fontSize: '16px', marginBottom: '20px' }}>
+        <div className={overlay}>
+          <div className={modal}>
+            <h3 className="mb-1 text-xl font-bold text-slate-900">📝 Enregistrer une intervention</h3>
+            <p className="mb-1 text-sm text-slate-400">{modalIntervention.locataire_nom} · {modalIntervention.adresse}</p>
+            <p className="mb-5 text-base font-bold text-red-600">
               {formaterMontant(modalIntervention.montant_du)} en retard
             </p>
 
-            <label style={s.label}>Type d'intervention</label>
-            <select style={s.input} value={form.type_action} onChange={e => setForm({ ...form, type_action: e.target.value })}>
+            <label className={champLabel}>Type d'intervention</label>
+            <select className={champInput} value={form.type_action} onChange={e => setForm({ ...form, type_action: e.target.value })}>
               {TYPES_ACTION.map(t => (
-                <option key={t} value={t} style={s.option}>{t.replace('_', ' ').charAt(0).toUpperCase() + t.replace('_', ' ').slice(1)}</option>
+                <option key={t} value={t}>{t.replace('_', ' ').charAt(0).toUpperCase() + t.replace('_', ' ').slice(1)}</option>
               ))}
             </select>
 
-            <label style={s.label}>Résultat</label>
-            <select style={s.input} value={form.resultat} onChange={e => setForm({ ...form, resultat: e.target.value })}>
+            <label className={champLabel}>Résultat</label>
+            <select className={champInput} value={form.resultat} onChange={e => setForm({ ...form, resultat: e.target.value })}>
               {RESULTATS.map(r => (
-                <option key={r} value={r} style={s.option}>{RESULTAT_LABELS[r]?.label || r}</option>
+                <option key={r} value={r}>{RESULTAT_LABELS[r]?.label || r}</option>
               ))}
             </select>
 
-            <label style={s.label}>Notes (optionnel)</label>
+            <label className={champLabel}>Notes (optionnel)</label>
             <textarea
-              style={{ ...s.input, height: '80px', resize: 'vertical' }}
+              className={`${champInput} h-20 resize-y`}
               placeholder="Détails de l'intervention..."
               value={form.notes}
               onChange={e => setForm({ ...form, notes: e.target.value })}
             />
 
-            {erreur && <p style={{ color: '#ef4444', fontSize: '13px', marginTop: '8px' }}>{erreur}</p>}
+            {erreur && <p className="mt-2 text-[13px] text-red-600">{erreur}</p>}
 
-            <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
-              <button style={s.btnAnnuler} onClick={() => setModalIntervention(null)}>Annuler</button>
-              <button style={s.btnValider} onClick={enregistrerIntervention} disabled={envoi}>
+            <div className="mt-5 flex gap-3">
+              <button className={btnAnnuler} onClick={() => setModalIntervention(null)}>Annuler</button>
+              <button className={btnValider} onClick={enregistrerIntervention} disabled={envoi}>
                 {envoi ? 'Enregistrement...' : '✅ Enregistrer'}
               </button>
             </div>
@@ -432,55 +438,3 @@ export default function AgentRecouvrements() {
     </div>
   );
 }
-
-const s = {
-  page: { minHeight: '100vh', background: 'linear-gradient(135deg,#0a0a0f 0%,#0d1117 100%)', fontFamily: "'Segoe UI',sans-serif", color: '#e2e8f0' },
-  nav: { background: 'rgba(10,10,20,0.95)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(124,58,237,0.2)', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '60px', position: 'sticky', top: 0, zIndex: 100 },
-  navLogo: { color: '#e2e8f0', fontSize: '18px', display: 'flex', alignItems: 'center', gap: '8px' },
-  navBenin: { color: '#f59e0b' },
-  agentBadge: { background: 'linear-gradient(135deg,#f59e0b,#d97706)', color: '#000', fontSize: '11px', padding: '3px 10px', borderRadius: '20px', fontWeight: '800' },
-  navMenu: { display: 'flex', gap: '8px', alignItems: 'center' },
-  navBtn: { background: 'transparent', border: '1px solid rgba(255,255,255,0.08)', color: '#9ca3af', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px' },
-  navBtnActif: { background: 'rgba(124,58,237,0.2)', border: '1px solid #7c3aed', color: '#c4b5fd', fontWeight: '600' },
-  navBtnProfil: { background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.3)', color: '#a78bfa', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px', fontWeight: '600' },
-  navDeconnexion: { background: 'transparent', border: '1px solid rgba(239,68,68,0.4)', color: '#ef4444', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px' },
-  contenu: { padding: '28px 24px', maxWidth: '1100px', margin: '0 auto' },
-  entete: { marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '16px' },
-  soldeBox: { background: 'linear-gradient(135deg,rgba(16,185,129,0.12),rgba(5,150,105,0.06))', border: '1px solid rgba(16,185,129,0.3)', borderRadius: '12px', padding: '12px 18px', textAlign: 'right' },
-  soldeLabel: { margin: 0, color: '#9ca3af', fontSize: '11px', fontWeight: '600' },
-  soldeValeur: { margin: '2px 0 8px', color: '#10b981', fontSize: '18px', fontWeight: '800' },
-  btnRecharger: { background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.4)', color: '#10b981', borderRadius: '6px', padding: '5px 12px', fontSize: '12px', fontWeight: '600', cursor: 'pointer' },
-  btnPayer: { background: 'linear-gradient(135deg,#10b981,#059669)', color: '#fff', border: 'none', borderRadius: '8px', padding: '10px 18px', fontSize: '13px', fontWeight: '600', cursor: 'pointer' },
-  btnPaiementManuel: { background: 'transparent', color: '#10b981', border: '1px solid rgba(16,185,129,0.4)', borderRadius: '8px', padding: '10px 18px', fontSize: '13px', fontWeight: '600', cursor: 'pointer' },
-  titre: { margin: 0, fontSize: '26px', fontWeight: '800', background: 'linear-gradient(135deg,#c4b5fd,#f59e0b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' },
-  sousTitre: { color: '#6b7280', margin: '4px 0 0', fontSize: '14px' },
-  succes: { background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)', color: '#10b981', padding: '12px 16px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' },
-  statsGrid: { display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '16px', marginBottom: '28px' },
-  statCard: { background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '20px', textAlign: 'center' },
-  statIcone: { fontSize: '28px', marginBottom: '8px' },
-  statVal: { fontSize: '32px', fontWeight: '800', marginBottom: '4px' },
-  statLabel: { fontSize: '13px', color: '#6b7280' },
-  sectionTitre: { color: '#a78bfa', fontSize: '13px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '1px', margin: '0 0 12px' },
-  vide: { textAlign: 'center', color: '#6b7280', padding: '60px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px' },
-  impayeCard: { background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(239,68,68,0.15)', borderRadius: '12px', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', flexWrap: 'wrap' },
-  impayeInfo: { flex: 1 },
-  impayeEntete: { display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px', flexWrap: 'wrap' },
-  locataireNom: { fontWeight: '700', fontSize: '16px', color: '#e2e8f0' },
-  retardBadge: { padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: '700' },
-  impayeDetail: { color: '#9ca3af', fontSize: '13px', marginBottom: '4px' },
-  impayeDroite: { display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '12px' },
-  montantImpaye: { color: '#ef4444', fontWeight: '800', fontSize: '20px' },
-  btnIntervenir: { background: 'linear-gradient(135deg,#7c3aed,#5b21b6)', color: '#fff', border: 'none', borderRadius: '8px', padding: '10px 18px', fontSize: '13px', fontWeight: '600', cursor: 'pointer' },
-  tableau: { background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', overflow: 'hidden', overflowX: 'auto' },
-  tableauEntete: { display: 'grid', gridTemplateColumns: '1.5fr 1fr 1.5fr 1fr 2fr', minWidth: '640px', padding: '12px 20px', background: 'rgba(124,58,237,0.1)', fontSize: '11px', fontWeight: '700', color: '#7c3aed', textTransform: 'uppercase', letterSpacing: '0.5px' },
-  tableauLigne: { display: 'grid', gridTemplateColumns: '1.5fr 1fr 1.5fr 1fr 2fr', minWidth: '640px', padding: '12px 20px', borderBottom: '1px solid rgba(255,255,255,0.05)', fontSize: '13px', alignItems: 'center' },
-  overlay: { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 },
-  modal: { background: '#0f0a1e', border: '1px solid rgba(124,58,237,0.4)', borderRadius: '16px', padding: '32px', width: '100%', maxWidth: '460px', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 25px 50px rgba(0,0,0,0.5)' },
-  modalTitre: { margin: '0 0 4px', color: '#c4b5fd', fontSize: '20px', fontWeight: '700' },
-  modalSous: { color: '#9ca3af', fontSize: '14px', marginBottom: '4px' },
-  label: { fontSize: '12px', fontWeight: '600', color: '#9ca3af', display: 'block', marginBottom: '4px', marginTop: '14px', textTransform: 'uppercase', letterSpacing: '0.5px' },
-  input: { width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#e2e8f0', padding: '10px 12px', borderRadius: '8px', fontSize: '14px', boxSizing: 'border-box', outline: 'none' },
-  option: { background: '#0f0a1e', color: '#e2e8f0' },
-  btnAnnuler: { background: 'rgba(255,255,255,0.05)', color: '#9ca3af', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 20px', fontSize: '14px', cursor: 'pointer', flex: 1 },
-  btnValider: { background: 'linear-gradient(135deg,#7c3aed,#5b21b6)', color: '#fff', border: 'none', borderRadius: '8px', padding: '10px 20px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', flex: 1 },
-};

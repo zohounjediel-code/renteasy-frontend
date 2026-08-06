@@ -6,6 +6,15 @@ import ClocheNotifications from '../components/ClocheNotifications';
 import Chat from '../components/Chat';
 import BoutonActiverRole from '../components/BoutonActiverRole';
 
+const ICONES_ACTION = {
+  creation_bien: '🏠',
+  ajout_photos: '📷',
+  ajout_locataire: '🧑',
+  creation_contrat: '📝',
+  approbation_demande: '✍️',
+  refus_demande: '✕',
+};
+
 export default function MonAgent() {
   const [agent, setAgent] = useState(null);
   const [chargement, setChargement] = useState(true);
@@ -49,74 +58,74 @@ export default function MonAgent() {
   }
 
   return (
-    <div style={s.page}>
-      <nav style={s.nav} className="re-nav">
-        <div style={s.navLogo}>🏠 <strong>RentEasy</strong> <span style={s.navBenin}>Bénin</span></div>
-        <div style={s.navMenu}>
-          <button style={s.navBtn} onClick={() => navigate('/biens')}>Mes biens</button>
-          <button style={s.navBtn} onClick={() => navigate('/locataires')}>Locataires</button>
-          <button style={s.navBtn} onClick={() => navigate('/paiements')}>Paiements</button>
-          <button style={s.navBtn} onClick={() => navigate('/dashboard')}>Dashboard</button>
-          <button style={s.navBtnActif}>Mon agent</button>
+    <div className="min-h-screen bg-slate-50">
+      <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
+        <div className="text-lg text-slate-900">🏠 <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span></div>
+        <div className="flex items-center gap-1.5">
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/biens')}>Mes biens</button>
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/locataires')}>Locataires</button>
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/paiements')}>Paiements</button>
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/dashboard')}>Dashboard</button>
+          <button className="rounded-lg border border-brand-600 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700">Mon agent</button>
           {estAussiLocataire && (
-            <button style={s.navBtnBasculer} onClick={() => navigate('/locataire/dashboard')}>🔄 Espace locataire</button>
+            <button className="rounded-lg bg-accent-500 px-3 py-1.5 text-sm font-bold text-white hover:bg-accent-600" onClick={() => navigate('/locataire/dashboard')}>🔄 Espace locataire</button>
           )}
-          <button style={s.navBtnProfil} onClick={() => navigate('/profil')}>👤 Mon profil</button>
+          <button className="rounded-lg border border-brand-200 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700 hover:bg-brand-100" onClick={() => navigate('/profil')}>👤 Mon profil</button>
           <ClocheNotifications />
-          <button style={s.navDeconnexion} onClick={deconnecter}>Déconnexion</button>
+          <button className="rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
         </div>
       </nav>
 
-      <div style={s.contenu}>
-        <h2 style={s.titre}>Mon agent RentEasy</h2>
-        <p style={s.sousTitre}>Votre agent attitré, disponible pour toutes vos demandes</p>
+      <div className="mx-auto max-w-5xl px-6 py-7">
+        <h2 className="text-2xl font-extrabold text-slate-900">Mon agent RentEasy</h2>
+        <p className="mb-5 mt-1 text-sm text-slate-500">Votre agent attitré, disponible pour toutes vos demandes</p>
 
-        <BoutonActiverRole />
+        <div className="mb-5"><BoutonActiverRole /></div>
 
         {chargement ? (
-          <p style={{ color: '#6b7280', textAlign: 'center', padding: '40px' }}>Chargement...</p>
+          <p className="py-10 text-center text-slate-400">Chargement...</p>
         ) : erreur ? (
-          <div style={s.vide}>
-            <p style={{ fontSize: '32px' }}>👔</p>
+          <div className="flex flex-col items-center gap-2 rounded-2xl border border-slate-100 bg-white p-14 text-center text-slate-400 shadow-card">
+            <p className="text-3xl">👔</p>
             <p>{erreur}</p>
-            <p style={{ color: '#6b7280', fontSize: '13px' }}>Contactez l'administration RentEasy pour vous assigner un agent.</p>
+            <p className="text-[13px] text-slate-400">Contactez l'administration RentEasy pour vous assigner un agent.</p>
           </div>
         ) : agent && (
-          <div style={s.layout}>
+          <div className="grid grid-cols-[340px_1fr] items-start gap-6">
             {/* Carte agent */}
-            <div style={s.agentCard}>
-              <div style={s.agentEntete}>
-                <div style={s.agentAvatar}>{agent.nom.charAt(0).toUpperCase()}</div>
+            <div className="sticky top-[84px] rounded-2xl border border-brand-200 bg-brand-50 p-6">
+              <div className="relative mb-5 flex items-center gap-3.5">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand-600 text-xl font-extrabold text-white">{agent.nom.charAt(0).toUpperCase()}</div>
                 <div>
-                  <div style={s.agentNom}>{agent.nom}</div>
-                  <div style={s.agentRole}>Agent RentEasy Bénin</div>
+                  <div className="text-lg font-extrabold text-slate-900">{agent.nom}</div>
+                  <div className="mt-0.5 text-[13px] text-brand-600">Agent RentEasy Bénin</div>
                 </div>
-                <span style={s.agentBadgeActif}>● En ligne</span>
+                <span className="absolute right-0 top-0 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700">● En ligne</span>
               </div>
 
-              <div style={s.agentInfos}>
-                <p style={s.infoTitre}>📞 Contact direct</p>
-                <div style={s.infoLigne}>
-                  <span style={s.infoLabel}>Téléphone</span>
-                  <a href={`tel:${agent.telephone}`} style={s.infoVal}>{agent.telephone}</a>
+              <div className="mb-4 rounded-xl bg-white p-4 shadow-card">
+                <p className="mb-3 text-xs font-bold uppercase tracking-wide text-brand-700">📞 Contact direct</p>
+                <div className="flex items-center justify-between border-b border-slate-100 py-2">
+                  <span className="text-[13px] text-slate-400">Téléphone</span>
+                  <a href={`tel:${agent.telephone}`} className="text-[13px] font-semibold text-brand-700 no-underline">{agent.telephone}</a>
                 </div>
-                <div style={s.infoLigne}>
-                  <span style={s.infoLabel}>Email</span>
-                  <a href={`mailto:${agent.email}`} style={s.infoVal}>{agent.email}</a>
+                <div className="flex items-center justify-between border-b border-slate-100 py-2">
+                  <span className="text-[13px] text-slate-400">Email</span>
+                  <a href={`mailto:${agent.email}`} className="text-[13px] font-semibold text-brand-700 no-underline">{agent.email}</a>
                 </div>
                 {agent.ville && (
-                  <div style={s.infoLigne}>
-                    <span style={s.infoLabel}>Ville</span>
-                    <span style={s.infoVal}>{agent.ville}</span>
+                  <div className="flex items-center justify-between py-2">
+                    <span className="text-[13px] text-slate-400">Ville</span>
+                    <span className="text-[13px] font-semibold text-brand-700">{agent.ville}</span>
                   </div>
                 )}
               </div>
 
-              <div style={s.delegationBox}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '10px' }}>
+              <div className="mb-4 rounded-xl bg-white p-4 shadow-card">
+                <div className="flex items-start justify-between gap-2.5">
                   <div>
-                    <p style={s.infoTitre}>🤝 Délégation de gestion</p>
-                    <p style={s.delegationTexte}>
+                    <p className="mb-3 text-xs font-bold uppercase tracking-wide text-brand-700">🤝 Délégation de gestion</p>
+                    <p className="m-0 text-xs leading-relaxed text-slate-500">
                       Autorisez votre agent à ajouter des biens, créer des contrats et ajouter des locataires
                       en votre nom. Chaque action de l'agent reste tracée et vous pouvez révoquer cette
                       autorisation à tout moment.
@@ -127,49 +136,49 @@ export default function MonAgent() {
                     aria-checked={delegationActive}
                     onClick={basculerDelegation}
                     disabled={envoiDelegation}
-                    style={{ ...s.interrupteur, background: delegationActive ? '#10b981' : 'rgba(255,255,255,0.15)' }}
+                    className={`relative h-[22px] w-10 shrink-0 rounded-full transition ${delegationActive ? 'bg-brand-600' : 'bg-slate-200'}`}
                   >
-                    <span style={{ ...s.interrupteurBille, transform: delegationActive ? 'translateX(18px)' : 'translateX(2px)' }} />
+                    <span className={`absolute top-0.5 block h-[18px] w-[18px] rounded-full bg-white transition-transform ${delegationActive ? 'translate-x-[18px]' : 'translate-x-0.5'}`} />
                   </button>
                 </div>
-                <p style={{ ...s.delegationStatut, color: delegationActive ? '#10b981' : '#9ca3af' }}>
+                <p className={`mt-2.5 text-xs font-bold ${delegationActive ? 'text-brand-700' : 'text-slate-400'}`}>
                   {delegationActive ? '✅ Délégation active' : '⛔ Délégation désactivée'}
                 </p>
-                {messageDelegation && <p style={s.delegationMessage}>{messageDelegation}</p>}
+                {messageDelegation && <p className="mt-2 text-xs italic text-slate-500">{messageDelegation}</p>}
               </div>
 
-              <div style={s.actions}>
-                <a href={`tel:${agent.telephone}`} style={s.btnAppeler}>📞 Appeler</a>
-                <a href={`mailto:${agent.email}`} style={s.btnEmail}>✉️ Email</a>
+              <div className="grid grid-cols-2 gap-2.5">
+                <a href={`tel:${agent.telephone}`} className="block rounded-xl bg-brand-600 py-2.5 text-center text-[13px] font-bold text-white no-underline hover:bg-brand-700">📞 Appeler</a>
+                <a href={`mailto:${agent.email}`} className="block rounded-xl border border-brand-300 bg-white py-2.5 text-center text-[13px] font-bold text-brand-700 no-underline hover:bg-brand-50">✉️ Email</a>
               </div>
             </div>
 
             {/* Zone de chat */}
             <div>
-              <p style={s.chatTitre}>💬 Discussion avec votre agent</p>
+              <p className="mb-3 text-xs font-bold uppercase tracking-wide text-brand-700">💬 Discussion avec votre agent</p>
               <Chat interlocuteur={agent} contexte="proprietaire" />
             </div>
           </div>
         )}
 
         {agent && (
-          <div style={{ marginTop: '28px' }}>
-            <p style={s.chatTitre}>🕓 Historique d'activité de votre agent</p>
-            <p style={{ color: '#6b7280', fontSize: '12px', margin: '-6px 0 14px' }}>
+          <div className="mt-7">
+            <p className="mb-1 text-xs font-bold uppercase tracking-wide text-brand-700">🕓 Historique d'activité de votre agent</p>
+            <p className="mb-3.5 text-xs text-slate-400">
               Toutes les actions effectuées par votre agent en votre nom, horodatées.
             </p>
             {chargementJournal ? (
-              <p style={{ color: '#6b7280', fontSize: '13px' }}>Chargement...</p>
+              <p className="text-[13px] text-slate-400">Chargement...</p>
             ) : !journal || journal.length === 0 ? (
-              <p style={{ color: '#6b7280', fontSize: '13px' }}>Aucune action enregistrée pour l'instant.</p>
+              <p className="text-[13px] text-slate-400">Aucune action enregistrée pour l'instant.</p>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '380px', overflowY: 'auto' }}>
+              <div className="flex max-h-[380px] flex-col gap-2 overflow-y-auto">
                 {journal.map(j => (
-                  <div key={j.id} style={s.journalLigne}>
-                    <span style={s.journalIcone}>{ICONES_ACTION[j.type_action] || '🤝'}</span>
-                    <div style={{ flex: 1 }}>
-                      <p style={{ margin: 0, color: '#e2e8f0', fontSize: '13px' }}>{j.description}</p>
-                      <p style={{ margin: '2px 0 0', color: '#6b7280', fontSize: '11px' }}>
+                  <div key={j.id} className="flex items-start gap-3 rounded-lg border border-slate-100 bg-white px-3.5 py-2.5 shadow-card">
+                    <span className="shrink-0 text-base">{ICONES_ACTION[j.type_action] || '🤝'}</span>
+                    <div className="flex-1">
+                      <p className="m-0 text-[13px] text-slate-800">{j.description}</p>
+                      <p className="mt-0.5 text-[11px] text-slate-400">
                         {new Date(j.created_at).toLocaleString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </p>
                     </div>
@@ -183,53 +192,3 @@ export default function MonAgent() {
     </div>
   );
 }
-
-const ICONES_ACTION = {
-  creation_bien: '🏠',
-  ajout_photos: '📷',
-  ajout_locataire: '🧑',
-  creation_contrat: '📝',
-  approbation_demande: '✍️',
-  refus_demande: '✕',
-};
-
-const s = {
-  page: { minHeight: '100vh', background: 'linear-gradient(135deg,#0a0a0f 0%,#0d1117 100%)', fontFamily: "'Segoe UI',sans-serif", color: '#e2e8f0' },
-  nav: { background: 'rgba(10,10,20,0.95)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(124,58,237,0.2)', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '60px', position: 'sticky', top: 0, zIndex: 100 },
-  navLogo: { color: '#e2e8f0', fontSize: '18px' },
-  navBenin: { color: '#f59e0b' },
-  navMenu: { display: 'flex', gap: '6px', alignItems: 'center' },
-  navBtn: { background: 'transparent', border: '1px solid rgba(255,255,255,0.08)', color: '#9ca3af', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px' },
-  navBtnActif: { background: 'rgba(124,58,237,0.2)', border: '1px solid #7c3aed', color: '#c4b5fd', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px', fontWeight: '600' },
-  navBtnBasculer: { background: 'linear-gradient(135deg,#f59e0b,#d97706)', border: 'none', color: '#000', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px', fontWeight: '700' },
-  navBtnProfil: { background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.3)', color: '#a78bfa', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px', fontWeight: '600' },
-  navDeconnexion: { background: 'transparent', border: '1px solid rgba(239,68,68,0.4)', color: '#ef4444', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px' },
-  contenu: { padding: '28px 24px', maxWidth: '1100px', margin: '0 auto' },
-  titre: { margin: 0, fontSize: '26px', fontWeight: '800', background: 'linear-gradient(135deg,#c4b5fd,#f59e0b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' },
-  sousTitre: { color: '#6b7280', margin: '4px 0 20px', fontSize: '14px' },
-  vide: { textAlign: 'center', color: '#9ca3af', padding: '60px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center' },
-  layout: { display: 'grid', gridTemplateColumns: '340px 1fr', gap: '24px', alignItems: 'start' },
-  agentCard: { background: 'linear-gradient(135deg,rgba(124,58,237,0.1),rgba(91,33,182,0.05))', border: '1px solid rgba(124,58,237,0.3)', borderRadius: '16px', padding: '24px', position: 'sticky', top: '84px' },
-  agentEntete: { display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '20px', position: 'relative' },
-  agentAvatar: { width: '56px', height: '56px', borderRadius: '50%', background: 'linear-gradient(135deg,#7c3aed,#5b21b6)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '22px', flexShrink: 0 },
-  agentNom: { fontWeight: '800', color: '#e2e8f0', fontSize: '18px' },
-  agentRole: { color: '#a78bfa', fontSize: '13px', marginTop: '2px' },
-  agentBadgeActif: { background: 'rgba(16,185,129,0.15)', color: '#10b981', padding: '4px 10px', borderRadius: '20px', fontSize: '11px', fontWeight: '700', position: 'absolute', top: 0, right: 0, border: '1px solid rgba(16,185,129,0.3)' },
-  agentInfos: { background: 'rgba(0,0,0,0.2)', borderRadius: '10px', padding: '16px', marginBottom: '16px' },
-  infoTitre: { color: '#a78bfa', fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 12px' },
-  infoLigne: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid rgba(255,255,255,0.05)' },
-  infoLabel: { color: '#6b7280', fontSize: '13px' },
-  infoVal: { color: '#c4b5fd', fontSize: '13px', fontWeight: '600', textDecoration: 'none' },
-  actions: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' },
-  btnAppeler: { background: 'linear-gradient(135deg,#10b981,#059669)', color: '#fff', border: 'none', borderRadius: '8px', padding: '10px', fontSize: '13px', fontWeight: '700', cursor: 'pointer', textAlign: 'center', textDecoration: 'none', display: 'block' },
-  btnEmail: { background: 'rgba(124,58,237,0.2)', color: '#c4b5fd', border: '1px solid rgba(124,58,237,0.3)', borderRadius: '8px', padding: '10px', fontSize: '13px', fontWeight: '700', cursor: 'pointer', textAlign: 'center', textDecoration: 'none', display: 'block' },
-  chatTitre: { color: '#a78bfa', fontSize: '13px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 12px' },
-  delegationBox: { background: 'rgba(0,0,0,0.2)', borderRadius: '10px', padding: '16px', marginBottom: '16px' },
-  delegationTexte: { color: '#9ca3af', fontSize: '12px', lineHeight: '1.5', margin: 0 },
-  delegationStatut: { fontSize: '12px', fontWeight: '700', margin: '10px 0 0' },
-  delegationMessage: { color: '#c4b5fd', fontSize: '12px', margin: '8px 0 0', fontStyle: 'italic' },
-  interrupteur: { width: '40px', height: '22px', borderRadius: '20px', border: 'none', cursor: 'pointer', position: 'relative', flexShrink: 0, transition: 'background 0.2s' },
-  interrupteurBille: { position: 'absolute', top: '2px', left: 0, width: '18px', height: '18px', borderRadius: '50%', background: '#fff', transition: 'transform 0.2s', display: 'block' },
-  journalLigne: { display: 'flex', gap: '12px', alignItems: 'flex-start', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px', padding: '10px 14px' },
-  journalIcone: { fontSize: '16px', flexShrink: 0 },
-};

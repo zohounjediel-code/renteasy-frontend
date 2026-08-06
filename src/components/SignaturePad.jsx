@@ -70,7 +70,7 @@ export default function SignaturePad({ onChange, largeur = 400, hauteur = 150 })
         ref={canvasRef}
         width={largeur}
         height={hauteur}
-        style={{ width: '100%', maxWidth: `${largeur}px`, height: `${hauteur}px`, background: '#fff', borderRadius: '8px', border: '1.5px dashed rgba(124,58,237,0.4)', cursor: 'crosshair', touchAction: 'none', display: 'block' }}
+        style={{ width: '100%', maxWidth: `${largeur}px`, height: `${hauteur}px`, background: '#fff', borderRadius: '8px', border: '1.5px dashed #6ee7b7', cursor: 'crosshair', touchAction: 'none', display: 'block' }}
         onMouseDown={demarrer}
         onMouseMove={dessiner}
         onMouseUp={arreter}
@@ -80,13 +80,13 @@ export default function SignaturePad({ onChange, largeur = 400, hauteur = 150 })
         onTouchEnd={arreter}
       />
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '6px' }}>
-        <span style={{ fontSize: '11px', color: aSigne ? '#10b981' : '#6b7280' }}>
+        <span style={{ fontSize: '11px', color: aSigne ? '#059669' : '#94a3b8' }}>
           {aSigne ? '✓ Signature enregistrée' : 'Dessinez votre signature ci-dessus'}
         </span>
         <button
           type="button"
           onClick={effacer}
-          style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.15)', color: '#9ca3af', borderRadius: '6px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer' }}
+          style={{ background: 'transparent', border: '1px solid #e2e8f0', color: '#64748b', borderRadius: '6px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer' }}
         >
           🗑️ Effacer
         </button>

@@ -1,9 +1,6 @@
-/* Styles globaux de responsivité.
- *
- * Tout le reste de l'app est en styles inline (objets JS), ce qui ne permet PAS de vraies media
- * queries — une @media ne peut pas s'exprimer dans un attribut style="" React. Ce fichier reste
- * volontairement minimal : quelques classes utilitaires appliquées EN PLUS des styles inline
- * existants sur les pages qui en ont besoin, pas une réécriture de tout le design en CSS.
+/* Styles globaux de responsivité, en complément de Tailwind (voir tailwind.config.js).
+ * Ce fichier reste volontairement minimal : ajustements ponctuels non exprimables directement
+ * en classes utilitaires, pas une réécriture du design.
  */
 
 * {
@@ -32,20 +29,5 @@ html, body {
   .re-nav {
     padding-left: 12px !important;
     padding-right: 12px !important;
-  }
-
-  /* Cartes de connexion/inscription/activation : moins de padding pour laisser plus de place
-     au contenu sur un écran de 320-375px de large. */
-  .re-auth-page {
-    padding: 10px !important;
-  }
-  .re-auth-card {
-    padding: 24px 20px !important;
-  }
-
-  /* Sélecteur de rôle à l'inscription (2 colonnes) : passe en 1 colonne, plus lisible qu'un
-     texte tassé sur des cartes de ~100px de large. */
-  .re-role-grid {
-    grid-template-columns: 1fr !important;
   }
 }

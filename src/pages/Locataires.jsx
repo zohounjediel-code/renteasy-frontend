@@ -46,6 +46,25 @@ function libelleEcheance(c) {
   return 'Échéance chaque jour';
 }
 
+const champLabel = 'mt-3 mb-1 block text-sm font-semibold text-slate-700';
+const champInput = 'w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30';
+const boutonPrim = 'rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 disabled:opacity-60';
+const boutonSec = 'rounded-xl border-[1.5px] border-accent-300 bg-white px-5 py-2.5 text-sm font-semibold text-accent-700 hover:bg-accent-50';
+const btnFermer = 'rounded-lg bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-500 hover:bg-slate-200';
+const card = 'mb-6 rounded-2xl border border-slate-100 bg-white p-6 shadow-card';
+const cardTitre = 'mb-4 text-lg font-bold text-slate-900';
+const grille2 = 'mb-4 grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4';
+const badgeAttente = 'rounded-full bg-accent-50 px-2.5 py-1 text-xs font-semibold text-accent-700';
+const bloc = 'rounded-xl bg-slate-50 p-3.5';
+const blocTitre = 'mb-2 text-[13px] font-bold text-brand-700';
+
+const STATUT_ECHEANCE = {
+  payee: { cls: 'bg-emerald-50 text-emerald-700', label: 'Payée' },
+  en_attente: { cls: 'bg-accent-50 text-accent-700', label: 'En attente' },
+  impayee: { cls: 'bg-red-50 text-red-600', label: 'Impayée' },
+  partielle: { cls: 'bg-blue-50 text-blue-700', label: 'Partielle' },
+};
+
 export default function Locataires() {
   const [locataires, setLocataires] = useState([]);
   const [liaisonsEnAttente, setLiaisonsEnAttente] = useState([]);
@@ -320,90 +339,83 @@ export default function Locataires() {
     return parseInt(n).toLocaleString('fr-FR') + ' FCFA';
   }
 
-  const STATUT_ECHEANCE = {
-    payee: { bg: '#e8f5e9', color: '#2e7d32', label: 'Payée' },
-    en_attente: { bg: '#fff3e0', color: '#e65100', label: 'En attente' },
-    impayee: { bg: '#ffebee', color: '#c62828', label: 'Impayée' },
-    partielle: { bg: '#e3f2fd', color: '#1565c0', label: 'Partielle' },
-  };
-
   return (
-    <div style={s.page}>
-      <nav style={s.nav} className="re-nav">
-        <div style={s.navLogo} onClick={() => navigate(lienConsultation('/dashboard'))}>🏠 <strong>RentEasy</strong> <span style={s.navBenin}>Bénin</span></div>
-        <div style={s.navMenu}>
-          <button style={s.navBtn} onClick={() => navigate(lienConsultation('/biens'))}>Mes biens</button>
-          <button style={s.navBtnActif}>Locataires</button>
-          <button style={s.navBtn} onClick={() => navigate(lienConsultation('/paiements'))}>Paiements</button>
-          <button style={s.navBtn} onClick={() => navigate(lienConsultation('/dashboard'))}>Dashboard</button>
+    <div className="min-h-screen bg-slate-50">
+      <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
+        <div className="cursor-pointer text-lg text-slate-900" onClick={() => navigate(lienConsultation('/dashboard'))}>🏠 <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span></div>
+        <div className="flex items-center gap-1.5">
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate(lienConsultation('/biens'))}>Mes biens</button>
+          <button className="rounded-lg border border-brand-600 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700">Locataires</button>
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate(lienConsultation('/paiements'))}>Paiements</button>
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate(lienConsultation('/dashboard'))}>Dashboard</button>
           {estAussiLocataire && !enConsultationAdmin && (
-            <button style={s.navBtnBasculer} onClick={() => navigate('/locataire/dashboard')}>🔄 Espace locataire</button>
+            <button className="rounded-lg bg-accent-500 px-3 py-1.5 text-sm font-bold text-white hover:bg-accent-600" onClick={() => navigate('/locataire/dashboard')}>🔄 Espace locataire</button>
           )}
-          <button style={s.navBtnProfil} onClick={() => navigate('/profil')}>👤 Mon profil</button>
+          <button className="rounded-lg border border-brand-200 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700 hover:bg-brand-100" onClick={() => navigate('/profil')}>👤 Mon profil</button>
           <ClocheNotifications />
         </div>
       </nav>
 
-      <div style={s.contenu}>
+      <div className="mx-auto max-w-6xl px-6 py-6">
         {enConsultationAdmin && (
-          <div style={s.bandeauConsultation}>
+          <div className="mb-5 rounded-xl border border-accent-200 bg-accent-50 px-4 py-2.5 text-sm text-accent-800">
             🛡️ Vous consultez et gérez les locataires de <strong>{proprietaireNomConsulte || 'ce propriétaire'}</strong> en tant qu'administrateur.
           </div>
         )}
-        <div style={s.entete}>
-          <h2 style={s.titre}>Locataires & Contrats</h2>
-          <div style={{ display: 'flex', gap: '12px' }}>
-            <button style={s.boutonSec} onClick={() => { setAfficherFormContrat(!afficherFormContrat); setAfficherFormLocataire(false); }}>
+        <div className="mb-6 flex items-center justify-between">
+          <h2 className="text-2xl font-extrabold text-slate-900">Locataires &amp; Contrats</h2>
+          <div className="flex gap-3">
+            <button className={boutonSec} onClick={() => { setAfficherFormContrat(!afficherFormContrat); setAfficherFormLocataire(false); }}>
               {afficherFormContrat ? '✕ Annuler' : '📋 Nouveau contrat'}
             </button>
-            <button style={s.boutonPrim} onClick={() => { setAfficherFormLocataire(!afficherFormLocataire); setAfficherFormContrat(false); }}>
+            <button className={boutonPrim} onClick={() => { setAfficherFormLocataire(!afficherFormLocataire); setAfficherFormContrat(false); }}>
               {afficherFormLocataire ? '✕ Annuler' : '+ Ajouter locataire'}
             </button>
           </div>
         </div>
 
-        {succes && <div style={s.succes}>{succes}</div>}
+        {succes && <div className="mb-4 rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm text-brand-800">{succes}</div>}
 
         {afficherFormLocataire && (
-          <div style={s.card}>
-            <h3 style={s.cardTitre}>Ajouter un locataire</h3>
-            <p style={{ color: '#9ca3af', fontSize: '13px', marginTop: '-8px', marginBottom: '16px' }}>
+          <div className={card}>
+            <h3 className={cardTitre}>Ajouter un locataire</h3>
+            <p className="-mt-2 mb-4 text-[13px] text-slate-500">
               Le locataire doit déjà avoir un compte sur RentEasy. Il recevra une notification et devra accepter avant d'apparaître dans votre liste.
             </p>
-            <div style={s.grille2}>
+            <div className={grille2}>
               <div>
-                <label style={s.label}>Téléphone ou email du locataire *</label>
-                <input style={s.input} placeholder="+22997001122 ou email@exemple.com" value={contactRecherche} onChange={e => { setContactRecherche(e.target.value); setLocataireTrouve(null); }} onKeyDown={e => e.key === 'Enter' && rechercherLocataire()} />
+                <label className={champLabel}>Téléphone ou email du locataire *</label>
+                <input className={champInput} placeholder="+22997001122 ou email@exemple.com" value={contactRecherche} onChange={e => { setContactRecherche(e.target.value); setLocataireTrouve(null); }} onKeyDown={e => e.key === 'Enter' && rechercherLocataire()} />
               </div>
-              <div style={{ display: 'flex', alignItems: 'flex-end' }}>
-                <button style={{ ...s.boutonSec, width: '100%' }} onClick={rechercherLocataire} disabled={rechercheEnCours}>
+              <div className="flex items-end">
+                <button className={`${boutonSec} w-full`} onClick={rechercherLocataire} disabled={rechercheEnCours}>
                   {rechercheEnCours ? 'Recherche...' : '🔍 Rechercher'}
                 </button>
               </div>
             </div>
 
             {locataireTrouve && (
-              <div style={s.locataireTrouveCard}>
-                <div style={s.avatar}>{locataireTrouve.nom.charAt(0).toUpperCase()}</div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: '700', color: '#e2e8f0' }}>{locataireTrouve.nom}</div>
-                  <div style={{ color: '#9ca3af', fontSize: '13px' }}>{locataireTrouve.telephone} {locataireTrouve.email ? `· ${locataireTrouve.email}` : ''}</div>
+              <div className="mt-3 flex items-center gap-3 rounded-xl border border-brand-200 bg-brand-50 px-4 py-3">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-600 text-lg font-bold text-white">{locataireTrouve.nom.charAt(0).toUpperCase()}</div>
+                <div className="flex-1">
+                  <div className="font-bold text-slate-900">{locataireTrouve.nom}</div>
+                  <div className="text-[13px] text-slate-500">{locataireTrouve.telephone} {locataireTrouve.email ? `· ${locataireTrouve.email}` : ''}</div>
                 </div>
-                <span style={{ color: '#10b981', fontSize: '13px', fontWeight: '600' }}>✅ Compte trouvé</span>
+                <span className="text-[13px] font-semibold text-brand-700">✅ Compte trouvé</span>
               </div>
             )}
 
             {locataireTrouve && (
-              <div style={{ marginTop: '12px' }}>
-                <label style={s.label}>N° pièce d'identité (optionnel)</label>
-                <input style={s.input} placeholder="CIP ou passeport" value={numeroPieceRecherche} onChange={e => setNumeroPieceRecherche(e.target.value)} />
+              <div className="mt-3">
+                <label className={champLabel}>N° pièce d'identité (optionnel)</label>
+                <input className={champInput} placeholder="CIP ou passeport" value={numeroPieceRecherche} onChange={e => setNumeroPieceRecherche(e.target.value)} />
               </div>
             )}
 
-            {erreur && <p style={s.erreur}>{erreur}</p>}
+            {erreur && <p className="mt-2 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{erreur}</p>}
 
             {locataireTrouve && (
-              <button style={{ ...s.boutonPrim, marginTop: '16px' }} onClick={envoyerDemandeLiaison} disabled={envoi}>
+              <button className={`${boutonPrim} mt-4`} onClick={envoyerDemandeLiaison} disabled={envoi}>
                 {envoi ? 'Envoi...' : "📨 Envoyer la demande d'ajout"}
               </button>
             )}
@@ -411,18 +423,18 @@ export default function Locataires() {
         )}
 
         {liaisonsEnAttente.length > 0 && (
-          <div style={s.card}>
-            <h3 style={s.cardTitre}>⏳ Demandes en attente d'acceptation</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <div className={card}>
+            <h3 className={cardTitre}>⏳ Demandes en attente d'acceptation</h3>
+            <div className="flex flex-col gap-2.5">
               {liaisonsEnAttente.map(l => (
-                <div key={l.id} style={s.attenteItem}>
+                <div key={l.id} className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50 px-4 py-3">
                   <div>
-                    <div style={{ fontWeight: '600', color: '#e2e8f0' }}>{l.nom}</div>
-                    <div style={{ color: '#9ca3af', fontSize: '12px' }}>{l.telephone}{l.email ? ` · ${l.email}` : ''}</div>
+                    <div className="font-semibold text-slate-900">{l.nom}</div>
+                    <div className="text-xs text-slate-400">{l.telephone}{l.email ? ` · ${l.email}` : ''}</div>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <span style={s.badgeAttente}>⏳ En attente</span>
-                    <button style={s.btnFermer} onClick={() => annulerDemandeLiaison(l.id)}>✕ Annuler</button>
+                  <div className="flex items-center gap-2.5">
+                    <span className={badgeAttente}>⏳ En attente</span>
+                    <button className={btnFermer} onClick={() => annulerDemandeLiaison(l.id)}>✕ Annuler</button>
                   </div>
                 </div>
               ))}
@@ -431,27 +443,27 @@ export default function Locataires() {
         )}
 
         {demandesLocataires.length > 0 && (
-          <div style={s.card}>
-            <h3 style={s.cardTitre}>📨 Demandes de réservation / location (marché)</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <div className={card}>
+            <h3 className={cardTitre}>📨 Demandes de réservation / location (marché)</h3>
+            <div className="flex flex-col gap-2.5">
               {demandesLocataires.map(d => (
-                <div key={d.id} style={s.attenteItem}>
+                <div key={d.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-100 bg-slate-50 px-4 py-3">
                   <div>
-                    <div style={{ fontWeight: '600', color: '#e2e8f0' }}>
+                    <div className="font-semibold text-slate-900">
                       {d.origine === 'locataire_location' ? '🔑 Location' : '📅 Réservation'} · 🔖 {d.numero_bien}
                     </div>
-                    <div style={{ color: '#9ca3af', fontSize: '12px' }}>
+                    <div className="text-xs text-slate-400">
                       {d.locataire_nom} ({d.locataire_telephone}) · {d.adresse}, {d.ville}
                     </div>
-                    <div style={{ color: '#6b7280', fontSize: '12px' }}>
+                    <div className="text-xs text-slate-400">
                       Du {new Date(d.date_debut).toLocaleDateString('fr-FR')} {d.date_fin ? `au ${new Date(d.date_fin).toLocaleDateString('fr-FR')}` : '(durée indéterminée)'} · {d.type_loyer} · {parseInt(d.loyer_mensuel).toLocaleString('fr-FR')} FCFA
                     </div>
-                    {d.note_locataire && <div style={{ color: '#9ca3af', fontSize: '12px', fontStyle: 'italic', marginTop: '4px' }}>« {d.note_locataire} »</div>}
+                    {d.note_locataire && <div className="mt-1 text-xs italic text-slate-400">« {d.note_locataire} »</div>}
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <button style={s.btnFermer} onClick={() => refuserDemandeLoc(d.id)}>✕ Refuser</button>
-                    <button style={s.boutonSec} onClick={() => setModalDetailDemande(d)}>👁️ Voir</button>
-                    <button style={s.boutonPrim} onClick={() => ouvrirModalApprobation(d)}>✍️ Approuver et signer</button>
+                  <div className="flex items-center gap-2.5">
+                    <button className={btnFermer} onClick={() => refuserDemandeLoc(d.id)}>✕ Refuser</button>
+                    <button className={boutonSec} onClick={() => setModalDetailDemande(d)}>👁️ Voir</button>
+                    <button className={boutonPrim} onClick={() => ouvrirModalApprobation(d)}>✍️ Approuver et signer</button>
                   </div>
                 </div>
               ))}
@@ -460,48 +472,48 @@ export default function Locataires() {
         )}
 
         {afficherFormContrat && (
-          <div style={s.card}>
-            <h3 style={s.cardTitre}>Nouveau contrat de location</h3>
-            {biens.length === 0 && <div style={s.alerte}>⚠️ Aucun bien libre disponible.</div>}
+          <div className={card}>
+            <h3 className={cardTitre}>Nouveau contrat de location</h3>
+            {biens.length === 0 && <div className="mb-3 rounded-lg bg-accent-50 px-3 py-2 text-[13px] text-accent-800">⚠️ Aucun bien libre disponible.</div>}
 
-            <div style={s.grille2}>
+            <div className={grille2}>
               <div>
-                <label style={s.label}>Numéro du bien *</label>
-                <div style={{ display: 'flex', gap: '8px' }}>
+                <label className={champLabel}>Numéro du bien *</label>
+                <div className="flex gap-2">
                   <input
-                    style={s.input}
+                    className={champInput}
                     placeholder="Ex: BIEN-00001"
                     value={formContrat.numero_bien}
                     onChange={e => setFormContrat({ ...formContrat, numero_bien: e.target.value })}
                     onKeyDown={e => e.key === 'Enter' && rechercherBienParNumero()}
                   />
-                  <button style={{ ...s.boutonSec, whiteSpace: 'nowrap' }} onClick={rechercherBienParNumero} disabled={rechercheBienEnCours}>
+                  <button className={`${boutonSec} whitespace-nowrap`} onClick={rechercherBienParNumero} disabled={rechercheBienEnCours}>
                     {rechercheBienEnCours ? '...' : '🔍'}
                   </button>
                 </div>
-                {erreurNumeroBien && <p style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>{erreurNumeroBien}</p>}
+                {erreurNumeroBien && <p className="mt-1 text-xs text-red-600">{erreurNumeroBien}</p>}
               </div>
               <div>
-                <label style={s.label}>Locataire *</label>
-                <select style={s.input} value={formContrat.locataire_id} onChange={e => setFormContrat({ ...formContrat, locataire_id: e.target.value })}>
-                  <option value="" style={s.option}>Sélectionner un locataire...</option>
-                  {locataires.map(l => <option key={l.id} value={l.id} style={s.option}>{l.nom} · {l.telephone}</option>)}
+                <label className={champLabel}>Locataire *</label>
+                <select className={champInput} value={formContrat.locataire_id} onChange={e => setFormContrat({ ...formContrat, locataire_id: e.target.value })}>
+                  <option value="">Sélectionner un locataire...</option>
+                  {locataires.map(l => <option key={l.id} value={l.id}>{l.nom} · {l.telephone}</option>)}
                 </select>
               </div>
             </div>
 
             {bienTrouve && (
-              <div style={s.bienTrouveCard}>
-                <p style={{ margin: '0 0 8px', fontWeight: '600', color: '#e2e8f0', fontSize: '13px' }}>
+              <div className="my-3 rounded-xl border border-brand-200 bg-brand-50 px-4 py-3.5">
+                <p className="mb-2 text-[13px] font-semibold text-slate-800">
                   🏠 {bienTrouve.adresse || bienTrouve.lieu_depot}, {bienTrouve.ville}
                 </p>
-                <p style={{ margin: '0 0 8px', color: '#9ca3af', fontSize: '12px' }}>Choisissez le type de loyer pour ce contrat :</p>
-                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                <p className="mb-2 text-xs text-slate-500">Choisissez le type de loyer pour ce contrat :</p>
+                <div className="flex flex-wrap gap-2">
                   {bienTrouve.tarifs && Object.keys(bienTrouve.tarifs).length > 0
                     ? Object.entries(bienTrouve.tarifs).map(([type, montant]) => (
                         <button
                           key={type}
-                          style={{ ...s.tarifChoixBtn, ...(formContrat.type_loyer === type ? s.tarifChoixBtnActif : {}) }}
+                          className={`rounded-lg border px-3.5 py-2 text-[13px] font-semibold ${formContrat.type_loyer === type ? 'border-brand-600 bg-brand-100 text-brand-700' : 'border-slate-200 bg-white text-slate-500'}`}
                           onClick={() => choisirTypeLoyer(type, montant)}
                         >
                           {LABELS_LOYER[type] || type} — {parseInt(montant).toLocaleString('fr-FR')} FCFA
@@ -509,7 +521,7 @@ export default function Locataires() {
                       ))
                     : (
                         <button
-                          style={{ ...s.tarifChoixBtn, ...(formContrat.type_loyer === (bienTrouve.type_loyer || 'mensuel') ? s.tarifChoixBtnActif : {}) }}
+                          className={`rounded-lg border px-3.5 py-2 text-[13px] font-semibold ${formContrat.type_loyer === (bienTrouve.type_loyer || 'mensuel') ? 'border-brand-600 bg-brand-100 text-brand-700' : 'border-slate-200 bg-white text-slate-500'}`}
                           onClick={() => choisirTypeLoyer(bienTrouve.type_loyer || 'mensuel', bienTrouve.loyer_mensuel)}
                         >
                           {LABELS_LOYER[bienTrouve.type_loyer] || 'Mensuel'} — {parseInt(bienTrouve.loyer_mensuel).toLocaleString('fr-FR')} FCFA
@@ -520,108 +532,108 @@ export default function Locataires() {
               </div>
             )}
 
-            <div style={s.grille2}>
-              <div><label style={s.label}>Date de début *</label><input style={s.input} type="date" value={formContrat.date_debut} onChange={e => setFormContrat({ ...formContrat, date_debut: e.target.value })} /></div>
+            <div className={grille2}>
+              <div><label className={champLabel}>Date de début *</label><input className={champInput} type="date" value={formContrat.date_debut} onChange={e => setFormContrat({ ...formContrat, date_debut: e.target.value })} /></div>
               <div>
-                <label style={s.label}>Durée du contrat</label>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <input style={{ ...s.input, flex: 1 }} type="number" min="1" placeholder="Vide = indéterminée" value={formContrat.duree_valeur} onChange={e => setFormContrat({ ...formContrat, duree_valeur: e.target.value })} />
-                  <select style={{ ...s.input, flex: 1 }} value={formContrat.duree_unite} onChange={e => setFormContrat({ ...formContrat, duree_unite: e.target.value })}>
-                    <option value="jours" style={s.option}>Jour(s)</option>
-                    <option value="semaines" style={s.option}>Semaine(s)</option>
-                    <option value="mois" style={s.option}>Mois</option>
-                    <option value="annees" style={s.option}>Année(s)</option>
+                <label className={champLabel}>Durée du contrat</label>
+                <div className="flex gap-2">
+                  <input className={`${champInput} flex-1`} type="number" min="1" placeholder="Vide = indéterminée" value={formContrat.duree_valeur} onChange={e => setFormContrat({ ...formContrat, duree_valeur: e.target.value })} />
+                  <select className={`${champInput} flex-1`} value={formContrat.duree_unite} onChange={e => setFormContrat({ ...formContrat, duree_unite: e.target.value })}>
+                    <option value="jours">Jour(s)</option>
+                    <option value="semaines">Semaine(s)</option>
+                    <option value="mois">Mois</option>
+                    <option value="annees">Année(s)</option>
                   </select>
                 </div>
               </div>
               <div>
-                <label style={s.label}>Échéance</label>
-                <p style={{ ...s.input, color: '#9ca3af', fontSize: '12px', display: 'flex', alignItems: 'center', minHeight: '20px' }}>
+                <label className={champLabel}>Échéance</label>
+                <p className={`${champInput} flex min-h-[20px] items-center text-xs text-slate-500`}>
                   {formContrat.date_debut && formContrat.type_loyer
                     ? `📅 ${libelleEcheanceAuto(formContrat.date_debut, formContrat.type_loyer)}`
                     : 'Choisissez la date de début et le type de loyer'}
                 </p>
               </div>
               <div>
-                <label style={s.label}>Type de loyer retenu *</label>
-                <input style={{ ...s.input, background: 'rgba(255,255,255,0.02)' }} value={formContrat.type_loyer ? LABELS_LOYER[formContrat.type_loyer] || formContrat.type_loyer : ''} placeholder="Choisissez ci-dessus" readOnly />
+                <label className={champLabel}>Type de loyer retenu *</label>
+                <input className={`${champInput} bg-slate-50`} value={formContrat.type_loyer ? LABELS_LOYER[formContrat.type_loyer] || formContrat.type_loyer : ''} placeholder="Choisissez ci-dessus" readOnly />
               </div>
               <div>
-                <label style={s.label}>Montant du loyer (FCFA) *</label>
-                <input style={s.input} type="number" placeholder="80000" value={formContrat.loyer_mensuel} onChange={e => setFormContrat({ ...formContrat, loyer_mensuel: e.target.value })} />
+                <label className={champLabel}>Montant du loyer (FCFA) *</label>
+                <input className={champInput} type="number" placeholder="80000" value={formContrat.loyer_mensuel} onChange={e => setFormContrat({ ...formContrat, loyer_mensuel: e.target.value })} />
               </div>
             </div>
-            <div style={s.signatureBox}>
-              <label style={{ ...s.label, color: '#c4b5fd' }}>✍️ Signature électronique du propriétaire *</label>
-              <p style={{ color: '#6b7280', fontSize: '12px', margin: '0 0 8px' }}>
+            <div className="my-4 rounded-xl border border-brand-200 bg-brand-50 px-4 py-3.5">
+              <label className="mb-1 block text-sm font-semibold text-brand-700">✍️ Signature électronique du propriétaire *</label>
+              <p className="mb-2 text-xs text-slate-500">
                 Dessinez votre signature ci-dessous pour signer électroniquement ce contrat. Le locataire devra ensuite signer à son tour pour que le contrat soit officiellement validé.
               </p>
               <SignaturePad onChange={dataUrl => setFormContrat({ ...formContrat, signature_proprietaire: dataUrl })} />
             </div>
-            {erreur && <p style={s.erreur}>{erreur}</p>}
-            <button style={s.boutonPrim} onClick={creerContrat} disabled={envoi || biens.length === 0}>{envoi ? 'Signature en cours...' : '✍️ Signer et envoyer au locataire'}</button>
+            {erreur && <p className="mb-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{erreur}</p>}
+            <button className={boutonPrim} onClick={creerContrat} disabled={envoi || biens.length === 0}>{envoi ? 'Signature en cours...' : '✍️ Signer et envoyer au locataire'}</button>
           </div>
         )}
 
         {contratDetail && (
-          <div style={s.card}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '8px' }}>
-              <h3 style={s.cardTitre}>Contrat — {contratDetail.locataire_nom}</h3>
-              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                <button style={s.btnPDF} onClick={() => telechargerPDF(contratDetail.id)}>📄 Télécharger PDF</button>
-                <button style={s.btnModif} onClick={() => setModalDemande(contratDetail)}>✏️ Modifier / Résilier</button>
-                <button style={s.btnFermer} onClick={() => setContratDetail(null)}>✕</button>
+          <div className={card}>
+            <div className="mb-5 flex flex-wrap items-center justify-between gap-2">
+              <h3 className={`${cardTitre} mb-0`}>Contrat — {contratDetail.locataire_nom}</h3>
+              <div className="flex flex-wrap gap-2">
+                <button className="rounded-lg bg-brand-700 px-3.5 py-2 text-xs font-semibold text-white hover:bg-brand-800" onClick={() => telechargerPDF(contratDetail.id)}>📄 Télécharger PDF</button>
+                <button className="rounded-lg bg-accent-500 px-3.5 py-2 text-xs font-semibold text-white hover:bg-accent-600" onClick={() => setModalDemande(contratDetail)}>✏️ Modifier / Résilier</button>
+                <button className={btnFermer} onClick={() => setContratDetail(null)}>✕</button>
               </div>
             </div>
-            <div style={s.grille2}>
-              <div style={s.bloc}><p style={s.blocTitre}>📍 Bien loué</p><p style={{ color: '#f59e0b', fontWeight: '700', fontSize: '12px', margin: '0 0 4px' }}>🔖 {contratDetail.numero_bien}</p><p>{contratDetail.adresse}</p><p style={{ color: '#6b7280' }}>{contratDetail.ville}</p></div>
-              <div style={s.bloc}><p style={s.blocTitre}>👤 Locataire</p><p>{contratDetail.locataire_nom}</p><p style={{ color: '#6b7280' }}>{contratDetail.locataire_telephone}</p></div>
-              <div style={s.bloc}><p style={s.blocTitre}>📅 Dates</p><p>Début : {formaterDate(contratDetail.date_debut)}</p><p style={{ color: '#6b7280' }}>{libelleEcheance(contratDetail)}</p><p style={{ color: '#6b7280' }}>Durée : {contratDetail.duree_valeur ? `${contratDetail.duree_valeur} ${LABELS_DUREE[contratDetail.duree_unite] || contratDetail.duree_unite} (fin le ${formaterDate(contratDetail.date_fin)})` : 'Indéterminée'}</p></div>
-              <div style={s.bloc}>
-                <p style={s.blocTitre}>💰 Loyer</p>
-                <p style={{ fontWeight: '700', color: '#e8a020', fontSize: '18px' }}>{formaterMontant(contratDetail.loyer_mensuel)}</p>
-                <p style={{ color: '#6b7280', fontSize: '12px' }}>Commission RentEasy : {formaterMontant(Math.round(contratDetail.loyer_mensuel * 0.05))}</p>
+            <div className={grille2}>
+              <div className={bloc}><p className={blocTitre}>📍 Bien loué</p><p className="mb-1 text-xs font-bold text-accent-600">🔖 {contratDetail.numero_bien}</p><p className="text-sm text-slate-700">{contratDetail.adresse}</p><p className="text-sm text-slate-400">{contratDetail.ville}</p></div>
+              <div className={bloc}><p className={blocTitre}>👤 Locataire</p><p className="text-sm text-slate-700">{contratDetail.locataire_nom}</p><p className="text-sm text-slate-400">{contratDetail.locataire_telephone}</p></div>
+              <div className={bloc}><p className={blocTitre}>📅 Dates</p><p className="text-sm text-slate-700">Début : {formaterDate(contratDetail.date_debut)}</p><p className="text-sm text-slate-400">{libelleEcheance(contratDetail)}</p><p className="text-sm text-slate-400">Durée : {contratDetail.duree_valeur ? `${contratDetail.duree_valeur} ${LABELS_DUREE[contratDetail.duree_unite] || contratDetail.duree_unite} (fin le ${formaterDate(contratDetail.date_fin)})` : 'Indéterminée'}</p></div>
+              <div className={bloc}>
+                <p className={blocTitre}>💰 Loyer</p>
+                <p className="text-lg font-bold text-brand-700">{formaterMontant(contratDetail.loyer_mensuel)}</p>
+                <p className="text-xs text-slate-400">Commission RentEasy : {formaterMontant(Math.round(contratDetail.loyer_mensuel * 0.05))}</p>
               </div>
             </div>
 
             {contratDetail.photos && contratDetail.photos.length > 0 && (
-              <div style={{ marginTop: '20px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                  <p style={{ ...s.blocTitre, margin: 0 }}>📷 Aperçu du bien</p>
+              <div className="mt-5">
+                <div className="mb-2.5 flex items-center justify-between">
+                  <p className={`${blocTitre} mb-0`}>📷 Aperçu du bien</p>
                   <Lightbox medias={contratDetail.photos} />
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(110px,1fr))', gap: '10px' }}>
+                <div className="grid grid-cols-[repeat(auto-fill,minmax(110px,1fr))] gap-2.5">
                   {contratDetail.photos.map(photo => (
                     estVideo(photo) ? (
-                      <video key={photo} src={`${API_BASE}${photo}`} controls style={{ width: '100%', height: '90px', objectFit: 'cover', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.08)' }} />
+                      <video key={photo} src={`${API_BASE}${photo}`} controls className="h-[90px] w-full rounded-lg border border-slate-100 object-cover" />
                     ) : (
-                      <img key={photo} src={`${API_BASE}${photo}`} alt="Aperçu du bien" style={{ width: '100%', height: '90px', objectFit: 'cover', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.08)' }} />
+                      <img key={photo} src={`${API_BASE}${photo}`} alt="Aperçu du bien" className="h-[90px] w-full rounded-lg border border-slate-100 object-cover" />
                     )
                   ))}
                 </div>
               </div>
             )}
 
-            <div style={{ marginTop: '20px' }}>
-              <p style={s.blocTitre}>📊 Échéances</p>
-              <div style={s.tableau}>
-                <div style={{ ...s.tableauEntete, gridTemplateColumns: '1.4fr 1.1fr 1.2fr', minWidth: '360px' }}>
+            <div className="mt-5">
+              <p className={blocTitre}>📊 Échéances</p>
+              <div className="overflow-x-auto rounded-xl border border-slate-100">
+                <div className="grid min-w-[360px] grid-cols-[1.4fr_1.1fr_1.2fr] bg-brand-50 px-4 py-2.5 text-xs font-bold uppercase text-brand-700">
                   <span>Période</span>
                   <span>Montant</span>
                   <span>Statut</span>
                 </div>
                 {(contratDetail.echeances || []).map(e => {
-                  const st = STATUT_ECHEANCE[e.statut] || { bg: '#f5f5f5', color: '#9ca3af', label: e.statut };
+                  const st = STATUT_ECHEANCE[e.statut] || { cls: 'bg-slate-100 text-slate-500', label: e.statut };
                   return (
-                    <div key={e.id} style={{ ...s.tableauLigne, gridTemplateColumns: '1.4fr 1.1fr 1.2fr', minWidth: '360px' }}>
-                      <span style={{ fontWeight: '600', fontSize: '13px' }}>
+                    <div key={e.id} className="grid min-w-[360px] grid-cols-[1.4fr_1.1fr_1.2fr] items-center border-t border-slate-50 px-4 py-3 text-sm">
+                      <span className="font-semibold text-slate-700">
                         {new Date(e.mois_concerne).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })}
                       </span>
-                      <span style={{ fontWeight: '700', color: '#e2e8f0', fontSize: '13px' }}>
+                      <span className="font-bold text-slate-900">
                         {formaterMontant(e.statut === 'partielle' ? e.montant_restant : e.montant_du)}
-                        {e.statut === 'partielle' && <span style={{ fontSize: '10px', color: '#888', display: 'block', fontWeight: '400' }}>reste sur {formaterMontant(e.montant_du)}</span>}
+                        {e.statut === 'partielle' && <span className="block text-[10px] font-normal text-slate-400">reste sur {formaterMontant(e.montant_du)}</span>}
                       </span>
-                      <span style={{ ...s.statutBadge, background: st.bg, color: st.color }}>{st.label}</span>
+                      <span className={`inline-block w-fit rounded-full px-2.5 py-1 text-xs font-semibold ${st.cls}`}>{st.label}</span>
                     </div>
                   );
                 })}
@@ -631,11 +643,11 @@ export default function Locataires() {
         )}
 
         {chargement ? (
-          <p style={s.vide}>Chargement...</p>
+          <p className="py-10 text-center text-slate-400">Chargement...</p>
         ) : locataires.length === 0 ? (
-          <div style={s.vide}><p>👤 Aucun locataire enregistré.</p></div>
+          <div className="rounded-2xl border border-slate-100 bg-white p-10 text-center text-slate-400 shadow-card"><p>👤 Aucun locataire enregistré.</p></div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div className="flex flex-col gap-3">
             {locataires.map(l => {
               // Un même locataire peut louer plusieurs biens chez le même propriétaire : on affiche
               // TOUS ses contrats actifs / en attente de signature, pas seulement le plus récent
@@ -643,30 +655,30 @@ export default function Locataires() {
               const contratsL = contrats.filter(c => c.locataire_id === l.id);
               const contratsActifsL = contratsL.filter(c => c.statut === 'actif' || c.statut === 'en_attente_signature');
               return (
-                <div key={l.id} style={s.locCard}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                    <div style={s.avatar}>{l.nom.charAt(0).toUpperCase()}</div>
+                <div key={l.id} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-100 bg-white px-5 py-4 shadow-card">
+                  <div className="flex items-center gap-3.5">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-600 text-lg font-bold text-white">{l.nom.charAt(0).toUpperCase()}</div>
                     <div>
-                      <div style={{ fontWeight: '700', fontSize: '15px', color: '#e2e8f0' }}>{l.nom}</div>
-                      <div style={{ fontSize: '13px', color: '#6b7280' }}>{l.telephone}{l.email ? ` · ${l.email}` : ''}</div>
-                      {l.numero_piece_identite && <div style={{ fontSize: '12px', color: '#9ca3af' }}>🪪 {l.numero_piece_identite}</div>}
+                      <div className="text-[15px] font-bold text-slate-900">{l.nom}</div>
+                      <div className="text-[13px] text-slate-400">{l.telephone}{l.email ? ` · ${l.email}` : ''}</div>
+                      {l.numero_piece_identite && <div className="text-xs text-slate-400">🪪 {l.numero_piece_identite}</div>}
                     </div>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                  <div className="flex flex-wrap items-center justify-end gap-2.5">
                     {contratsActifsL.length > 0 ? (
                       contratsActifsL.map(c => (
                         c.statut === 'en_attente_signature' ? (
-                          <span key={c.id} style={s.badgeAttente}>✍️ {c.numero_bien} — en attente de signature{c.effectue_par_agent_id ? ' (créé par votre agent)' : ''}</span>
+                          <span key={c.id} className={badgeAttente}>✍️ {c.numero_bien} — en attente de signature{c.effectue_par_agent_id ? ' (créé par votre agent)' : ''}</span>
                         ) : (
-                          <button key={c.id} style={s.btnContrat} onClick={() => voirDetailContrat(c)}>
+                          <button key={c.id} className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2 text-[13px] font-semibold text-emerald-700 hover:bg-emerald-100" onClick={() => voirDetailContrat(c)}>
                             📋 🔖 {c.numero_bien} · {c.adresse}{c.effectue_par_agent_id ? ' · 🤝 par votre agent' : ''}
                           </button>
                         )
                       ))
                     ) : (
                       <>
-                        <span style={{ color: '#9ca3af', fontSize: '13px', fontStyle: 'italic' }}>Aucun contrat actif</span>
-                        <button style={s.btnFermer} onClick={() => supprimerLocataireAction(l)}>🗑️ Supprimer</button>
+                        <span className="text-[13px] italic text-slate-400">Aucun contrat actif</span>
+                        <button className={btnFermer} onClick={() => supprimerLocataireAction(l)}>🗑️ Supprimer</button>
                       </>
                     )}
                   </div>
@@ -678,59 +690,59 @@ export default function Locataires() {
       </div>
 
       {modalDemande && (
-        <div style={s.overlay}>
-          <div style={s.modal}>
-            <h3 style={{ margin: '0 0 4px', color: '#c4b5fd', fontSize: '20px' }}>Demande de contrat</h3>
-            <p style={{ color: '#6b7280', fontSize: '14px', marginBottom: '16px' }}>{modalDemande.locataire_nom} · {modalDemande.adresse}</p>
-            <div style={{ background: '#fff8e1', color: '#f57f17', padding: '10px 14px', borderRadius: '8px', fontSize: '13px', marginBottom: '16px' }}>
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-slate-900/50 p-5 backdrop-blur-sm">
+          <div className="w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-7 shadow-2xl">
+            <h3 className="mb-1 text-xl font-bold text-slate-900">Demande de contrat</h3>
+            <p className="mb-4 text-sm text-slate-400">{modalDemande.locataire_nom} · {modalDemande.adresse}</p>
+            <div className="mb-4 rounded-lg bg-amber-50 px-3.5 py-2.5 text-[13px] text-amber-800">
               ⚠️ Cette demande sera envoyée à votre agent et au locataire. L'agent traitera et vous notifiera de sa décision.
             </div>
-            <div style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
-              <button style={{ ...s.typeBtn, background: formDemande.type_demande === 'modification' ? '#1a3a5c' : '#f5f5f5', color: formDemande.type_demande === 'modification' ? '#fff' : '#333' }} onClick={() => setFormDemande({ ...formDemande, type_demande: 'modification' })}>✏️ Modification</button>
-              <button style={{ ...s.typeBtn, background: formDemande.type_demande === 'resiliation' ? '#c62828' : '#f5f5f5', color: formDemande.type_demande === 'resiliation' ? '#fff' : '#333' }} onClick={() => setFormDemande({ ...formDemande, type_demande: 'resiliation' })}>🔴 Résiliation</button>
+            <div className="mb-4 flex gap-3">
+              <button className={`flex-1 rounded-xl py-2.5 text-sm font-semibold ${formDemande.type_demande === 'modification' ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600'}`} onClick={() => setFormDemande({ ...formDemande, type_demande: 'modification' })}>✏️ Modification</button>
+              <button className={`flex-1 rounded-xl py-2.5 text-sm font-semibold ${formDemande.type_demande === 'resiliation' ? 'bg-red-600 text-white' : 'bg-slate-100 text-slate-600'}`} onClick={() => setFormDemande({ ...formDemande, type_demande: 'resiliation' })}>🔴 Résiliation</button>
             </div>
             {formDemande.type_demande === 'modification' && (
               <div>
-                <label style={s.label}>Nouveau loyer souhaité (FCFA)</label>
-                <input style={s.input} type="number" placeholder="Laisser vide si inchangé" value={formDemande.nouveau_loyer} onChange={e => setFormDemande({ ...formDemande, nouveau_loyer: e.target.value })} />
+                <label className={champLabel}>Nouveau loyer souhaité (FCFA)</label>
+                <input className={champInput} type="number" placeholder="Laisser vide si inchangé" value={formDemande.nouveau_loyer} onChange={e => setFormDemande({ ...formDemande, nouveau_loyer: e.target.value })} />
               </div>
             )}
-            <div style={{ marginTop: '12px' }}>
-              <label style={s.label}>Note pour l'agent</label>
-              <textarea style={{ ...s.input, height: '80px', resize: 'vertical' }} placeholder={formDemande.type_demande === 'resiliation' ? 'Motif de résiliation...' : 'Précisez les modifications souhaitées...'} value={formDemande.note_proprietaire} onChange={e => setFormDemande({ ...formDemande, note_proprietaire: e.target.value })} />
+            <div className="mt-3">
+              <label className={champLabel}>Note pour l'agent</label>
+              <textarea className={`${champInput} h-20 resize-y`} placeholder={formDemande.type_demande === 'resiliation' ? 'Motif de résiliation...' : 'Précisez les modifications souhaitées...'} value={formDemande.note_proprietaire} onChange={e => setFormDemande({ ...formDemande, note_proprietaire: e.target.value })} />
             </div>
-            {erreur && <p style={s.erreur}>{erreur}</p>}
-            <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
-              <button style={{ background: 'rgba(255,255,255,0.05)', color: '#9ca3af', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 20px', fontSize: '14px', cursor: 'pointer', flex: 1 }} onClick={() => setModalDemande(null)}>Annuler</button>
-              <button style={{ ...s.boutonPrim, flex: 1, ...(formDemande.type_demande === 'resiliation' ? { background: 'linear-gradient(135deg,#c62828,#a01010)' } : {}) }} onClick={soumettreDemandeContrat} disabled={envoi}>{envoi ? 'Envoi...' : '📨 Soumettre'}</button>
+            {erreur && <p className="mt-2 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{erreur}</p>}
+            <div className="mt-4 flex gap-3">
+              <button className="flex-1 rounded-xl border border-slate-200 py-2.5 text-sm text-slate-500 hover:bg-slate-50" onClick={() => setModalDemande(null)}>Annuler</button>
+              <button className={`flex-1 ${boutonPrim} ${formDemande.type_demande === 'resiliation' ? '!bg-red-600 hover:!bg-red-700' : ''}`} onClick={soumettreDemandeContrat} disabled={envoi}>{envoi ? 'Envoi...' : '📨 Soumettre'}</button>
             </div>
           </div>
         </div>
       )}
 
       {modalDetailDemande && (
-        <div style={s.overlay}>
-          <div style={s.modal}>
-            <h3 style={{ margin: '0 0 4px', color: '#c4b5fd', fontSize: '20px' }}>👁️ Détails de la demande</h3>
-            <p style={{ color: '#6b7280', fontSize: '13px', marginBottom: '16px' }}>
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-slate-900/50 p-5 backdrop-blur-sm">
+          <div className="w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-7 shadow-2xl">
+            <h3 className="mb-1 text-xl font-bold text-slate-900">👁️ Détails de la demande</h3>
+            <p className="mb-4 text-[13px] text-slate-400">
               {modalDetailDemande.origine === 'locataire_location' ? '🔑 Location' : '📅 Réservation'} · 🔖 {modalDetailDemande.numero_bien}
             </p>
-            <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '8px', padding: '14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <p style={{ margin: 0, fontSize: '14px', color: '#e2e8f0' }}><strong>Locataire :</strong> {modalDetailDemande.locataire_nom} · {modalDetailDemande.locataire_telephone}</p>
-              <p style={{ margin: 0, fontSize: '14px', color: '#e2e8f0' }}><strong>Bien :</strong> {modalDetailDemande.adresse}, {modalDetailDemande.ville}</p>
-              <p style={{ margin: 0, fontSize: '14px', color: '#e2e8f0' }}>
+            <div className="flex flex-col gap-2 rounded-xl bg-slate-50 p-3.5">
+              <p className="m-0 text-sm text-slate-700"><strong>Locataire :</strong> {modalDetailDemande.locataire_nom} · {modalDetailDemande.locataire_telephone}</p>
+              <p className="m-0 text-sm text-slate-700"><strong>Bien :</strong> {modalDetailDemande.adresse}, {modalDetailDemande.ville}</p>
+              <p className="m-0 text-sm text-slate-700">
                 <strong>Période :</strong> du {new Date(modalDetailDemande.date_debut).toLocaleDateString('fr-FR')} {modalDetailDemande.date_fin ? `au ${new Date(modalDetailDemande.date_fin).toLocaleDateString('fr-FR')}` : '(durée indéterminée)'}
               </p>
-              <p style={{ margin: 0, fontSize: '14px', color: '#e2e8f0' }}><strong>Type de loyer :</strong> {LABELS_LOYER[modalDetailDemande.type_loyer] || modalDetailDemande.type_loyer}</p>
-              <p style={{ margin: 0, fontSize: '14px', color: '#e2e8f0' }}><strong>Montant :</strong> {parseInt(modalDetailDemande.loyer_mensuel).toLocaleString('fr-FR')} FCFA</p>
-              <p style={{ margin: 0, fontSize: '14px', color: '#9ca3af' }}>{libelleEcheanceAuto(modalDetailDemande.date_debut, modalDetailDemande.type_loyer)}</p>
+              <p className="m-0 text-sm text-slate-700"><strong>Type de loyer :</strong> {LABELS_LOYER[modalDetailDemande.type_loyer] || modalDetailDemande.type_loyer}</p>
+              <p className="m-0 text-sm text-slate-700"><strong>Montant :</strong> {parseInt(modalDetailDemande.loyer_mensuel).toLocaleString('fr-FR')} FCFA</p>
+              <p className="m-0 text-sm text-slate-400">{libelleEcheanceAuto(modalDetailDemande.date_debut, modalDetailDemande.type_loyer)}</p>
               {modalDetailDemande.note_locataire && (
-                <p style={{ margin: 0, fontSize: '13px', color: '#9ca3af', fontStyle: 'italic' }}>« {modalDetailDemande.note_locataire} »</p>
+                <p className="m-0 text-[13px] italic text-slate-400">« {modalDetailDemande.note_locataire} »</p>
               )}
             </div>
-            <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
-              <button style={{ background: 'rgba(255,255,255,0.05)', color: '#9ca3af', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 20px', fontSize: '14px', cursor: 'pointer', flex: 1 }} onClick={() => setModalDetailDemande(null)}>Fermer</button>
-              <button style={{ ...s.boutonPrim, flex: 1 }} onClick={() => { const d = modalDetailDemande; setModalDetailDemande(null); ouvrirModalApprobation(d); }}>
+            <div className="mt-5 flex gap-3">
+              <button className="flex-1 rounded-xl border border-slate-200 py-2.5 text-sm text-slate-500 hover:bg-slate-50" onClick={() => setModalDetailDemande(null)}>Fermer</button>
+              <button className={`flex-1 ${boutonPrim}`} onClick={() => { const d = modalDetailDemande; setModalDetailDemande(null); ouvrirModalApprobation(d); }}>
                 ✍️ Approuver et signer
               </button>
             </div>
@@ -739,25 +751,25 @@ export default function Locataires() {
       )}
 
       {modalApprobation && (
-        <div style={s.overlay}>
-          <div style={s.modal}>
-            <h3 style={{ margin: '0 0 4px', color: '#c4b5fd', fontSize: '20px' }}>✍️ Approuver la demande</h3>
-            <p style={{ color: '#6b7280', fontSize: '13px', marginBottom: '16px' }}>
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-slate-900/50 p-5 backdrop-blur-sm">
+          <div className="w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-7 shadow-2xl">
+            <h3 className="mb-1 text-xl font-bold text-slate-900">✍️ Approuver la demande</h3>
+            <p className="mb-4 text-[13px] text-slate-400">
               🔖 {modalApprobation.numero_bien} — {modalApprobation.locataire_nom} · du {new Date(modalApprobation.date_debut).toLocaleDateString('fr-FR')}
               {modalApprobation.date_fin ? ` au ${new Date(modalApprobation.date_fin).toLocaleDateString('fr-FR')}` : ' (durée indéterminée)'}
             </p>
-            <p style={{ color: '#e2e8f0', fontSize: '13px', marginBottom: '4px' }}>
+            <p className="mb-1 text-[13px] text-slate-700">
               {LABELS_LOYER[modalApprobation.type_loyer] || modalApprobation.type_loyer} · {parseInt(modalApprobation.loyer_mensuel).toLocaleString('fr-FR')} FCFA
             </p>
-            <p style={{ color: '#9ca3af', fontSize: '12px', marginBottom: '12px' }}>{libelleEcheanceAuto(modalApprobation.date_debut, modalApprobation.type_loyer)}</p>
-            <p style={{ color: '#9ca3af', fontSize: '13px', marginBottom: '12px' }}>
+            <p className="mb-3 text-xs text-slate-400">{libelleEcheanceAuto(modalApprobation.date_debut, modalApprobation.type_loyer)}</p>
+            <p className="mb-3 text-[13px] text-slate-500">
               En signant, vous approuvez cette demande. Le locataire devra ensuite signer à son tour pour valider officiellement le contrat.
             </p>
             <SignaturePad onChange={setSignatureApprobation} />
-            {erreurApprobation && <p style={{ color: '#ef4444', fontSize: '13px', marginTop: '8px' }}>{erreurApprobation}</p>}
-            <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
-              <button style={{ background: 'rgba(255,255,255,0.05)', color: '#9ca3af', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 20px', fontSize: '14px', cursor: 'pointer', flex: 1 }} onClick={() => setModalApprobation(null)}>Annuler</button>
-              <button style={{ ...s.boutonPrim, flex: 1 }} onClick={approuverDemandeLoc} disabled={envoiApprobation}>
+            {erreurApprobation && <p className="mt-2 text-[13px] text-red-600">{erreurApprobation}</p>}
+            <div className="mt-5 flex gap-3">
+              <button className="flex-1 rounded-xl border border-slate-200 py-2.5 text-sm text-slate-500 hover:bg-slate-50" onClick={() => setModalApprobation(null)}>Annuler</button>
+              <button className={`flex-1 ${boutonPrim}`} onClick={approuverDemandeLoc} disabled={envoiApprobation}>
                 {envoiApprobation ? 'Envoi...' : '✍️ Signer et approuver'}
               </button>
             </div>
@@ -767,55 +779,3 @@ export default function Locataires() {
     </div>
   );
 }
-
-const s = {
-    page: { minHeight: '100vh', background: 'linear-gradient(135deg,#0a0a0f 0%,#0d1117 100%)', fontFamily: "'Segoe UI',sans-serif", color: '#e2e8f0' },
-    nav: { background: 'rgba(10,10,20,0.95)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(124,58,237,0.2)', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '60px', position: 'sticky', top: 0, zIndex: 100 },
-    navLogo: { color: '#e2e8f0', fontSize: '18px', cursor: 'pointer' },
-    navBenin: { color: '#f59e0b' },
-  navMenu: { display: 'flex', gap: '8px', alignItems: 'center' },
-    navBtnProfil: { background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.3)', color: '#a78bfa', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px', fontWeight: '600' },
-  navBtn: { background: 'transparent', border: '1px solid rgba(255,255,255,0.08)', color: '#9ca3af', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px' },
-    navBtnBasculer: { background: 'linear-gradient(135deg,#f59e0b,#d97706)', border: 'none', color: '#000', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px', fontWeight: '700' },
-    navBtnActif: { background: 'rgba(124,58,237,0.2)', border: '1px solid #7c3aed', color: '#c4b5fd', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px', fontWeight: '600' },
-  contenu: { padding: '24px', maxWidth: '1200px', margin: '0 auto' },
-  bandeauConsultation: { background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.35)', color: '#f59e0b', padding: '10px 16px', borderRadius: '8px', fontSize: '13px', marginBottom: '20px' },
-  entete: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' },
-    titre: { margin: 0, fontSize: '24px', fontWeight: '800', background: 'linear-gradient(135deg,#c4b5fd,#f59e0b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' },
-  boutonPrim: { background: 'linear-gradient(135deg,#e8a020,#c47f10)', color: '#fff', border: 'none', borderRadius: '8px', padding: '10px 20px', fontSize: '14px', fontWeight: '600', cursor: 'pointer' },
-  boutonSec: { background: 'rgba(255,255,255,0.05)', color: '#c4b5fd', border: '1.5px solid rgba(196,181,253,0.4)', borderRadius: '8px', padding: '10px 20px', fontSize: '14px', fontWeight: '600', cursor: 'pointer' },
-    card: { background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '24px', marginBottom: '24px' },
-  cardTitre: { margin: '0 0 16px', color: '#c4b5fd' },
-  grille2: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: '16px', marginBottom: '16px' },
-    label: { fontSize: '13px', fontWeight: '600', color: '#9ca3af', display: 'block', marginBottom: '4px', marginTop: '12px' },
-    input: { width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', fontSize: '14px', boxSizing: 'border-box', background: 'rgba(255,255,255,0.05)', color: '#e2e8f0', outline: 'none' },
-    option: { background: '#0f0a1e', color: '#e2e8f0' },
-    erreur: { color: '#ef4444', background: 'rgba(239,68,68,0.1)', padding: '10px', borderRadius: '6px', fontSize: '13px', marginTop: '8px', border: '1px solid rgba(239,68,68,0.2)' },
-    succes: { background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)', color: '#10b981', padding: '12px 16px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' },
-  alerte: { background: '#fff3e0', color: '#e65100', padding: '10px', borderRadius: '6px', fontSize: '13px', marginBottom: '12px' },
-  bienTrouveCard: { background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.25)', borderRadius: '10px', padding: '14px 16px', margin: '12px 0' },
-  signatureBox: { background: 'rgba(124,58,237,0.06)', border: '1px solid rgba(124,58,237,0.25)', borderRadius: '10px', padding: '14px 16px', margin: '16px 0' },
-  tarifChoixBtn: { background: 'rgba(255,255,255,0.05)', color: '#9ca3af', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '8px 14px', fontSize: '13px', fontWeight: '600', cursor: 'pointer' },
-  tarifChoixBtnActif: { background: 'rgba(16,185,129,0.2)', color: '#10b981', border: '1px solid #10b981' },
-    vide: { textAlign: 'center', color: '#6b7280', padding: '40px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px' },
-  bloc: { background: 'rgba(255,255,255,0.03)', borderRadius: '8px', padding: '14px' },
-  blocTitre: { fontWeight: '700', color: '#c4b5fd', fontSize: '13px', marginBottom: '8px', marginTop: 0 },
-  tableau: { borderRadius: '8px', overflow: 'hidden', overflowX: 'auto', border: '1px solid rgba(255,255,255,0.08)' },
-  tableauEntete: { display: 'grid', padding: '10px 16px', background: 'rgba(124,58,237,0.1)', fontSize: '12px', fontWeight: '700', color: '#7c3aed', textTransform: 'uppercase' },
-  tableauLigne: { display: 'grid', padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.05)', fontSize: '14px', alignItems: 'center', color: '#e2e8f0' },
-  statutBadge: { fontSize: '12px', fontWeight: '600', padding: '4px 10px', borderRadius: '20px', display: 'inline-block' },
-  echeancesGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(80px,1fr))', gap: '8px', marginTop: '8px' },
-  echeanceItem: { borderRadius: '6px', padding: '8px', textAlign: 'center' },
-  locCard: { background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '16px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' },
-  locataireTrouveCard: { display: 'flex', alignItems: 'center', gap: '12px', background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.3)', borderRadius: '10px', padding: '12px 16px', marginTop: '12px' },
-  attenteItem: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '10px', padding: '12px 16px' },
-  badgeAttente: { background: 'rgba(245,158,11,0.15)', color: '#f59e0b', padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: '600' },
-  avatar: { width: '44px', height: '44px', borderRadius: '50%', background: '#1a3a5c', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '700', fontSize: '18px', flexShrink: 0 },
-  btnContrat: { background: '#e8f5e9', color: '#2e7d32', border: '1px solid #a5d6a7', borderRadius: '8px', padding: '8px 16px', fontSize: '13px', cursor: 'pointer', fontWeight: '600' },
-  btnPDF: { background: '#1a3a5c', color: '#fff', border: 'none', borderRadius: '6px', padding: '8px 14px', fontSize: '12px', cursor: 'pointer', fontWeight: '600' },
-  btnModif: { background: '#e8a020', color: '#fff', border: 'none', borderRadius: '6px', padding: '8px 14px', fontSize: '12px', cursor: 'pointer', fontWeight: '600' },
-  btnFermer: { background: 'rgba(255,255,255,0.05)', color: '#9ca3af', border: 'none', borderRadius: '6px', padding: '8px 12px', fontSize: '12px', cursor: 'pointer' },
-    overlay: { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 },
-    modal: { background: '#0f0a1e', border: '1px solid rgba(124,58,237,0.4)', borderRadius: '16px', padding: '32px', width: '100%', maxWidth: '460px', boxShadow: '0 25px 50px rgba(0,0,0,0.5)', maxHeight: '90vh', overflowY: 'auto' },
-  typeBtn: { flex: 1, border: 'none', borderRadius: '8px', padding: '10px', fontSize: '14px', fontWeight: '600', cursor: 'pointer' },
-};

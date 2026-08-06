@@ -27,6 +27,9 @@ const LABELS_TYPE_ACTION = {
 // justement cette distinction qui rend le journal utile pour détecter un abus d'un côté ou de l'autre.
 const ACTIONS_ADMIN = ['compte_active', 'compte_desactive', 'reassignation_agent', 'creation_compte_agent', 'creation_compte_admin'];
 
+const navBtn = 'rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50';
+const navBtnActif = 'rounded-lg border border-brand-600 bg-brand-50 px-3.5 py-1.5 text-[13px] font-semibold text-brand-700';
+
 export default function SuperAdminJournal() {
   const [journal, setJournal] = useState([]);
   const [chargement, setChargement] = useState(true);
@@ -63,45 +66,45 @@ export default function SuperAdminJournal() {
   });
 
   return (
-    <div style={s.page}>
-      <nav style={s.nav} className="re-nav">
-        <div style={s.navLogo} onClick={() => navigate('/superadmin/dashboard')}>
-          ⚡ RentEasy <span style={s.navBenin}>Bénin</span>
-          <span style={s.superBadge}>SUPER ADMIN</span>
+    <div className="min-h-screen bg-slate-50">
+      <nav className="re-nav sticky top-0 z-[100] flex h-16 items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
+        <div className="flex cursor-pointer items-center gap-2.5 text-lg font-bold text-slate-900" onClick={() => navigate('/superadmin/dashboard')}>
+          ⚡ RentEasy <span className="text-accent-600">Bénin</span>
+          <span className="rounded-full bg-purple-600 px-2.5 py-0.5 text-[10px] font-extrabold tracking-wide text-white">SUPER ADMIN</span>
         </div>
-        <div style={s.navMenu}>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/dashboard')}>Dashboard</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/utilisateurs')}>Utilisateurs</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/contrats')}>Contrats</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/biens')}>Biens</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/locataires')}>Locataires</button>
-          <button style={{ ...s.navBtn, ...s.navBtnActif }}>Journal</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/parametres')}>Paramètres</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/moderation')}>Modération</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/rapport-financier')}>Rapport financier</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/rappels')}>Rappels</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/erreurs')}>Erreurs</button>
-          <button style={s.navDeconnexion} onClick={deconnecter}>Déconnexion</button>
+        <div className="flex flex-wrap items-center gap-1.5">
+          <button className={navBtn} onClick={() => navigate('/superadmin/dashboard')}>Dashboard</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/utilisateurs')}>Utilisateurs</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/contrats')}>Contrats</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/biens')}>Biens</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/locataires')}>Locataires</button>
+          <button className={navBtnActif}>Journal</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/parametres')}>Paramètres</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/moderation')}>Modération</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/rapport-financier')}>Rapport financier</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/rappels')}>Rappels</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/erreurs')}>Erreurs</button>
+          <button className="rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
         </div>
       </nav>
 
-      <div style={s.contenu}>
-        <div style={s.entete}>
+      <div className="mx-auto max-w-6xl px-6 py-8">
+        <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h2 style={s.titre}>Journal d'activité global</h2>
-            <p style={s.sousTitre}>Toutes les actions des agents (en délégation) et des admins/super admins, horodatées</p>
+            <h2 className="text-2xl font-extrabold text-slate-900">Journal d'activité global</h2>
+            <p className="mt-1.5 text-[13px] text-slate-500">Toutes les actions des agents (en délégation) et des admins/super admins, horodatées</p>
           </div>
-          <span style={s.compteur}>{journalFiltre.length} action(s)</span>
+          <span className="rounded-full border border-purple-200 bg-purple-50 px-4 py-1.5 text-sm font-semibold text-purple-700">{journalFiltre.length} action(s)</span>
         </div>
 
-        <div style={s.filtres}>
+        <div className="mb-5 flex flex-wrap items-center gap-3">
           <input
-            style={s.recherche}
+            className="w-[320px] rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
             placeholder="🔍 Acteur, cible, description..."
             value={recherche}
             onChange={e => setRecherche(e.target.value)}
           />
-          <div style={{ display: 'flex', gap: '8px' }}>
+          <div className="flex gap-2">
             {[
               { valeur: 'tous', label: 'Toutes' },
               { valeur: 'admin', label: '🛡️ Admin' },
@@ -109,7 +112,7 @@ export default function SuperAdminJournal() {
             ].map(f => (
               <button
                 key={f.valeur}
-                style={{ ...s.filtreBouton, background: filtre === f.valeur ? '#7c3aed' : 'rgba(255,255,255,0.05)', color: filtre === f.valeur ? '#fff' : '#9ca3af', border: filtre === f.valeur ? '1px solid #7c3aed' : '1px solid rgba(255,255,255,0.1)' }}
+                className={`rounded-full border px-4 py-1.5 text-[13px] font-semibold ${filtre === f.valeur ? 'border-brand-600 bg-brand-600 text-white' : 'border-slate-200 bg-white text-slate-500'}`}
                 onClick={() => setFiltre(f.valeur)}
               >
                 {f.label}
@@ -119,12 +122,12 @@ export default function SuperAdminJournal() {
         </div>
 
         {chargement ? (
-          <p style={{ color: '#6b7280', textAlign: 'center', padding: '40px' }}>Chargement...</p>
+          <p className="py-10 text-center text-slate-400">Chargement...</p>
         ) : journalFiltre.length === 0 ? (
-          <div style={s.vide}>Aucune action trouvée</div>
+          <div className="rounded-2xl border border-slate-100 bg-white py-16 text-center text-slate-400 shadow-card">Aucune action trouvée</div>
         ) : (
-          <div style={s.tableau}>
-            <div style={s.tableauEntete}>
+          <div className="overflow-x-auto rounded-2xl border border-slate-100 bg-white shadow-card">
+            <div className="grid min-w-[560px] grid-cols-[1.2fr_1.5fr_2fr_1.3fr] bg-purple-50 px-5 py-3.5 text-[11px] font-bold uppercase tracking-wide text-purple-700">
               <span>Date</span>
               <span>Acteur</span>
               <span>Action</span>
@@ -133,19 +136,19 @@ export default function SuperAdminJournal() {
             {journalFiltre.map(j => {
               const estActionAdmin = ACTIONS_ADMIN.includes(j.type_action);
               return (
-                <div key={j.id} style={s.tableauLigne}>
-                  <div style={{ color: '#9ca3af', fontSize: '13px' }}>{formaterDateHeure(j.created_at)}</div>
+                <div key={j.id} className="grid min-w-[560px] grid-cols-[1.2fr_1.5fr_2fr_1.3fr] items-center border-t border-slate-50 px-5 py-3.5 text-sm">
+                  <div className="text-[13px] text-slate-400">{formaterDateHeure(j.created_at)}</div>
                   <div>
-                    <div style={s.cellPrincipal}>{j.acteur_nom}</div>
-                    <div style={{ ...s.badgeRole, color: estActionAdmin ? '#f59e0b' : '#06b6d4' }}>
+                    <div className="text-sm font-semibold text-slate-900">{j.acteur_nom}</div>
+                    <div className={`mt-0.5 text-[11px] font-semibold capitalize ${estActionAdmin ? 'text-accent-600' : 'text-cyan-600'}`}>
                       {(j.acteur_role || '').replace(/,/g, ', ')}
                     </div>
                   </div>
                   <div>
-                    <div style={s.cellPrincipal}>{LABELS_TYPE_ACTION[j.type_action] || j.type_action}</div>
-                    <div style={s.cellSous}>{j.description}</div>
+                    <div className="text-sm font-semibold text-slate-900">{LABELS_TYPE_ACTION[j.type_action] || j.type_action}</div>
+                    <div className="mt-0.5 text-xs text-slate-400">{j.description}</div>
                   </div>
-                  <div style={{ color: '#9ca3af', fontSize: '13px' }}>{j.cible_nom || '—'}</div>
+                  <div className="text-[13px] text-slate-400">{j.cible_nom || '—'}</div>
                 </div>
               );
             })}
@@ -155,30 +158,3 @@ export default function SuperAdminJournal() {
     </div>
   );
 }
-
-const s = {
-  page: { minHeight: '100vh', background: 'linear-gradient(135deg,#0a0a0f 0%,#0f0a1e 50%,#0a0f0a 100%)', fontFamily: "'Segoe UI',sans-serif", color: '#e2e8f0' },
-  nav: { background: 'rgba(10,10,20,0.95)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(124,58,237,0.3)', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' },
-  navLogo: { display: 'flex', alignItems: 'center', gap: '10px', color: '#e2e8f0', fontSize: '18px', fontWeight: '700', cursor: 'pointer' },
-  navBenin: { color: '#f59e0b' },
-  superBadge: { background: 'linear-gradient(135deg,#7c3aed,#5b21b6)', color: '#fff', fontSize: '10px', padding: '3px 10px', borderRadius: '20px', fontWeight: '800', letterSpacing: '1px' },
-  navMenu: { display: 'flex', gap: '8px', alignItems: 'center' },
-  navBtn: { background: 'transparent', border: '1px solid rgba(124,58,237,0.3)', color: '#a78bfa', cursor: 'pointer', padding: '7px 14px', borderRadius: '6px', fontSize: '13px' },
-  navBtnActif: { background: 'rgba(124,58,237,0.2)', border: '1px solid #7c3aed', color: '#c4b5fd' },
-  navDeconnexion: { background: 'transparent', border: '1px solid rgba(239,68,68,0.4)', color: '#ef4444', cursor: 'pointer', padding: '7px 14px', borderRadius: '6px', fontSize: '13px' },
-  contenu: { padding: '32px 24px', maxWidth: '1300px', margin: '0 auto' },
-  entete: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' },
-  titre: { margin: 0, fontSize: '24px', fontWeight: '800', background: 'linear-gradient(135deg,#c4b5fd,#f59e0b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' },
-  sousTitre: { color: '#6b7280', margin: '6px 0 0', fontSize: '13px' },
-  compteur: { background: 'rgba(124,58,237,0.2)', color: '#a78bfa', padding: '6px 16px', borderRadius: '20px', fontSize: '14px', fontWeight: '600', border: '1px solid rgba(124,58,237,0.3)' },
-  filtres: { display: 'flex', gap: '12px', marginBottom: '20px', flexWrap: 'wrap', alignItems: 'center' },
-  recherche: { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#e2e8f0', padding: '10px 16px', borderRadius: '8px', fontSize: '14px', width: '320px', outline: 'none' },
-  filtreBouton: { padding: '6px 16px', borderRadius: '20px', fontSize: '13px', cursor: 'pointer', fontWeight: '600' },
-  vide: { textAlign: 'center', color: '#6b7280', padding: '60px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)' },
-  tableau: { background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', overflow: 'hidden', overflowX: 'auto' },
-  tableauEntete: { display: 'grid', gridTemplateColumns: '1.2fr 1.5fr 2fr 1.3fr', minWidth: '560px', padding: '14px 20px', background: 'rgba(124,58,237,0.1)', fontSize: '11px', fontWeight: '700', color: '#7c3aed', textTransform: 'uppercase', letterSpacing: '0.5px' },
-  tableauLigne: { display: 'grid', gridTemplateColumns: '1.2fr 1.5fr 2fr 1.3fr', minWidth: '560px', padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.05)', fontSize: '14px', alignItems: 'center' },
-  cellPrincipal: { fontWeight: '600', color: '#e2e8f0', fontSize: '14px' },
-  cellSous: { color: '#6b7280', fontSize: '12px', marginTop: '2px' },
-  badgeRole: { fontSize: '11px', fontWeight: '600', textTransform: 'capitalize', marginTop: '2px' },
-};

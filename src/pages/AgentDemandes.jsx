@@ -5,10 +5,18 @@ import ClocheNotifications from '../components/ClocheNotifications';
 import { useAuth } from '../context/AuthContext';
 
 const STATUT_COULEURS = {
-  en_attente: { bg: '#fff3e0', color: '#e65100', label: '⏳ En attente' },
-  approuvee: { bg: '#e8f5e9', color: '#2e7d32', label: '✅ Approuvée' },
-  annulee: { bg: '#ffebee', color: '#c62828', label: '❌ Annulée' },
+  en_attente: { cls: 'bg-accent-50 text-accent-700', label: '⏳ En attente' },
+  approuvee: { cls: 'bg-emerald-50 text-emerald-700', label: '✅ Approuvée' },
+  annulee: { cls: 'bg-red-50 text-red-600', label: '❌ Annulée' },
 };
+
+const champLabel = 'mt-3 mb-1 block text-sm font-semibold text-slate-700';
+const champInput = 'w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30';
+const overlay = 'fixed inset-0 z-[1000] flex items-center justify-center bg-slate-900/50 p-5 backdrop-blur-sm';
+const modal = 'w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-7 shadow-2xl';
+const btnAnnulerModal = 'rounded-xl border border-slate-200 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50';
+const btnRefuser = 'flex-1 rounded-xl border border-red-300 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-100 disabled:opacity-60';
+const btnValider = 'flex-1 rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-60';
 
 export default function AgentDemandes() {
   const [demandes, setDemandes] = useState([]);
@@ -100,35 +108,33 @@ export default function AgentDemandes() {
     .sort((a, b) => (b.escaladee ? 1 : 0) - (a.escaladee ? 1 : 0));
 
   return (
-    <div style={s.page}>
-      <nav style={s.nav} className="re-nav">
-        <div style={s.navLogo}>🏠 <strong>RentEasy</strong> <span style={s.navBenin}>Bénin</span> <span style={s.agentBadge}>Agent</span></div>
-        <div style={s.navMenu}>
-          <button style={s.navBtn} onClick={() => navigate('/agent/dashboard')}>Tableau de bord</button>
-          <button style={s.navBtnActif}>Demandes</button>
-          <button style={s.navBtn} onClick={() => navigate('/agent/recouvrements')}>Recouvrements</button>
-          <button style={s.navBtnProfil} onClick={() => navigate('/profil')}>👤 Mon profil</button>
+    <div className="min-h-screen bg-slate-50">
+      <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
+        <div className="flex items-center gap-2 text-lg text-slate-900">🏠 <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span> <span className="rounded-full bg-accent-500 px-2.5 py-0.5 text-[11px] font-extrabold text-white">Agent</span></div>
+        <div className="flex items-center gap-1.5">
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/agent/dashboard')}>Tableau de bord</button>
+          <button className="rounded-lg border border-brand-600 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700">Demandes</button>
+          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/agent/recouvrements')}>Recouvrements</button>
+          <button className="rounded-lg border border-brand-200 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700 hover:bg-brand-100" onClick={() => navigate('/profil')}>👤 Mon profil</button>
           <ClocheNotifications />
-          <button style={s.navDeconnexion} onClick={deconnecter}>Déconnexion</button>
+          <button className="rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
         </div>
       </nav>
 
-      <div style={s.contenu}>
-        <div style={s.entete}>
-          <div>
-            <h2 style={s.titre}>Demandes de contrats</h2>
-            <p style={s.sousTitre}>{demandes.filter(d => d.statut === 'en_attente').length} demande(s) en attente de traitement</p>
-          </div>
+      <div className="mx-auto max-w-6xl px-6 py-6">
+        <div className="mb-6">
+          <h2 className="text-2xl font-extrabold text-slate-900">Demandes de contrats</h2>
+          <p className="mt-1 text-sm text-slate-500">{demandes.filter(d => d.statut === 'en_attente').length} demande(s) en attente de traitement</p>
         </div>
 
-        {succes && <div style={s.succes}>{succes}</div>}
+        {succes && <div className="mb-4 rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm text-brand-800">{succes}</div>}
 
         {/* Filtres */}
-        <div style={s.filtres}>
+        <div className="mb-5 flex flex-wrap gap-2">
           {['en_attente', 'approuvee', 'annulee', 'toutes'].map(f => (
             <button
               key={f}
-              style={{ ...s.filtreBouton, background: filtre === f ? '#1a3a5c' : '#fff', color: filtre === f ? '#fff' : '#555' }}
+              className={`rounded-full border-[1.5px] px-4 py-1.5 text-[13px] font-medium ${filtre === f ? 'border-brand-600 bg-brand-600 text-white' : 'border-slate-200 bg-white text-slate-600'}`}
               onClick={() => setFiltre(f)}
             >
               {f === 'toutes' ? 'Toutes' : STATUT_COULEURS[f]?.label || f}
@@ -138,71 +144,69 @@ export default function AgentDemandes() {
 
         {/* Liste des demandes */}
         {chargement ? (
-          <p style={s.vide}>Chargement...</p>
+          <p className="py-10 text-center text-slate-400">Chargement...</p>
         ) : demandesFiltrees.length === 0 ? (
-          <div style={s.vide}>
+          <div className="rounded-2xl border border-slate-100 bg-white p-10 text-center text-slate-400 shadow-card">
             <p>✅ Aucune demande {filtre === 'en_attente' ? 'en attente' : ''}</p>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div className="flex flex-col gap-4">
             {demandesFiltrees.map(d => {
-              const st = STATUT_COULEURS[d.statut] || { bg: '#f5f5f5', color: '#9ca3af', label: d.statut };
+              const st = STATUT_COULEURS[d.statut] || { cls: 'bg-slate-100 text-slate-500', label: d.statut };
               const conditions = d.conditions_demandees || {};
               return (
-                <div key={d.id} style={s.demandeCard}>
-                  <div style={s.demandeEntete}>
+                <div key={d.id} className="rounded-2xl border border-slate-100 bg-white p-5 shadow-card">
+                  <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
                     <div>
-                      <span style={{
-                        ...s.typeBadge,
-                        background: d.type_demande === 'modification' ? '#e3f2fd' : d.type_demande === 'fin_contrat' ? '#fff3e0' : '#ffebee',
-                        color: d.type_demande === 'modification' ? '#1565c0' : d.type_demande === 'fin_contrat' ? '#e65100' : '#c62828',
-                      }}>
+                      <span className={`rounded-full px-3 py-1 text-[13px] font-bold ${
+                        d.type_demande === 'modification' ? 'bg-blue-50 text-blue-700' : d.type_demande === 'fin_contrat' ? 'bg-accent-50 text-accent-700' : 'bg-red-50 text-red-600'
+                      }`}>
                         {d.type_demande === 'modification' ? '✏️ Modification' : d.type_demande === 'fin_contrat' ? '🔚 Fin de contrat' : '🔴 Résiliation'}
                       </span>
                       {d.initiee_par === 'locataire' && (
-                        <span style={{ ...s.typeBadge, background: 'rgba(124,58,237,0.15)', color: '#a78bfa', marginLeft: '6px' }}>
+                        <span className="ml-1.5 rounded-full bg-purple-50 px-3 py-1 text-[13px] font-bold text-purple-700">
                           👤 Initiée par le locataire
                         </span>
                       )}
                       {d.initiee_par === 'systeme' && (
-                        <span style={{ ...s.typeBadge, background: 'rgba(107,114,128,0.15)', color: '#9ca3af', marginLeft: '6px' }}>
+                        <span className="ml-1.5 rounded-full bg-slate-100 px-3 py-1 text-[13px] font-bold text-slate-500">
                           ⚙️ Générée automatiquement
                         </span>
                       )}
                       {d.escaladee && (
-                        <span style={{ ...s.typeBadge, background: 'rgba(239,68,68,0.15)', color: '#ef4444', marginLeft: '6px' }}>
+                        <span className="ml-1.5 rounded-full bg-red-50 px-3 py-1 text-[13px] font-bold text-red-600">
                           🚨 Bloquée depuis plus de 3 jours
                         </span>
                       )}
-                      <span style={{ ...s.statutBadge, background: st.bg, color: st.color, marginLeft: '8px' }}>
+                      <span className={`ml-2 rounded-full px-2.5 py-1 text-xs font-semibold ${st.cls}`}>
                         {st.label}
                       </span>
                     </div>
-                    <span style={s.demandeDate}>{formaterDate(d.created_at)}</span>
+                    <span className="text-xs text-slate-400">{formaterDate(d.created_at)}</span>
                   </div>
 
-                  <div style={s.demandeGrille}>
-                    <div style={s.demandeBloc}>
-                      <p style={s.demandeBlocTitre}>👤 Propriétaire</p>
-                      <p style={s.demandeBlocVal}>{d.proprietaire_nom}</p>
-                      <p style={s.demandeBlocSous}>{d.proprietaire_email}</p>
-                      <p style={s.demandeBlocSous}>{d.proprietaire_telephone}</p>
+                  <div className="mb-3 grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-3">
+                    <div className="rounded-xl bg-slate-50 p-3">
+                      <p className="mb-1.5 text-xs font-bold uppercase tracking-wide text-brand-700">👤 Propriétaire</p>
+                      <p className="m-0 mb-0.5 text-sm font-semibold text-slate-800">{d.proprietaire_nom}</p>
+                      <p className="m-0 text-xs text-slate-400">{d.proprietaire_email}</p>
+                      <p className="m-0 text-xs text-slate-400">{d.proprietaire_telephone}</p>
                     </div>
-                    <div style={s.demandeBloc}>
-                      <p style={s.demandeBlocTitre}>🏠 Bien concerné</p>
-                      <p style={s.demandeBlocVal}>{d.adresse}, {d.ville}</p>
-                      <p style={s.demandeBlocSous}>{d.type_bien}</p>
+                    <div className="rounded-xl bg-slate-50 p-3">
+                      <p className="mb-1.5 text-xs font-bold uppercase tracking-wide text-brand-700">🏠 Bien concerné</p>
+                      <p className="m-0 mb-0.5 text-sm font-semibold text-slate-800">{d.adresse}, {d.ville}</p>
+                      <p className="m-0 text-xs text-slate-400">{d.type_bien}</p>
                     </div>
-                    <div style={s.demandeBloc}>
-                      <p style={s.demandeBlocTitre}>👥 Locataire</p>
-                      <p style={s.demandeBlocVal}>{d.locataire_nom}</p>
-                      <p style={s.demandeBlocSous}>{d.locataire_telephone}</p>
+                    <div className="rounded-xl bg-slate-50 p-3">
+                      <p className="mb-1.5 text-xs font-bold uppercase tracking-wide text-brand-700">👥 Locataire</p>
+                      <p className="m-0 mb-0.5 text-sm font-semibold text-slate-800">{d.locataire_nom}</p>
+                      <p className="m-0 text-xs text-slate-400">{d.locataire_telephone}</p>
                     </div>
-                    <div style={s.demandeBloc}>
-                      <p style={s.demandeBlocTitre}>💰 Contrat actuel</p>
-                      <p style={s.demandeBlocVal}>{formaterMontant(d.loyer_mensuel)} / mois</p>
+                    <div className="rounded-xl bg-slate-50 p-3">
+                      <p className="mb-1.5 text-xs font-bold uppercase tracking-wide text-brand-700">💰 Contrat actuel</p>
+                      <p className="m-0 mb-0.5 text-sm font-semibold text-slate-800">{formaterMontant(d.loyer_mensuel)} / mois</p>
                       {conditions.loyer_mensuel && (
-                        <p style={{ color: '#e8a020', fontSize: '13px', fontWeight: '600' }}>
+                        <p className="text-[13px] font-semibold text-accent-600">
                           → Nouveau loyer demandé : {formaterMontant(conditions.loyer_mensuel)}
                         </p>
                       )}
@@ -210,30 +214,30 @@ export default function AgentDemandes() {
                   </div>
 
                   {d.note_proprietaire && (
-                    <div style={s.noteProprietaire}>
+                    <div className="mt-2 rounded-lg bg-amber-50 px-3.5 py-2.5 text-[13px] text-amber-800">
                       <strong>Note du propriétaire :</strong> {d.note_proprietaire}
                     </div>
                   )}
 
                   {d.note_agent && (
-                    <div style={s.noteAgent}>
+                    <div className="mt-2 rounded-lg bg-emerald-50 px-3.5 py-2.5 text-[13px] text-emerald-800">
                       <strong>Note de l'agent :</strong> {d.note_agent}
                     </div>
                   )}
 
                   {d.statut === 'en_attente' && (
-                    <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
+                    <div className="mt-4 flex gap-3">
                       {d.type_demande === 'fin_contrat' ? (
                         <>
-                          <button style={s.btnApprouver} onClick={() => validerFinResiliation(d.id)}>
+                          <button className="rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700" onClick={() => validerFinResiliation(d.id)}>
                             ✅ Valider la résiliation
                           </button>
-                          <button style={{ ...s.btnApprouver, background: 'linear-gradient(135deg,#f59e0b,#d97706)' }} onClick={() => { setModalRenouvellement(d); setDureeRenouvellement(''); setUniteRenouvellement('mois'); setErreur(''); }}>
+                          <button className="rounded-xl bg-accent-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-accent-600" onClick={() => { setModalRenouvellement(d); setDureeRenouvellement(''); setUniteRenouvellement('mois'); setErreur(''); }}>
                             🔄 Renouveler
                           </button>
                         </>
                       ) : (
-                        <button style={s.btnApprouver} onClick={() => { setModalTraitement(d); setNoteAgent(''); setErreur(''); }}>
+                        <button className="rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700" onClick={() => { setModalTraitement(d); setNoteAgent(''); setErreur(''); }}>
                           ✅ Traiter cette demande
                         </button>
                       )}
@@ -248,44 +252,44 @@ export default function AgentDemandes() {
 
       {/* Modal traitement */}
       {modalTraitement && (
-        <div style={s.overlay}>
-          <div style={s.modal}>
-            <h3 style={{ margin: '0 0 4px', color: '#c4b5fd' }}>Traiter la demande</h3>
-            <p style={{ color: '#6b7280', fontSize: '14px', marginBottom: '16px' }}>
+        <div className={overlay}>
+          <div className={modal}>
+            <h3 className="mb-1 text-xl font-bold text-slate-900">Traiter la demande</h3>
+            <p className="mb-4 text-sm text-slate-400">
               {modalTraitement.type_demande === 'modification' ? '✏️ Modification' : '🔴 Résiliation'} · {modalTraitement.proprietaire_nom}
             </p>
 
-            <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '8px', padding: '14px', marginBottom: '16px' }}>
-              <p style={{ margin: '0 0 4px', fontWeight: '600', fontSize: '13px', color: '#c4b5fd' }}>Demande :</p>
-              <p style={{ margin: 0, fontSize: '14px', color: '#e2e8f0' }}>
+            <div className="mb-4 rounded-xl bg-slate-50 p-3.5">
+              <p className="mb-1 text-[13px] font-semibold text-brand-700">Demande :</p>
+              <p className="m-0 text-sm text-slate-700">
                 {modalTraitement.type_demande === 'resiliation'
                   ? `Résiliation du contrat pour ${modalTraitement.locataire_nom} au ${modalTraitement.adresse}`
                   : `Modification du loyer${modalTraitement.conditions_demandees?.loyer_mensuel ? ` → ${formaterMontant(modalTraitement.conditions_demandees.loyer_mensuel)}` : ''}`
                 }
               </p>
               {modalTraitement.note_proprietaire && (
-                <p style={{ margin: '8px 0 0', fontSize: '13px', color: '#9ca3af', fontStyle: 'italic' }}>
+                <p className="mt-2 text-[13px] italic text-slate-400">
                   "{modalTraitement.note_proprietaire}"
                 </p>
               )}
             </div>
 
-            <label style={s.label}>Note pour le propriétaire (optionnel)</label>
+            <label className={champLabel}>Note pour le propriétaire (optionnel)</label>
             <textarea
-              style={{ ...s.input, height: '80px', resize: 'vertical' }}
+              className={`${champInput} h-20 resize-y`}
               placeholder="Expliquez votre décision..."
               value={noteAgent}
               onChange={e => setNoteAgent(e.target.value)}
             />
 
-            {erreur && <p style={{ color: '#ef4444', fontSize: '13px', marginTop: '8px' }}>{erreur}</p>}
+            {erreur && <p className="mt-2 text-[13px] text-red-600">{erreur}</p>}
 
-            <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
-              <button style={s.btnAnnulerModal} onClick={() => setModalTraitement(null)}>Fermer</button>
-              <button style={s.btnRefuser} onClick={() => traiterDemande('annuler')} disabled={envoi}>
+            <div className="mt-4 flex gap-3">
+              <button className={btnAnnulerModal} onClick={() => setModalTraitement(null)}>Fermer</button>
+              <button className={btnRefuser} onClick={() => traiterDemande('annuler')} disabled={envoi}>
                 ❌ Annuler la demande
               </button>
-              <button style={s.btnValider} onClick={() => traiterDemande('approuver')} disabled={envoi}>
+              <button className={btnValider} onClick={() => traiterDemande('approuver')} disabled={envoi}>
                 {envoi ? 'Traitement...' : '✅ Approuver'}
               </button>
             </div>
@@ -294,32 +298,32 @@ export default function AgentDemandes() {
       )}
 
       {modalRenouvellement && (
-        <div style={s.overlay}>
-          <div style={s.modal}>
-            <h3 style={s.modalTitre}>🔄 Renouveler le contrat</h3>
-            <p style={{ color: '#6b7280', fontSize: '13px', marginBottom: '16px' }}>
+        <div className={overlay}>
+          <div className={modal}>
+            <h3 className="mb-1 text-xl font-bold text-slate-900">🔄 Renouveler le contrat</h3>
+            <p className="mb-4 text-[13px] text-slate-400">
               🔖 {modalRenouvellement.numero_bien} · {modalRenouvellement.proprietaire_nom}
             </p>
-            <p style={{ color: '#9ca3af', fontSize: '13px', marginBottom: '12px' }}>
+            <p className="mb-3 text-[13px] text-slate-500">
               Confirmez d'abord l'accord entre le propriétaire et le locataire, puis précisez la durée de prolongation.
             </p>
 
-            <label style={s.label}>Durée de renouvellement *</label>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <input style={{ ...s.input, flex: 1 }} type="number" min="1" placeholder="Ex: 12" value={dureeRenouvellement} onChange={e => setDureeRenouvellement(e.target.value)} />
-              <select style={{ ...s.input, flex: 1 }} value={uniteRenouvellement} onChange={e => setUniteRenouvellement(e.target.value)}>
-                <option value="jours" style={s.option}>Jour(s)</option>
-                <option value="semaines" style={s.option}>Semaine(s)</option>
-                <option value="mois" style={s.option}>Mois</option>
-                <option value="annees" style={s.option}>Année(s)</option>
+            <label className={champLabel}>Durée de renouvellement *</label>
+            <div className="flex gap-2">
+              <input className={`${champInput} flex-1`} type="number" min="1" placeholder="Ex: 12" value={dureeRenouvellement} onChange={e => setDureeRenouvellement(e.target.value)} />
+              <select className={`${champInput} flex-1`} value={uniteRenouvellement} onChange={e => setUniteRenouvellement(e.target.value)}>
+                <option value="jours">Jour(s)</option>
+                <option value="semaines">Semaine(s)</option>
+                <option value="mois">Mois</option>
+                <option value="annees">Année(s)</option>
               </select>
             </div>
 
-            {erreur && <p style={{ color: '#ef4444', fontSize: '13px', marginTop: '8px' }}>{erreur}</p>}
+            {erreur && <p className="mt-2 text-[13px] text-red-600">{erreur}</p>}
 
-            <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
-              <button style={s.btnAnnulerModal} onClick={() => setModalRenouvellement(null)}>Annuler</button>
-              <button style={s.btnValider} onClick={soumettreRenouvellement} disabled={envoiRenouvellement}>
+            <div className="mt-5 flex gap-3">
+              <button className={btnAnnulerModal} onClick={() => setModalRenouvellement(null)}>Annuler</button>
+              <button className={btnValider} onClick={soumettreRenouvellement} disabled={envoiRenouvellement}>
                 {envoiRenouvellement ? 'Renouvellement...' : '🔄 Confirmer le renouvellement'}
               </button>
             </div>
@@ -329,45 +333,3 @@ export default function AgentDemandes() {
     </div>
   );
 }
-
-const s = {
-    page: { minHeight: '100vh', background: 'linear-gradient(135deg,#0a0a0f 0%,#0d1117 100%)', fontFamily: "'Segoe UI',sans-serif", color: '#e2e8f0' },
-    nav: { background: 'rgba(10,10,20,0.95)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(124,58,237,0.2)', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '60px', position: 'sticky', top: 0, zIndex: 100 },
-    navLogo: { color: '#e2e8f0', fontSize: '18px', cursor: 'pointer' },
-    navBenin: { color: '#f59e0b' },
-  agentBadge: { background: '#e8a020', color: '#fff', fontSize: '11px', padding: '2px 8px', borderRadius: '10px', fontWeight: '700' },
-  navMenu: { display: 'flex', gap: '8px', alignItems: 'center' },
-    navBtn: { background: 'transparent', border: '1px solid rgba(255,255,255,0.08)', color: '#9ca3af', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px' },
-    navBtnActif: { background: 'rgba(124,58,237,0.2)', border: '1px solid #7c3aed', color: '#c4b5fd', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px', fontWeight: '600' },
-    navBtnProfil: { background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.3)', color: '#a78bfa', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px', fontWeight: '600' },
-  navDeconnexion: { background: 'transparent', border: '1px solid rgba(239,68,68,0.4)', color: '#ef4444', cursor: 'pointer', padding: '7px 12px', borderRadius: '6px', fontSize: '13px' },
-  contenu: { padding: '24px', maxWidth: '1200px', margin: '0 auto' },
-  entete: { marginBottom: '24px' },
-    titre: { margin: 0, fontSize: '24px', fontWeight: '800', background: 'linear-gradient(135deg,#c4b5fd,#f59e0b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' },
-  sousTitre: { color: '#6b7280', margin: '4px 0 0', fontSize: '14px' },
-    succes: { background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)', color: '#10b981', padding: '12px 16px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' },
-  filtres: { display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap' },
-  filtreBouton: { border: '1.5px solid #ddd', borderRadius: '20px', padding: '6px 16px', fontSize: '13px', cursor: 'pointer', fontWeight: '500' },
-    vide: { textAlign: 'center', color: '#6b7280', padding: '40px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px' },
-  demandeCard: { background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '20px' },
-  demandeEntete: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '8px' },
-  typeBadge: { fontSize: '13px', fontWeight: '700', padding: '4px 12px', borderRadius: '20px' },
-  statutBadge: { fontSize: '12px', fontWeight: '600', padding: '4px 10px', borderRadius: '20px' },
-  demandeDate: { color: '#9ca3af', fontSize: '12px' },
-  demandeGrille: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '12px', marginBottom: '12px' },
-  demandeBloc: { background: 'rgba(255,255,255,0.03)', borderRadius: '8px', padding: '12px' },
-  demandeBlocTitre: { fontWeight: '700', color: '#c4b5fd', fontSize: '12px', marginBottom: '6px', marginTop: 0, textTransform: 'uppercase', letterSpacing: '0.5px' },
-  demandeBlocVal: { fontWeight: '600', fontSize: '14px', color: '#e2e8f0', margin: '0 0 2px' },
-  demandeBlocSous: { fontSize: '12px', color: '#6b7280', margin: 0 },
-  noteProprietaire: { background: '#fff8e1', color: '#f57f17', padding: '10px 14px', borderRadius: '8px', fontSize: '13px', marginTop: '8px' },
-  noteAgent: { background: '#e8f5e9', color: '#2e7d32', padding: '10px 14px', borderRadius: '8px', fontSize: '13px', marginTop: '8px' },
-  btnApprouver: { background: 'linear-gradient(135deg, #e8a020, #c47f10)', color: '#fff', border: 'none', borderRadius: '8px', padding: '10px 20px', fontSize: '14px', fontWeight: '600', cursor: 'pointer' },
-    overlay: { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 },
-    modal: { background: '#0f0a1e', border: '1px solid rgba(124,58,237,0.4)', borderRadius: '16px', padding: '32px', width: '100%', maxWidth: '460px', boxShadow: '0 25px 50px rgba(0,0,0,0.5)', maxHeight: '90vh', overflowY: 'auto' },
-    label: { fontSize: '13px', fontWeight: '600', color: '#9ca3af', display: 'block', marginBottom: '4px', marginTop: '12px' },
-    input: { width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', fontSize: '14px', boxSizing: 'border-box', background: 'rgba(255,255,255,0.05)', color: '#e2e8f0', outline: 'none' },
-    option: { background: '#12121a', color: '#e2e8f0' },
-  btnAnnulerModal: { background: 'rgba(255,255,255,0.05)', color: '#9ca3af', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 16px', fontSize: '14px', cursor: 'pointer' },
-  btnRefuser: { background: '#ffebee', color: '#c62828', border: '1px solid #c62828', borderRadius: '8px', padding: '10px 16px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', flex: 1 },
-  btnValider: { background: 'linear-gradient(135deg, #2e7d32, #1b5e20)', color: '#fff', border: 'none', borderRadius: '8px', padding: '10px 20px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', flex: 1 },
-};

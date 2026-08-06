@@ -32,43 +32,41 @@ export default function Connexion() {
   }
 
   return (
-    <div style={styles.page} className="re-auth-page">
-      <div style={styles.card} className="re-auth-card">
-        {/* Logo */}
-        <div style={styles.logo}>
-          <span style={styles.logoIcon}>🏠</span>
-          <h1 style={styles.logoText}>RentEasy <span style={styles.logoBenin}>Bénin</span></h1>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-900 via-brand-800 to-slate-900 px-4 py-10">
+      <div className="w-full max-w-md rounded-3xl bg-white p-8 sm:p-10 shadow-2xl">
+        <div className="flex items-center gap-3">
+          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-50 text-2xl">🏠</span>
+          <h1 className="text-2xl font-extrabold text-slate-900">RentEasy <span className="text-accent-600">Bénin</span></h1>
         </div>
-        <p style={styles.sousTitre}>Gestion & recouvrement de loyers</p>
+        <p className="mt-1 text-sm text-slate-500">Gestion &amp; recouvrement de loyers</p>
 
-        {/* Formulaire */}
-        <div style={styles.form}>
-          <label style={styles.label}>Adresse email</label>
+        <div className="mt-8 flex flex-col gap-1">
+          <label className="text-sm font-semibold text-slate-700">Adresse email</label>
           <input
-            style={styles.input}
+            className="rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
             type="email"
             placeholder="votre@email.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
 
-          <label style={styles.label}>Mot de passe</label>
+          <label className="mt-3 text-sm font-semibold text-slate-700">Mot de passe</label>
           <input
-            style={styles.input}
+            className="rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
             type="password"
             placeholder="••••••••"
             value={motDePasse}
             onChange={(e) => setMotDePasse(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleConnexion()}
           />
-          <p style={{ ...styles.lien, textAlign: 'right', fontSize: '13px', margin: '0 0 4px' }} onClick={() => navigate('/mot-de-passe-oublie')}>
+          <p className="mt-1.5 cursor-pointer text-right text-xs font-semibold text-accent-600 hover:text-accent-700" onClick={() => navigate('/mot-de-passe-oublie')}>
             Mot de passe oublié ?
           </p>
 
-          {erreur && <p style={styles.erreur}>{erreur}</p>}
+          {erreur && <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{erreur}</p>}
 
           <button
-            style={{ ...styles.bouton, opacity: chargement ? 0.7 : 1 }}
+            className="mt-2 rounded-xl bg-brand-600 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 disabled:opacity-60"
             onClick={handleConnexion}
             disabled={chargement}
           >
@@ -76,100 +74,12 @@ export default function Connexion() {
           </button>
         </div>
 
-        <p style={styles.lienInscription}>
+        <p className="mt-6 text-center text-sm text-slate-500">
           Pas encore de compte ?{' '}
-          <span style={styles.lien} onClick={() => navigate('/inscription')}>S'inscrire</span>
+          <span className="cursor-pointer font-semibold text-accent-600 hover:text-accent-700" onClick={() => navigate('/inscription')}>S'inscrire</span>
         </p>
-        <p style={styles.footer}>
-          © 2026 RentEasy Bénin · Cotonou, Bénin
-        </p>
+        <p className="mt-2 text-center text-xs text-slate-400">© 2026 RentEasy Bénin · Cotonou, Bénin</p>
       </div>
     </div>
   );
 }
-
-const styles = {
-  page: {
-    minHeight: '100vh',
-    background: 'linear-gradient(135deg, #1a3a5c 0%, #0d2137 100%)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontFamily: "'Segoe UI', sans-serif",
-    padding: '20px',
-  },
-  card: {
-    background: '#fff',
-    borderRadius: '16px',
-    padding: '40px',
-    width: '100%',
-    maxWidth: '420px',
-    boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
-  },
-  logo: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px',
-    marginBottom: '4px',
-  },
-  logoIcon: { fontSize: '32px' },
-  logoText: {
-    fontSize: '26px',
-    fontWeight: '700',
-    color: '#1a3a5c',
-    margin: 0,
-  },
-  logoBenin: { color: '#e8a020' },
-  sousTitre: {
-    color: '#666',
-    fontSize: '14px',
-    marginBottom: '32px',
-    marginTop: '4px',
-  },
-  form: { display: 'flex', flexDirection: 'column', gap: '8px' },
-  label: { fontSize: '13px', fontWeight: '600', color: '#333' },
-  input: {
-    padding: '12px 16px',
-    borderRadius: '8px',
-    border: '1.5px solid #ddd',
-    fontSize: '15px',
-    outline: 'none',
-    marginBottom: '8px',
-    transition: 'border-color 0.2s',
-  },
-  erreur: {
-    color: '#e03131',
-    fontSize: '13px',
-    background: '#fff5f5',
-    padding: '10px',
-    borderRadius: '6px',
-    margin: '4px 0',
-  },
-  bouton: {
-    background: 'linear-gradient(135deg, #e8a020, #c47f10)',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '8px',
-    padding: '14px',
-    fontSize: '15px',
-    fontWeight: '600',
-    cursor: 'pointer',
-    marginTop: '8px',
-    transition: 'opacity 0.2s',
-  },
-  lienInscription: {
-    textAlign: 'center',
-    color: '#888',
-    fontSize: '13px',
-    marginTop: '16px',
-    marginBottom: 0,
-  },
-  lien: { color: '#e8a020', fontWeight: '600', cursor: 'pointer' },
-  footer: {
-    textAlign: 'center',
-    color: '#aaa',
-    fontSize: '12px',
-    marginTop: '8px',
-    marginBottom: 0,
-  },
-};

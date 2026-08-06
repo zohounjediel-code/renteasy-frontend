@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
+const navBtn = 'rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50';
+const navBtnActif = 'rounded-lg border border-brand-600 bg-brand-50 px-3.5 py-1.5 text-[13px] font-semibold text-brand-700';
+
 export default function SuperAdminErreurs() {
   const [erreurs, setErreurs] = useState([]);
   const [chargement, setChargement] = useState(true);
@@ -35,75 +38,75 @@ export default function SuperAdminErreurs() {
   });
 
   return (
-    <div style={s.page}>
-      <nav style={s.nav} className="re-nav">
-        <div style={s.navLogo} onClick={() => navigate('/superadmin/dashboard')}>
-          ⚡ RentEasy <span style={s.navBenin}>Bénin</span>
-          <span style={s.superBadge}>SUPER ADMIN</span>
+    <div className="min-h-screen bg-slate-50">
+      <nav className="re-nav sticky top-0 z-[100] flex h-16 flex-wrap items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
+        <div className="flex cursor-pointer items-center gap-2.5 text-lg font-bold text-slate-900" onClick={() => navigate('/superadmin/dashboard')}>
+          ⚡ RentEasy <span className="text-accent-600">Bénin</span>
+          <span className="rounded-full bg-purple-600 px-2.5 py-0.5 text-[10px] font-extrabold tracking-wide text-white">SUPER ADMIN</span>
         </div>
-        <div style={s.navMenu}>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/dashboard')}>Dashboard</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/utilisateurs')}>Utilisateurs</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/contrats')}>Contrats</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/biens')}>Biens</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/locataires')}>Locataires</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/journal')}>Journal</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/parametres')}>Paramètres</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/moderation')}>Modération</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/rapport-financier')}>Rapport financier</button>
-          <button style={s.navBtn} onClick={() => navigate('/superadmin/rappels')}>Rappels</button>
-          <button style={{ ...s.navBtn, ...s.navBtnActif }}>Erreurs</button>
-          <button style={s.navDeconnexion} onClick={deconnecter}>Déconnexion</button>
+        <div className="flex flex-wrap items-center gap-1.5">
+          <button className={navBtn} onClick={() => navigate('/superadmin/dashboard')}>Dashboard</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/utilisateurs')}>Utilisateurs</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/contrats')}>Contrats</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/biens')}>Biens</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/locataires')}>Locataires</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/journal')}>Journal</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/parametres')}>Paramètres</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/moderation')}>Modération</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/rapport-financier')}>Rapport financier</button>
+          <button className={navBtn} onClick={() => navigate('/superadmin/rappels')}>Rappels</button>
+          <button className={navBtnActif}>Erreurs</button>
+          <button className="rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
         </div>
       </nav>
 
-      <div style={s.contenu}>
-        <div style={s.entete}>
+      <div className="mx-auto max-w-6xl px-6 py-8">
+        <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h2 style={s.titre}>Erreurs serveur</h2>
-            <p style={s.sousTitre}>
+            <h2 className="text-2xl font-extrabold text-slate-900">Erreurs serveur</h2>
+            <p className="mt-1.5 max-w-xl text-[13px] text-slate-500">
               Historique des erreurs 500, exceptions non attrapées et rejets de promesse non gérés — chaque nouvelle erreur déclenche aussi une alerte email (au maximum une toutes les 30 minutes par erreur identique).
             </p>
           </div>
-          <span style={s.compteur}>{erreursFiltrees.length} erreur(s)</span>
+          <span className="rounded-full border border-purple-200 bg-purple-50 px-4 py-1.5 text-sm font-semibold text-purple-700">{erreursFiltrees.length} erreur(s)</span>
         </div>
 
-        <div style={s.filtres}>
+        <div className="mb-5 flex items-center gap-3">
           <input
-            style={s.recherche}
+            className="w-[320px] rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
             placeholder="🔍 Message, route..."
             value={recherche}
             onChange={e => setRecherche(e.target.value)}
           />
-          <button style={s.btnActualiser} onClick={chargerErreurs}>↻ Actualiser</button>
+          <button className="rounded-xl border border-brand-300 bg-brand-50 px-4 py-2.5 text-[13px] font-semibold text-brand-700" onClick={chargerErreurs}>↻ Actualiser</button>
         </div>
 
         {chargement ? (
-          <p style={{ color: '#6b7280', textAlign: 'center', padding: '40px' }}>Chargement...</p>
+          <p className="py-10 text-center text-slate-400">Chargement...</p>
         ) : erreursFiltrees.length === 0 ? (
-          <div style={s.vide}>Aucune erreur enregistrée 🎉</div>
+          <div className="rounded-2xl border border-slate-100 bg-white py-16 text-center text-slate-400 shadow-card">Aucune erreur enregistrée 🎉</div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <div className="flex flex-col gap-2.5">
             {erreursFiltrees.map(err => {
               const depliee = erreurDepliee === err.id;
               return (
-                <div key={err.id} style={s.carteErreur}>
-                  <div style={s.carteEnTete} onClick={() => setErreurDepliee(depliee ? null : err.id)}>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                        {err.statut_http && <span style={s.badgeStatut}>{err.statut_http}</span>}
-                        {err.methode && <span style={s.badgeMethode}>{err.methode}</span>}
-                        {err.route && <span style={s.route}>{err.route}</span>}
+                <div key={err.id} className="overflow-hidden rounded-xl border border-red-100 bg-white shadow-card">
+                  <div className="flex cursor-pointer items-center justify-between gap-4 px-4.5 py-3.5" onClick={() => setErreurDepliee(depliee ? null : err.id)}>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        {err.statut_http && <span className="rounded-md bg-red-50 px-2 py-0.5 text-[11px] font-extrabold text-red-600">{err.statut_http}</span>}
+                        {err.methode && <span className="rounded-md bg-purple-50 px-2 py-0.5 text-[11px] font-bold text-purple-700">{err.methode}</span>}
+                        {err.route && <span className="font-mono text-xs text-slate-400">{err.route}</span>}
                       </div>
-                      <div style={s.message}>{err.message}</div>
+                      <div className="mt-1.5 break-words text-sm text-slate-800">{err.message}</div>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
-                      <span style={s.date}>{formaterDateHeure(err.created_at)}</span>
-                      <span style={{ color: '#7c3aed', fontSize: '12px' }}>{depliee ? '▲' : '▼'}</span>
+                    <div className="flex shrink-0 items-center gap-3">
+                      <span className="whitespace-nowrap text-xs text-slate-400">{formaterDateHeure(err.created_at)}</span>
+                      <span className="text-xs text-purple-600">{depliee ? '▲' : '▼'}</span>
                     </div>
                   </div>
                   {depliee && err.stack && (
-                    <pre style={s.stack}>{err.stack}</pre>
+                    <pre className="m-0 overflow-x-auto border-t border-red-100 bg-slate-900 px-4.5 py-3.5 font-mono text-xs leading-relaxed text-red-400">{err.stack}</pre>
                   )}
                 </div>
               );
@@ -114,32 +117,3 @@ export default function SuperAdminErreurs() {
     </div>
   );
 }
-
-const s = {
-  page: { minHeight: '100vh', background: 'linear-gradient(135deg,#0a0a0f 0%,#0f0a1e 50%,#0a0f0a 100%)', fontFamily: "'Segoe UI',sans-serif", color: '#e2e8f0' },
-  nav: { background: 'rgba(10,10,20,0.95)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(124,58,237,0.3)', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px', flexWrap: 'wrap' },
-  navLogo: { display: 'flex', alignItems: 'center', gap: '10px', color: '#e2e8f0', fontSize: '18px', fontWeight: '700', cursor: 'pointer' },
-  navBenin: { color: '#f59e0b' },
-  superBadge: { background: 'linear-gradient(135deg,#7c3aed,#5b21b6)', color: '#fff', fontSize: '10px', padding: '3px 10px', borderRadius: '20px', fontWeight: '800', letterSpacing: '1px' },
-  navMenu: { display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' },
-  navBtn: { background: 'transparent', border: '1px solid rgba(124,58,237,0.3)', color: '#a78bfa', cursor: 'pointer', padding: '7px 14px', borderRadius: '6px', fontSize: '13px' },
-  navBtnActif: { background: 'rgba(124,58,237,0.2)', border: '1px solid #7c3aed', color: '#c4b5fd' },
-  navDeconnexion: { background: 'transparent', border: '1px solid rgba(239,68,68,0.4)', color: '#ef4444', cursor: 'pointer', padding: '7px 14px', borderRadius: '6px', fontSize: '13px' },
-  contenu: { padding: '32px 24px', maxWidth: '1300px', margin: '0 auto' },
-  entete: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' },
-  titre: { margin: 0, fontSize: '24px', fontWeight: '800', background: 'linear-gradient(135deg,#c4b5fd,#f59e0b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' },
-  sousTitre: { color: '#6b7280', margin: '6px 0 0', fontSize: '13px', maxWidth: '640px' },
-  compteur: { background: 'rgba(124,58,237,0.2)', color: '#a78bfa', padding: '6px 16px', borderRadius: '20px', fontSize: '14px', fontWeight: '600', border: '1px solid rgba(124,58,237,0.3)' },
-  filtres: { display: 'flex', gap: '12px', marginBottom: '20px', alignItems: 'center' },
-  recherche: { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#e2e8f0', padding: '10px 16px', borderRadius: '8px', fontSize: '14px', width: '320px', outline: 'none' },
-  btnActualiser: { background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.3)', color: '#a78bfa', borderRadius: '8px', padding: '9px 16px', fontSize: '13px', fontWeight: '600', cursor: 'pointer' },
-  vide: { textAlign: 'center', color: '#6b7280', padding: '60px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)' },
-  carteErreur: { background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '10px', overflow: 'hidden' },
-  carteEnTete: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', padding: '14px 18px', cursor: 'pointer' },
-  badgeStatut: { background: 'rgba(239,68,68,0.15)', color: '#ef4444', padding: '2px 8px', borderRadius: '6px', fontSize: '11px', fontWeight: '800' },
-  badgeMethode: { background: 'rgba(124,58,237,0.15)', color: '#a78bfa', padding: '2px 8px', borderRadius: '6px', fontSize: '11px', fontWeight: '700' },
-  route: { color: '#6b7280', fontSize: '12px', fontFamily: 'monospace' },
-  message: { color: '#e2e8f0', fontSize: '14px', marginTop: '6px', wordBreak: 'break-word' },
-  date: { color: '#6b7280', fontSize: '12px', whiteSpace: 'nowrap' },
-  stack: { background: '#050508', color: '#f87171', padding: '14px 18px', margin: 0, fontSize: '12px', overflowX: 'auto', borderTop: '1px solid rgba(239,68,68,0.2)', fontFamily: 'monospace', lineHeight: '1.5' },
-};
