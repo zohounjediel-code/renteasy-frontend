@@ -4,12 +4,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Nouvelle identité RentEasy — remplace le marine/or et le violet sombre utilisés par
-        // endroits dans l'ancien design. "brand" (émeraude) porte la confiance/l'argent/la
-        // croissance ; "accent" (corail) porte les actions (CTA, montants, alertes positives).
+        // Identité RentEasy — "brand" (tanzanite, bleu-violet profond) porte la confiance et la
+        // structure de l'app (nav, boutons, liens) ; "accent" (corail) porte les actions (CTA,
+        // montants, alertes positives), en contraste chaud face au brand froid.
         brand: {
-          50: '#ecfdf5', 100: '#d1fae5', 200: '#a7f3d0', 300: '#6ee7b7', 400: '#34d399',
-          500: '#10b981', 600: '#059669', 700: '#047857', 800: '#065f46', 900: '#064e3b',
+          50: '#f4f2fe', 100: '#e9e5fd', 200: '#d3cbfb', 300: '#b3a5f7', 400: '#8f76f0',
+          500: '#5d3fd3', 600: '#4d2fc0', 700: '#3e239b', 800: '#331e7d', 900: '#2b1a65',
         },
         accent: {
           50: '#fff7ed', 100: '#ffedd5', 200: '#fed7aa', 300: '#fdba74', 400: '#fb923c',
@@ -20,7 +20,7 @@ module.exports = {
         sans: ['"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
-        card: '0 1px 3px rgba(6,78,59,0.06), 0 8px 24px -8px rgba(6,78,59,0.12)',
+        card: '0 1px 3px rgba(43,26,101,0.06), 0 8px 24px -8px rgba(43,26,101,0.12)',
       },
     },
   },
