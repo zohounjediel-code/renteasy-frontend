@@ -702,7 +702,7 @@ export default function Locataires() {
             {erreur && <p style={s.erreur}>{erreur}</p>}
             <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
               <button style={{ background: 'rgba(255,255,255,0.05)', color: '#9ca3af', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 20px', fontSize: '14px', cursor: 'pointer', flex: 1 }} onClick={() => setModalDemande(null)}>Annuler</button>
-              <button style={{ ...s.boutonPrim, flex: 1, background: formDemande.type_demande === 'resiliation' ? 'linear-gradient(135deg,#c62828,#a01010)' : undefined }} onClick={soumettreDemandeContrat} disabled={envoi}>{envoi ? 'Envoi...' : '📨 Soumettre'}</button>
+              <button style={{ ...s.boutonPrim, flex: 1, ...(formDemande.type_demande === 'resiliation' ? { background: 'linear-gradient(135deg,#c62828,#a01010)' } : {}) }} onClick={soumettreDemandeContrat} disabled={envoi}>{envoi ? 'Envoi...' : '📨 Soumettre'}</button>
             </div>
           </div>
         </div>
