@@ -267,7 +267,10 @@ export default function LocataireDashboard() {
 
   const echeances = data?.echeances || [];
   const maintenant = new Date();
-  const echeancesEnRetard = echeances.filter(e => (e.statut === 'impayee' || e.statut === 'partielle' || e.statut === 'en_recouvrement') && new Date(e.date_limite) < maintenant);
+  // Comparaison par date calendaire (pas par instant précis) : une échéance dont la date limite
+  // est aujourd'hui ne doit pas apparaître en retard tant que la journée n'est pas terminée.
+  const aujourdHui = new Date(Date.UTC(maintenant.getFullYear(), maintenant.getMonth(), maintenant.getDate()));
+  const echeancesEnRetard = echeances.filter(e => (e.statut === 'impayee' || e.statut === 'partielle' || e.statut === 'en_recouvrement') && new Date(e.date_limite) < aujourdHui);
   // Échéances en attente dont l'échéance tombe dans le mois en cours : pas encore en retard,
   // mais le locataire doit pouvoir les voir et les payer sans attendre qu'elles deviennent impayées.
   const echeancesEnAttenteMoisEnCours = echeances.filter(e => {
