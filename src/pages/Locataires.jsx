@@ -75,6 +75,10 @@ export default function Locataires() {
   const [contratDetail, setContratDetail] = useState(null);
   const [pdfApercuUrl, setPdfApercuUrl] = useState(null);
   const [modalDemande, setModalDemande] = useState(null);
+  const [modalPieceIdentite, setModalPieceIdentite] = useState(null);
+  const [valeurPieceIdentite, setValeurPieceIdentite] = useState('');
+  const [envoiPieceIdentite, setEnvoiPieceIdentite] = useState(false);
+  const [erreurPieceIdentite, setErreurPieceIdentite] = useState('');
   const [chargement, setChargement] = useState(true);
   const [envoi, setEnvoi] = useState(false);
   const [erreur, setErreur] = useState('');
@@ -224,6 +228,26 @@ export default function Locataires() {
       chargerDonnees();
     } catch (e) {
       alert(e.response?.data?.message || 'Erreur lors de la suppression');
+    }
+  }
+
+  function ouvrirModalPieceIdentite(locataire) {
+    setModalPieceIdentite(locataire);
+    setValeurPieceIdentite(locataire.numero_piece_identite || '');
+    setErreurPieceIdentite('');
+  }
+
+  async function enregistrerPieceIdentite() {
+    setEnvoiPieceIdentite(true);
+    setErreurPieceIdentite('');
+    try {
+      await api.put(`/locataires/${modalPieceIdentite.id}`, { numero_piece_identite: valeurPieceIdentite.trim() || null });
+      setModalPieceIdentite(null);
+      chargerDonnees();
+    } catch (e) {
+      setErreurPieceIdentite(e.response?.data?.message || 'Erreur lors de la mise à jour');
+    } finally {
+      setEnvoiPieceIdentite(false);
     }
   }
 
@@ -681,10 +705,15 @@ export default function Locataires() {
                     <div>
                       <div className="text-[15px] font-bold text-slate-900">{l.nom}</div>
                       <div className="text-[13px] text-slate-400">{l.telephone}{l.email ? ` · ${l.email}` : ''}</div>
-                      {l.numero_piece_identite && <div className="text-xs text-slate-400">🪪 {l.numero_piece_identite}</div>}
+                      {l.numero_piece_identite ? (
+                        <div className="text-xs text-slate-400">🪪 {l.numero_piece_identite}</div>
+                      ) : (
+                        <div className="text-xs italic text-accent-600">🪪 Pièce d'identité non renseignée</div>
+                      )}
                     </div>
                   </div>
                   <div className="flex flex-wrap items-center justify-end gap-2.5">
+                    <button className="rounded-lg border border-slate-200 px-3 py-2 text-[13px] font-semibold text-slate-600 hover:bg-slate-50" onClick={() => ouvrirModalPieceIdentite(l)}>✏️ Modifier</button>
                     {contratsActifsL.length > 0 ? (
                       contratsActifsL.map(c => (
                         c.statut === 'en_attente_signature' ? (
@@ -717,6 +746,34 @@ export default function Locataires() {
               <button className={btnFermer} onClick={fermerApercuPDF}>✕ Fermer</button>
             </div>
             <iframe src={pdfApercuUrl} title="Aperçu du contrat" className="flex-1" />
+          </div>
+        </div>
+      )}
+
+      {modalPieceIdentite && (
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-slate-900/50 p-5 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-2xl bg-white p-7 shadow-2xl">
+            <h3 className="mb-1 text-xl font-bold text-slate-900">Modifier la pièce d'identité</h3>
+            <p className="mb-4 text-sm text-slate-400">{modalPieceIdentite.nom}</p>
+
+            <label className={champLabel}>Numéro de pièce d'identité</label>
+            <input
+              className={champInput}
+              type="text"
+              value={valeurPieceIdentite}
+              onChange={e => setValeurPieceIdentite(e.target.value)}
+              placeholder="Ex : 0123456789"
+              autoFocus
+            />
+
+            {erreurPieceIdentite && <p className="mt-3 text-sm text-red-600">{erreurPieceIdentite}</p>}
+
+            <div className="mt-5 flex gap-3">
+              <button className="flex-1 rounded-xl border border-slate-200 px-5 py-3 text-sm text-slate-600 hover:bg-slate-50" onClick={() => setModalPieceIdentite(null)}>Annuler</button>
+              <button className="flex-1 rounded-xl bg-brand-600 py-3 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-60" onClick={enregistrerPieceIdentite} disabled={envoiPieceIdentite}>
+                {envoiPieceIdentite ? 'Enregistrement...' : 'Enregistrer'}
+              </button>
+            </div>
           </div>
         </div>
       )}
