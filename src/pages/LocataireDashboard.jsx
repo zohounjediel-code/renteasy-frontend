@@ -301,8 +301,8 @@ export default function LocataireDashboard() {
             </>
           )}
           <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/profil')}>👤 Mon profil</button>
-          <ClocheNotifications />
           <button className="whitespace-nowrap rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
+          <ClocheNotifications />
         </div>
       </nav>
 

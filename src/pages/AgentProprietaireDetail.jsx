@@ -541,8 +541,8 @@ export default function AgentProprietaireDetail() {
         </div>
         <div className="flex flex-wrap items-center gap-1.5">
           <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/agent/proprietaires')}>← Mes propriétaires</button>
-          <ClocheNotifications />
           <button className="whitespace-nowrap rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
+          <ClocheNotifications />
         </div>
       </nav>
 

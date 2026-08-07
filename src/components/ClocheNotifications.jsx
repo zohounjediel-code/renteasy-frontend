@@ -5,7 +5,9 @@ export default function ClocheNotifications() {
   const [notifications, setNotifications] = useState([]);
   const [nonLues, setNonLues] = useState(0);
   const [ouvert, setOuvert] = useState(false);
+  const [position, setPosition] = useState(null);
   const ref = useRef(null);
+  const boutonRef = useRef(null);
 
   useEffect(() => {
     chargerNotifications();
@@ -20,6 +22,25 @@ export default function ClocheNotifications() {
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
+
+  // La cloche peut se retrouver n'importe où après le retour à la ligne de la nav sur mobile :
+  // le panneau est donc positionné en `fixed` d'après la position réelle du bouton à l'ouverture,
+  // plutôt qu'ancré en absolu à son coin (qui déborderait de l'écran selon l'endroit où il tombe).
+  function ouvrirPanneau() {
+    if (!ouvert && boutonRef.current) {
+      const rect = boutonRef.current.getBoundingClientRect();
+      const largeur = Math.min(360, window.innerWidth - 32);
+      // Aligne le panneau sur le bord droit du bouton, mais le ramène dans l'écran
+      // (marge mini 16px de chaque côté) si le bouton est loin du bord droit — ce qui
+      // arrive souvent sur mobile une fois que la nav est passée à la ligne.
+      let right = window.innerWidth - rect.right;
+      const left = window.innerWidth - right - largeur;
+      if (left < 16) right = window.innerWidth - largeur - 16;
+      right = Math.max(16, right);
+      setPosition({ top: rect.bottom + 8, right, width: largeur });
+    }
+    setOuvert(o => !o);
+  }
 
   async function chargerNotifications() {
     try {
@@ -51,15 +72,18 @@ export default function ClocheNotifications() {
 
   return (
     <div className="relative" ref={ref}>
-      <button className="relative rounded-lg px-2 py-1.5 text-lg text-slate-500 hover:bg-slate-100" onClick={() => setOuvert(!ouvert)}>
+      <button ref={boutonRef} className="relative rounded-lg px-2 py-1.5 text-lg text-slate-500 hover:bg-slate-100" onClick={ouvrirPanneau}>
         🔔
         {nonLues > 0 && (
           <span className="absolute -right-0.5 -top-0.5 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white">{nonLues > 9 ? '9+' : nonLues}</span>
         )}
       </button>
 
-      {ouvert && (
-        <div className="absolute right-0 top-10 z-[1000] w-[360px] overflow-hidden rounded-2xl bg-white shadow-2xl">
+      {ouvert && position && (
+        <div
+          className="fixed z-[1000] overflow-hidden rounded-2xl bg-white shadow-2xl"
+          style={{ top: position.top, right: position.right, width: position.width }}
+        >
           <div className="flex items-center justify-between border-b border-slate-100 p-4">
             <span className="text-[15px] font-bold text-slate-900">Notifications</span>
             {nonLues > 0 && (
