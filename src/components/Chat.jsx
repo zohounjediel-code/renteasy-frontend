@@ -7,8 +7,9 @@ export default function Chat({ interlocuteur, onFermer, contexte = 'proprietaire
   const [contenu, setContenu] = useState('');
   const [envoi, setEnvoi] = useState(false);
   const { utilisateur } = useAuth();
-  const bottomRef = useRef(null);
+  const conteneurRef = useRef(null);
   const intervalRef = useRef(null);
+  const dernierMessageIdRef = useRef(null);
 
   useEffect(() => {
     if (!interlocuteur?.id) return;
@@ -19,7 +20,14 @@ export default function Chat({ interlocuteur, onFermer, contexte = 'proprietaire
   }, [interlocuteur?.id, contexte]);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // Le polling recrée le tableau de messages toutes les 5s même sans nouveau message : ne
+    // faire défiler que quand un message est réellement arrivé, et seulement à l'intérieur de
+    // la zone de chat (jamais toute la page, qui "sautait" toute seule pendant la lecture).
+    const dernierId = messages.length > 0 ? messages[messages.length - 1].id : null;
+    if (dernierId !== null && dernierId !== dernierMessageIdRef.current) {
+      dernierMessageIdRef.current = dernierId;
+      conteneurRef.current?.scrollTo({ top: conteneurRef.current.scrollHeight, behavior: 'smooth' });
+    }
   }, [messages]);
 
   async function chargerMessages() {
@@ -73,7 +81,7 @@ export default function Chat({ interlocuteur, onFermer, contexte = 'proprietaire
       </div>
 
       {/* Messages */}
-      <div className="flex flex-1 flex-col gap-2 overflow-y-auto p-4">
+      <div ref={conteneurRef} className="flex flex-1 flex-col gap-2 overflow-y-auto p-4">
         {messages.length === 0 && (
           <div className="m-auto text-center text-slate-400">
             <p>💬</p>
@@ -103,7 +111,6 @@ export default function Chat({ interlocuteur, onFermer, contexte = 'proprietaire
             </div>
           );
         })}
-        <div ref={bottomRef} />
       </div>
 
       {/* Saisie */}
