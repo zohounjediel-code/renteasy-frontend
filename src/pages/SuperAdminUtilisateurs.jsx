@@ -157,17 +157,17 @@ export default function SuperAdminUtilisateurs() {
           <span className="rounded-full bg-purple-600 px-2.5 py-0.5 text-[10px] font-extrabold tracking-wide text-white">{estSuperAdmin ? 'SUPER ADMIN' : 'ADMIN'}</span>
         </div>
         <div className="flex flex-wrap items-center gap-1.5">
-          <button className="rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate(estSuperAdmin ? '/superadmin/dashboard' : '/admin/dashboard')}>Dashboard</button>
-          {!estSuperAdmin && <button className="rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/admin/agents')}>Agents</button>}
-          <button className="rounded-lg border border-brand-600 bg-brand-50 px-3.5 py-1.5 text-[13px] font-semibold text-brand-700">Utilisateurs</button>
-          {estSuperAdmin && <button className="rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/contrats')}>Contrats</button>}
-          {estSuperAdmin && <button className="rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/journal')}>Journal</button>}
-          {estSuperAdmin && <button className="rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/parametres')}>Paramètres</button>}
-          {estSuperAdmin && <button className="rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/moderation')}>Modération</button>}
-          {estSuperAdmin && <button className="rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/rapport-financier')}>Rapport financier</button>}
-          {estSuperAdmin && <button className="rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/rappels')}>Rappels</button>}
-          {estSuperAdmin && <button className="rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/erreurs')}>Erreurs</button>}
-          <button className="rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
+          <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate(estSuperAdmin ? '/superadmin/dashboard' : '/admin/dashboard')}>Dashboard</button>
+          {!estSuperAdmin && <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/admin/agents')}>Agents</button>}
+          <button className="whitespace-nowrap rounded-lg border border-brand-600 bg-brand-50 px-3.5 py-1.5 text-[13px] font-semibold text-brand-700">Utilisateurs</button>
+          {estSuperAdmin && <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/contrats')}>Contrats</button>}
+          {estSuperAdmin && <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/journal')}>Journal</button>}
+          {estSuperAdmin && <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/parametres')}>Paramètres</button>}
+          {estSuperAdmin && <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/moderation')}>Modération</button>}
+          {estSuperAdmin && <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/rapport-financier')}>Rapport financier</button>}
+          {estSuperAdmin && <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/rappels')}>Rappels</button>}
+          {estSuperAdmin && <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/erreurs')}>Erreurs</button>}
+          <button className="whitespace-nowrap rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
         </div>
       </nav>
 
@@ -209,6 +209,8 @@ export default function SuperAdminUtilisateurs() {
         {chargement ? (
           <p className="py-10 text-center text-slate-400">Chargement...</p>
         ) : (
+          <>
+          <p className="mb-1.5 text-[11px] text-slate-400 sm:hidden">↔ Faites glisser pour voir toutes les colonnes</p>
           <div className="overflow-x-auto rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 shadow-card">
             <div className="grid min-w-[700px] grid-cols-[1.5fr_2fr_1.5fr_1.2fr_1fr_1.5fr] bg-purple-50 px-5 py-3.5 text-[11px] font-bold uppercase tracking-wide text-purple-700">
               <span>Utilisateur</span>
@@ -274,6 +276,7 @@ export default function SuperAdminUtilisateurs() {
               </div>
             ))}
           </div>
+          </>
         )}
       </div>
 

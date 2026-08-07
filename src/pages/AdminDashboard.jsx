@@ -80,16 +80,16 @@ export default function AdminDashboard() {
           🛡️ <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span>
           <span className="rounded-full bg-red-500 px-2.5 py-0.5 text-[10px] font-extrabold tracking-wide text-white">Admin</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <button className="rounded-lg border border-brand-600 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700">Dashboard</button>
-          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/admin/agents')}>Agents</button>
-          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/superadmin/utilisateurs')}>Utilisateurs</button>
-          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/agent/demandes')}>Demandes</button>
-          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/superadmin/rapport-regional')}>📊 Rapport régional</button>
+        <div className="flex flex-wrap items-center gap-1.5">
+          <button className="whitespace-nowrap rounded-lg border border-brand-600 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700">Dashboard</button>
+          <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/admin/agents')}>Agents</button>
+          <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/superadmin/utilisateurs')}>Utilisateurs</button>
+          <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/agent/demandes')}>Demandes</button>
+          <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/superadmin/rapport-regional')}>📊 Rapport régional</button>
           <button className="rounded-lg bg-accent-500 px-3 py-1.5 text-sm font-semibold text-white hover:bg-accent-600" onClick={() => { setModalCreerAgent(true); setErreur(''); setSucces(''); }}>+ Créer agent</button>
-          <button className="rounded-lg border border-brand-200 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700 hover:bg-brand-100" onClick={() => navigate('/profil')}>👤 Mon profil</button>
+          <button className="whitespace-nowrap rounded-lg border border-brand-200 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700 hover:bg-brand-100" onClick={() => navigate('/profil')}>👤 Mon profil</button>
           <ClocheNotifications />
-          <button className="rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
+          <button className="whitespace-nowrap rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
         </div>
       </nav>
 
@@ -125,6 +125,8 @@ export default function AdminDashboard() {
             <button className="rounded-xl bg-accent-500 px-5 py-2.5 text-sm font-bold text-white hover:bg-accent-600" onClick={() => setModalCreerAgent(true)}>+ Créer le premier agent</button>
           </div>
         ) : (
+          <>
+          <p className="mb-1.5 text-[11px] text-slate-400 sm:hidden">↔ Faites glisser pour voir toutes les colonnes</p>
           <div className="overflow-x-auto rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 shadow-card">
             <div className="grid min-w-[760px] grid-cols-[1.6fr_1.6fr_0.9fr_0.9fr_1.3fr_1.1fr_0.9fr] bg-accent-50 px-5 py-3 text-[11px] font-bold uppercase tracking-wide text-accent-700">
               <span>Agent</span>
@@ -160,12 +162,14 @@ export default function AdminDashboard() {
               </div>
             ))}
           </div>
+          </>
         )}
 
         {/* Dernières demandes */}
         {demandes.length > 0 && (
           <>
             <p className="mb-3 mt-7 text-xs font-bold uppercase tracking-wide text-accent-600">📋 Dernières demandes de contrats</p>
+            <p className="mb-1.5 text-[11px] text-slate-400 sm:hidden">↔ Faites glisser pour voir toutes les colonnes</p>
             <div className="overflow-x-auto rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 shadow-card">
               <div className="grid min-w-[600px] grid-cols-[2fr_1.5fr_1.5fr_1fr_1fr] bg-accent-50 px-5 py-3 text-[11px] font-bold uppercase tracking-wide text-accent-700">
                 <span>Propriétaire</span>

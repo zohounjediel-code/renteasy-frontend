@@ -525,7 +525,7 @@ export default function AgentProprietaireDetail() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-brand-50">
         <p className="text-red-600">{erreur}</p>
-        <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/agent/proprietaires')}>← Retour à mes propriétaires</button>
+        <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/agent/proprietaires')}>← Retour à mes propriétaires</button>
       </div>
     );
   }
@@ -539,10 +539,10 @@ export default function AgentProprietaireDetail() {
           ⚡ <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span>
           <span className="rounded-full bg-accent-500 px-2.5 py-0.5 text-[11px] font-extrabold text-white">Agent · Lecture seule</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/agent/proprietaires')}>← Mes propriétaires</button>
+        <div className="flex flex-wrap items-center gap-1.5">
+          <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/agent/proprietaires')}>← Mes propriétaires</button>
           <ClocheNotifications />
-          <button className="rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
+          <button className="whitespace-nowrap rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
         </div>
       </nav>
 

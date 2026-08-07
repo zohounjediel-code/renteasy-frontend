@@ -73,20 +73,20 @@ export default function SuperAdminDashboard() {
         <div className="flex flex-wrap items-center gap-1.5">
           <button className={`rounded-lg border px-3.5 py-1.5 text-[13px] ${onglet === 'overview' ? 'border-brand-600 bg-brand-50 text-brand-700' : 'border-slate-200 text-slate-500'}`} onClick={() => setOnglet('overview')}>Vue globale</button>
           <button className={`rounded-lg border px-3.5 py-1.5 text-[13px] ${onglet === 'agents' ? 'border-brand-600 bg-brand-50 text-brand-700' : 'border-slate-200 text-slate-500'}`} onClick={() => setOnglet('agents')}>Agents</button>
-          <button className="rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/utilisateurs')}>Utilisateurs</button>
-          <button className="rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/contrats')}>Contrats</button>
-          <button className="rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/biens')}>Biens</button>
-          <button className="rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/locataires')}>Locataires</button>
-          <button className="rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/journal')}>Journal</button>
-          <button className="rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/parametres')}>Paramètres</button>
-          <button className="rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/moderation')}>Modération</button>
-          <button className="rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/rapport-financier')}>Rapport financier</button>
-          <button className="rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/rappels')}>Rappels</button>
-          <button className="rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/erreurs')}>Erreurs</button>
-          <button className="rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/rapport-regional')}>📊 Rapport régional</button>
-          <button className="rounded-lg border border-brand-200 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700 hover:bg-brand-100" onClick={() => navigate('/profil')}>👤 Mon profil</button>
+          <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/utilisateurs')}>Utilisateurs</button>
+          <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/contrats')}>Contrats</button>
+          <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/biens')}>Biens</button>
+          <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/locataires')}>Locataires</button>
+          <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/journal')}>Journal</button>
+          <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/parametres')}>Paramètres</button>
+          <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/moderation')}>Modération</button>
+          <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/rapport-financier')}>Rapport financier</button>
+          <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/rappels')}>Rappels</button>
+          <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/erreurs')}>Erreurs</button>
+          <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50" onClick={() => navigate('/superadmin/rapport-regional')}>📊 Rapport régional</button>
+          <button className="whitespace-nowrap rounded-lg border border-brand-200 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700 hover:bg-brand-100" onClick={() => navigate('/profil')}>👤 Mon profil</button>
           <ClocheNotifications />
-          <button className="rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
+          <button className="whitespace-nowrap rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
         </div>
       </nav>
 
@@ -149,6 +149,8 @@ export default function SuperAdminDashboard() {
             {agents.length === 0 ? (
               <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-10 text-center text-slate-400 shadow-card">Aucun agent enregistré</div>
             ) : (
+              <>
+              <p className="mb-1.5 text-[11px] text-slate-400 sm:hidden">↔ Faites glisser pour voir toutes les colonnes</p>
               <div className="overflow-x-auto rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 shadow-card">
                 <div className="grid min-w-[760px] grid-cols-[1.3fr_1.8fr_0.9fr_1.4fr_1.4fr_1.1fr_0.9fr] bg-purple-50 px-5 py-3.5 text-[11px] font-bold uppercase tracking-wide text-purple-700">
                   <span>Agent</span>
@@ -188,6 +190,7 @@ export default function SuperAdminDashboard() {
                   </div>
                 ))}
               </div>
+              </>
             )}
           </>
         )}

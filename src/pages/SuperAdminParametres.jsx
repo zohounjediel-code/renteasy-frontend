@@ -33,8 +33,8 @@ const CHAMPS_OPERATEUR = {
 
 const NOMS_OPERATEUR = { mtn: '📱 MTN Mobile Money', moov: '📱 Moov Money', celtiis: '📱 Celtiis Pay', sms: '✉️ SMS (Africa\'s Talking)' };
 
-const navBtn = 'rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50';
-const navBtnActif = 'rounded-lg border border-brand-600 bg-brand-50 px-3.5 py-1.5 text-[13px] font-semibold text-brand-700';
+const navBtn = 'whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50';
+const navBtnActif = 'whitespace-nowrap rounded-lg border border-brand-600 bg-brand-50 px-3.5 py-1.5 text-[13px] font-semibold text-brand-700';
 const champInput = 'w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30';
 
 export default function SuperAdminParametres() {
@@ -134,7 +134,7 @@ export default function SuperAdminParametres() {
           <button className={navBtn} onClick={() => navigate('/superadmin/rapport-financier')}>Rapport financier</button>
           <button className={navBtn} onClick={() => navigate('/superadmin/rappels')}>Rappels</button>
           <button className={navBtn} onClick={() => navigate('/superadmin/erreurs')}>Erreurs</button>
-          <button className="rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
+          <button className="whitespace-nowrap rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
         </div>
       </nav>
 

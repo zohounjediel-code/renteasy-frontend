@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
-const navBtn = 'rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50';
-const navBtnActif = 'rounded-lg border border-brand-600 bg-brand-50 px-3.5 py-1.5 text-[13px] font-semibold text-brand-700';
+const navBtn = 'whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50';
+const navBtnActif = 'whitespace-nowrap rounded-lg border border-brand-600 bg-brand-50 px-3.5 py-1.5 text-[13px] font-semibold text-brand-700';
 
 export default function SuperAdminContrats() {
   const [contrats, setContrats] = useState([]);
@@ -69,7 +69,7 @@ export default function SuperAdminContrats() {
           <button className={navBtn} onClick={() => navigate('/superadmin/rappels')}>Rappels</button>
           <button className={navBtn} onClick={() => navigate('/superadmin/erreurs')}>Erreurs</button>
           <button className="rounded-lg bg-accent-500 px-3.5 py-1.5 text-[13px] font-semibold text-white hover:bg-accent-600" onClick={() => navigate('/superadmin/utilisateurs?action=creer-admin')}>+ Créer compte</button>
-          <button className="rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
+          <button className="whitespace-nowrap rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
         </div>
       </nav>
 
@@ -105,6 +105,8 @@ export default function SuperAdminContrats() {
         ) : contratsFiltres.length === 0 ? (
           <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 py-16 text-center text-slate-400 shadow-card">Aucun contrat trouvé</div>
         ) : (
+          <>
+          <p className="mb-1.5 text-[11px] text-slate-400 sm:hidden">↔ Faites glisser pour voir toutes les colonnes</p>
           <div className="overflow-x-auto rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 shadow-card">
             <div className="grid min-w-[700px] grid-cols-[2fr_1.5fr_1.5fr_1.2fr_1fr_1fr] bg-purple-50 px-5 py-3.5 text-[11px] font-bold uppercase tracking-wide text-purple-700">
               <span>Bien</span>
@@ -141,6 +143,7 @@ export default function SuperAdminContrats() {
               );
             })}
           </div>
+          </>
         )}
       </div>
     </div>

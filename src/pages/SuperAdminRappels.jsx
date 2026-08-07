@@ -10,8 +10,8 @@ const LABELS_TYPE_RAPPEL = {
   retard_7j: { label: '🚨 Retard (J+7)', cls: 'text-red-700 bg-red-100' },
 };
 
-const navBtn = 'rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50';
-const navBtnActif = 'rounded-lg border border-brand-600 bg-brand-50 px-3.5 py-1.5 text-[13px] font-semibold text-brand-700';
+const navBtn = 'whitespace-nowrap rounded-lg border border-slate-200 px-3.5 py-1.5 text-[13px] text-slate-500 hover:bg-slate-50';
+const navBtnActif = 'whitespace-nowrap rounded-lg border border-brand-600 bg-brand-50 px-3.5 py-1.5 text-[13px] font-semibold text-brand-700';
 
 export default function SuperAdminRappels() {
   const [rappels, setRappels] = useState([]);
@@ -73,7 +73,7 @@ export default function SuperAdminRappels() {
           <button className={navBtn} onClick={() => navigate('/superadmin/rapport-financier')}>Rapport financier</button>
           <button className={navBtnActif}>Rappels</button>
           <button className={navBtn} onClick={() => navigate('/superadmin/erreurs')}>Erreurs</button>
-          <button className="rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
+          <button className="whitespace-nowrap rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
         </div>
       </nav>
 
@@ -117,6 +117,8 @@ export default function SuperAdminRappels() {
         ) : rappelsFiltres.length === 0 ? (
           <div className="rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 py-16 text-center text-slate-400 shadow-card">Aucun rappel envoyé pour l'instant</div>
         ) : (
+          <>
+          <p className="mb-1.5 text-[11px] text-slate-400 sm:hidden">↔ Faites glisser pour voir toutes les colonnes</p>
           <div className="overflow-x-auto rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 shadow-card">
             <div className="grid min-w-[700px] grid-cols-[1.1fr_1.3fr_1.6fr_1.1fr_1.1fr_1.3fr] bg-purple-50 px-5 py-3.5 text-[11px] font-bold uppercase tracking-wide text-purple-700">
               <span>Envoyé le</span>
@@ -148,6 +150,7 @@ export default function SuperAdminRappels() {
               );
             })}
           </div>
+          </>
         )}
       </div>
     </div>

@@ -164,10 +164,10 @@ export default function Profil() {
         <div className="cursor-pointer text-lg text-slate-900" onClick={retourDashboard}>
           🏠 <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={retourDashboard}>← Dashboard</button>
+        <div className="flex flex-wrap items-center gap-1.5">
+          <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={retourDashboard}>← Dashboard</button>
           <ClocheNotifications />
-          <button className="rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
+          <button className="whitespace-nowrap rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
         </div>
       </nav>
 
