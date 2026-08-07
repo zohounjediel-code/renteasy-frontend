@@ -55,7 +55,7 @@ const card = 'mb-6 rounded-2xl border border-brand-100 bg-gradient-to-b from-whi
 const cardTitre = 'mb-4 text-lg font-bold text-slate-900';
 const grille2 = 'mb-4 grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4';
 const badgeAttente = 'rounded-full bg-accent-50 px-2.5 py-1 text-xs font-semibold text-accent-700';
-const bloc = 'rounded-xl bg-slate-50 p-3.5';
+const bloc = 'rounded-xl border border-slate-200 bg-white p-3.5 shadow-sm';
 const blocTitre = 'mb-2 text-[13px] font-bold text-brand-700';
 
 const STATUT_ECHEANCE = {
@@ -73,6 +73,7 @@ export default function Locataires() {
   const [afficherFormLocataire, setAfficherFormLocataire] = useState(false);
   const [afficherFormContrat, setAfficherFormContrat] = useState(false);
   const [contratDetail, setContratDetail] = useState(null);
+  const [pdfApercuUrl, setPdfApercuUrl] = useState(null);
   const [modalDemande, setModalDemande] = useState(null);
   const [chargement, setChargement] = useState(true);
   const [envoi, setEnvoi] = useState(false);
@@ -294,6 +295,24 @@ export default function Locataires() {
       const r = await api.get(`/contrats/${contrat.id}`);
       setContratDetail(r.data);
     } catch (e) { console.error(e); }
+  }
+
+  // Le PDF est protégé par JWT (pas de cookie), donc un <a href> ou window.open() direct vers
+  // l'API ne fonctionnerait pas : on le récupère en blob via axios (authentifié). Affiché dans
+  // un lecteur intégré (iframe) plutôt que dans un nouvel onglet : Chrome bloque la navigation
+  // d'un onglet fraîchement ouvert vers une blob: URL créée ailleurs (restriction de sécurité,
+  // même en synchrone) — l'iframe reste dans le même document, donc pas concerné.
+  async function voirPDF(contratId) {
+    try {
+      const r = await api.get(`/contrats/${contratId}/pdf`, { responseType: 'blob' });
+      const url = window.URL.createObjectURL(new Blob([r.data], { type: 'application/pdf' }));
+      setPdfApercuUrl(url);
+    } catch (e) { console.error(e); }
+  }
+
+  function fermerApercuPDF() {
+    if (pdfApercuUrl) window.URL.revokeObjectURL(pdfApercuUrl);
+    setPdfApercuUrl(null);
   }
 
   async function telechargerPDF(contratId) {
@@ -580,6 +599,7 @@ export default function Locataires() {
             <div className="mb-5 flex flex-wrap items-center justify-between gap-2">
               <h3 className={`${cardTitre} mb-0`}>Contrat — {contratDetail.locataire_nom}</h3>
               <div className="flex flex-wrap gap-2">
+                <button className="rounded-lg bg-brand-600 px-3.5 py-2 text-xs font-semibold text-white hover:bg-brand-700" onClick={() => voirPDF(contratDetail.id)}>👁️ Voir le contrat</button>
                 <button className="rounded-lg bg-brand-700 px-3.5 py-2 text-xs font-semibold text-white hover:bg-brand-800" onClick={() => telechargerPDF(contratDetail.id)}>📄 Télécharger PDF</button>
                 <button className="rounded-lg bg-accent-500 px-3.5 py-2 text-xs font-semibold text-white hover:bg-accent-600" onClick={() => setModalDemande(contratDetail)}>✏️ Modifier / Résilier</button>
                 <button className={btnFermer} onClick={() => setContratDetail(null)}>✕</button>
@@ -688,6 +708,18 @@ export default function Locataires() {
           </div>
         )}
       </div>
+
+      {pdfApercuUrl && (
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-slate-900/70 p-5 backdrop-blur-sm">
+          <div className="flex h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-100 px-5 py-3.5">
+              <span className="text-sm font-bold text-slate-900">📄 Aperçu du contrat</span>
+              <button className={btnFermer} onClick={fermerApercuPDF}>✕ Fermer</button>
+            </div>
+            <iframe src={pdfApercuUrl} title="Aperçu du contrat" className="flex-1" />
+          </div>
+        </div>
+      )}
 
       {modalDemande && (
         <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-slate-900/50 p-5 backdrop-blur-sm">
