@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import ClocheNotifications from '../components/ClocheNotifications';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -12,11 +12,23 @@ const STATUT_COULEURS = {
   en_recouvrement: { cls: 'bg-purple-50 text-purple-700', label: '🔄 En recouvrement' },
 };
 
+const OPERATEURS_MOBILE_MONEY = [
+  { value: 'mtn_momo', label: '📱 MTN Mobile Money' },
+  { value: 'moov_money', label: '📱 Moov Money' },
+  { value: 'celtiis_pay', label: '📱 Celtiis Pay' },
+];
+
 export default function Paiements() {
   const [echeances, setEcheances] = useState([]);
   const [contrats, setContrats] = useState([]);
   const [filtre, setFiltre] = useState('tous');
   const [chargement, setChargement] = useState(true);
+  const [modalMobileMoney, setModalMobileMoney] = useState(null); // échéance ciblée
+  const [methodeMobileMoney, setMethodeMobileMoney] = useState('mtn_momo');
+  const [telephoneMobileMoney, setTelephoneMobileMoney] = useState('');
+  const [statutDemande, setStatutDemande] = useState(null); // null | 'envoi' | 'attente' | 'echec'
+  const [erreurMobileMoney, setErreurMobileMoney] = useState('');
+  const [referenceEnCours, setReferenceEnCours] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
   const { utilisateur } = useAuth();
@@ -37,6 +49,89 @@ export default function Paiements() {
   }
 
   useEffect(() => { chargerDonnees(); }, [proprietaireIdConsulte]);
+
+  const intervalPollingRef = useRef(null);
+  const tentativesPollingRef = useRef(0);
+
+  // Le locataire confirme sur son téléphone, hors de l'app — on ne sait donc pas quand ça arrive
+  // et on interroge le statut périodiquement le temps que la fenêtre reste ouverte. Le job
+  // périodique côté serveur (verifierPaiementsMobileEnCoursPeriodique) prend le relais si la
+  // personne ferme la fenêtre avant confirmation, donc pas besoin de polling indéfini ici.
+  useEffect(() => {
+    if (!referenceEnCours) return;
+    tentativesPollingRef.current = 0;
+
+    intervalPollingRef.current = setInterval(async () => {
+      tentativesPollingRef.current += 1;
+      try {
+        const r = await api.get(`/mobilemoney/statut/${referenceEnCours}`, { params: { methode: methodeMobileMoney } });
+        if (r.data.statut === 'SUCCESSFUL') {
+          clearInterval(intervalPollingRef.current);
+          setReferenceEnCours(null);
+          setModalMobileMoney(null);
+          setStatutDemande(null);
+          chargerDonnees();
+        } else if (r.data.statut === 'FAILED') {
+          clearInterval(intervalPollingRef.current);
+          setReferenceEnCours(null);
+          setStatutDemande('echec');
+          setErreurMobileMoney('Le paiement a été refusé ou annulé côté opérateur.');
+        } else if (tentativesPollingRef.current >= 40) { // ~2 minutes à 3s d'intervalle
+          clearInterval(intervalPollingRef.current);
+          setReferenceEnCours(null);
+          setStatutDemande('echec');
+          setErreurMobileMoney("Toujours en attente de confirmation. Si le locataire valide plus tard, l'échéance se mettra à jour automatiquement.");
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }, 3000);
+
+    return () => clearInterval(intervalPollingRef.current);
+  }, [referenceEnCours, methodeMobileMoney]);
+
+  function ouvrirModalMobileMoney(echeance) {
+    setModalMobileMoney(echeance);
+    setMethodeMobileMoney('mtn_momo');
+    setTelephoneMobileMoney(echeance.locataire_telephone || '');
+    setStatutDemande(null);
+    setErreurMobileMoney('');
+    setReferenceEnCours(null);
+  }
+
+  function fermerModalMobileMoney() {
+    clearInterval(intervalPollingRef.current);
+    setModalMobileMoney(null);
+    setReferenceEnCours(null);
+  }
+
+  async function envoyerDemandeMobileMoney() {
+    if (!telephoneMobileMoney.trim()) {
+      setErreurMobileMoney('Le numéro de téléphone du locataire est requis');
+      return;
+    }
+    setStatutDemande('envoi');
+    setErreurMobileMoney('');
+    try {
+      // Timeout dédié : l'appel à l'opérateur (MTN/Moov/Celtiis) peut rester bloqué en silence
+      // côté serveur si son API ne répond pas — sans ça, le propriétaire resterait indéfiniment
+      // sur "Envoi..." sans le moindre message d'erreur.
+      const r = await api.post('/mobilemoney/initier', {
+        echeance_id: modalMobileMoney.id,
+        methode: methodeMobileMoney,
+        telephone_payeur: telephoneMobileMoney.trim(),
+      }, { timeout: 25000 });
+      setReferenceEnCours(r.data.reference_transaction);
+      setStatutDemande('attente');
+    } catch (e) {
+      setStatutDemande('echec');
+      setErreurMobileMoney(
+        e.code === 'ECONNABORTED'
+          ? "L'opérateur met du temps à répondre. Réessayez dans quelques instants."
+          : e.response?.data?.message || "Erreur lors de l'envoi de la demande"
+      );
+    }
+  }
 
   async function chargerDonnees() {
     try {
@@ -148,17 +243,18 @@ export default function Paiements() {
           <>
           <p className="mb-1.5 text-[11px] text-slate-400 sm:hidden">↔ Faites glisser pour voir toutes les colonnes</p>
           <div className="overflow-x-auto rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 shadow-card">
-            <div className="grid min-w-[640px] grid-cols-[1.2fr_1.5fr_2fr_1.3fr_1.5fr] bg-slate-50 px-5 py-3 text-xs font-bold uppercase tracking-wide text-slate-400">
+            <div className="grid min-w-[760px] grid-cols-[1.2fr_1.5fr_2fr_1.3fr_1.5fr_1.6fr] bg-slate-50 px-5 py-3 text-xs font-bold uppercase tracking-wide text-slate-400">
               <span>Période</span>
               <span>Locataire</span>
               <span>Bien</span>
               <span>Montant</span>
               <span>Statut</span>
+              <span>Action</span>
             </div>
             {echeancesFiltrees.map(e => {
               const statutInfo = STATUT_COULEURS[e.statut] || { cls: 'bg-slate-100 text-slate-500', label: e.statut };
               return (
-                <div key={e.id} className="grid min-w-[640px] grid-cols-[1.2fr_1.5fr_2fr_1.3fr_1.5fr] items-center border-t border-slate-50 px-5 py-3.5 text-sm">
+                <div key={e.id} className="grid min-w-[760px] grid-cols-[1.2fr_1.5fr_2fr_1.3fr_1.5fr_1.6fr] items-center border-t border-slate-50 px-5 py-3.5 text-sm">
                   <span className="font-semibold capitalize text-slate-800">{formaterDate(e.mois_concerne)}</span>
                   <span className="text-slate-700">{e.locataire_nom}</span>
                   <span className="text-[13px] text-slate-400">{e.adresse}</span>
@@ -171,6 +267,13 @@ export default function Paiements() {
                       {statutInfo.label}
                     </span>
                   </span>
+                  <span>
+                    {e.statut !== 'payee' && (
+                      <button className="whitespace-nowrap rounded-lg border border-brand-200 bg-brand-50 px-3 py-1.5 text-xs font-semibold text-brand-700 hover:bg-brand-100" onClick={() => ouvrirModalMobileMoney(e)}>
+                        📱 Mobile Money
+                      </button>
+                    )}
+                  </span>
                 </div>
               );
             })}
@@ -178,6 +281,55 @@ export default function Paiements() {
           </>
         )}
       </div>
+
+      {modalMobileMoney && (
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-slate-900/50 p-5 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-2xl bg-white p-7 shadow-2xl">
+            <h3 className="mb-1 text-xl font-bold text-slate-900">📱 Demander un paiement Mobile Money</h3>
+            <p className="mb-4 text-sm text-slate-400">
+              {modalMobileMoney.locataire_nom} · {formaterMontant(modalMobileMoney.statut === 'partielle' ? modalMobileMoney.montant_restant : modalMobileMoney.montant_du)}
+            </p>
+
+            {statutDemande === 'attente' ? (
+              <div className="flex flex-col items-center gap-3 rounded-xl bg-brand-50 px-5 py-8 text-center">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-brand-200 border-t-brand-600" />
+                <p className="text-sm font-semibold text-brand-800">Demande envoyée à {telephoneMobileMoney}</p>
+                <p className="text-xs text-slate-500">Le locataire doit valider sur son téléphone. Cette fenêtre se met à jour automatiquement.</p>
+              </div>
+            ) : (
+              <>
+                <label className="mt-3 mb-1 block text-sm font-semibold text-slate-700">Opérateur</label>
+                <div className="flex flex-col gap-2">
+                  {OPERATEURS_MOBILE_MONEY.map(op => (
+                    <label key={op.value} className={`flex cursor-pointer items-center gap-2.5 rounded-xl border px-3.5 py-2.5 text-sm ${methodeMobileMoney === op.value ? 'border-brand-600 bg-brand-50 font-semibold text-brand-700' : 'border-slate-200 text-slate-600'}`}>
+                      <input type="radio" name="methode-momo" className="accent-brand-600" checked={methodeMobileMoney === op.value} onChange={() => setMethodeMobileMoney(op.value)} />
+                      {op.label}
+                    </label>
+                  ))}
+                </div>
+
+                <label className="mt-4 mb-1 block text-sm font-semibold text-slate-700">Numéro de téléphone du locataire</label>
+                <input
+                  className="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
+                  type="tel"
+                  value={telephoneMobileMoney}
+                  onChange={e => setTelephoneMobileMoney(e.target.value)}
+                  placeholder="Ex : 22990000000"
+                />
+
+                {erreurMobileMoney && <p className="mt-3 text-sm text-red-600">{erreurMobileMoney}</p>}
+
+                <div className="mt-5 flex gap-3">
+                  <button className="flex-1 rounded-xl border border-slate-200 px-5 py-3 text-sm text-slate-600 hover:bg-slate-50" onClick={fermerModalMobileMoney}>Annuler</button>
+                  <button className="flex-1 rounded-xl bg-brand-600 py-3 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-60" onClick={envoyerDemandeMobileMoney} disabled={statutDemande === 'envoi'}>
+                    {statutDemande === 'envoi' ? 'Envoi...' : 'Envoyer la demande'}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
