@@ -175,9 +175,9 @@ export default function Profil() {
         {chargement ? (
           <div className="flex justify-center py-20"><div className="h-10 w-10 animate-spin rounded-full border-4 border-brand-100 border-t-brand-600" /></div>
         ) : (
-          <div className="grid grid-cols-[280px_1fr] items-start gap-6">
+          <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[280px_1fr]">
             {/* Carte profil gauche */}
-            <div className="sticky top-[84px] flex flex-col items-center gap-3 rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-7 shadow-card">
+            <div className="flex flex-col items-center gap-3 rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-7 shadow-card lg:sticky lg:top-[84px]">
               <div className="flex h-20 w-20 items-center justify-center rounded-full bg-brand-600 text-3xl font-extrabold text-white">{profil?.nom?.charAt(0).toUpperCase()}</div>
               <h2 className="m-0 text-center text-xl font-extrabold text-slate-900">{profil?.nom}</h2>
               <p className="m-0 text-center text-[13px] text-slate-400">{profil?.email}</p>

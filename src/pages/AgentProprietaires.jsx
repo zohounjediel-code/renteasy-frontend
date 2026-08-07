@@ -81,7 +81,7 @@ export default function AgentProprietaires() {
       </nav>
 
       <div className="mx-auto max-w-6xl px-6 py-7">
-        <div className="grid grid-cols-[380px_1fr] items-start gap-6">
+        <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[380px_1fr]">
           {/* Liste propriétaires */}
           <div className="flex flex-col">
             <h2 className="text-xl font-extrabold text-slate-900">Mes propriétaires</h2>
@@ -168,7 +168,7 @@ export default function AgentProprietaires() {
           </div>
 
           {/* Zone de chat */}
-          <div className="sticky top-[84px]">
+          <div className="lg:sticky lg:top-[84px]">
             {interlocuteur ? (
               <Chat
                 interlocuteur={interlocuteur}
