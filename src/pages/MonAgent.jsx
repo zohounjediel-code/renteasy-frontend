@@ -91,9 +91,9 @@ export default function MonAgent() {
             <p className="text-[13px] text-slate-400">Contactez l'administration RentEasy pour vous assigner un agent.</p>
           </div>
         ) : agent && (
-          <div className="grid grid-cols-[340px_1fr] items-start gap-6">
+          <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[340px_1fr]">
             {/* Carte agent */}
-            <div className="sticky top-[84px] rounded-2xl border border-brand-200 bg-brand-50 p-6">
+            <div className="rounded-2xl border border-brand-200 bg-brand-50 p-6 lg:sticky lg:top-[84px]">
               <div className="relative mb-5 flex items-center gap-3.5">
                 <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand-600 text-xl font-extrabold text-white">{agent.nom.charAt(0).toUpperCase()}</div>
                 <div>
