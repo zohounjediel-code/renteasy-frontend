@@ -108,8 +108,6 @@ export default function Profil() {
     setSucces(''); setErreur(''); setEnvoi(true);
     try {
       const r = await api.put('/profil', form);
-      // Mettre à jour le token et l'utilisateur
-      localStorage.setItem('renteasy_token', r.data.token);
       localStorage.setItem('renteasy_user', JSON.stringify(r.data.utilisateur));
       if (setUtilisateur) setUtilisateur(r.data.utilisateur);
       setProfil(r.data.utilisateur);

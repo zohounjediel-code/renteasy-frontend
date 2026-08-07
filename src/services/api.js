@@ -13,23 +13,17 @@ function normaliserUrlApi(url) {
 
 const api = axios.create({
   baseURL: normaliserUrlApi(process.env.REACT_APP_API_URL),
+  // Le token JWT vit dans un cookie httpOnly posé par le backend (inaccessible en JS, donc pas
+  // volable par une faille XSS) : le navigateur doit être autorisé à l'envoyer sur ces requêtes
+  // cross-origin (frontend Vercel, backend Railway ne partagent pas le même domaine).
+  withCredentials: true,
 });
 
-// Injecte automatiquement le token JWT dans chaque requête
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('renteasy_token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
-// Redirige vers /connexion si le token est expiré
+// Redirige vers /connexion si le cookie de session est absent ou expiré
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('renteasy_token');
       localStorage.removeItem('renteasy_user');
       window.location.href = '/connexion';
     }

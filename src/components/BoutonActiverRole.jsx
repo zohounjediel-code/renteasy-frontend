@@ -22,8 +22,6 @@ export default function BoutonActiverRole({ roleActuel }) {
     setChargement(true); setErreur(''); setSucces('');
     try {
       const r = await api.post('/auth/ajouter-role', { role: roleACiver });
-      // Mettre à jour le token et l'utilisateur
-      localStorage.setItem('renteasy_token', r.data.token);
       localStorage.setItem('renteasy_user', JSON.stringify(r.data.utilisateur));
       setSucces(r.data.message);
       setTimeout(() => {

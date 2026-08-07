@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import api from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
 export default function ActiverCompte() {
   const [searchParams] = useSearchParams();
@@ -12,6 +13,7 @@ export default function ActiverCompte() {
   const [chargement, setChargement] = useState(false);
   const token = searchParams.get('token');
   const navigate = useNavigate();
+  const { setUtilisateur } = useAuth();
 
   useEffect(() => {
     if (!token) {
@@ -36,8 +38,8 @@ export default function ActiverCompte() {
     setChargement(true);
     try {
       const r = await api.post('/auth/activer-compte', { token, mot_de_passe: motDePasse, cgu_acceptees: true });
-      localStorage.setItem('renteasy_token', r.data.token);
       localStorage.setItem('renteasy_user', JSON.stringify(r.data.utilisateur));
+      setUtilisateur(r.data.utilisateur);
       setSucces(true);
       setTimeout(() => navigate('/locataire/dashboard'), 2000);
     } catch (err) {
