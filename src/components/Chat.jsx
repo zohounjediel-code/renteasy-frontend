@@ -6,6 +6,7 @@ export default function Chat({ interlocuteur, onFermer, contexte = 'proprietaire
   const [messages, setMessages] = useState([]);
   const [contenu, setContenu] = useState('');
   const [envoi, setEnvoi] = useState(false);
+  const [erreurEnvoi, setErreurEnvoi] = useState('');
   const { utilisateur } = useAuth();
   const conteneurRef = useRef(null);
   const intervalRef = useRef(null);
@@ -42,6 +43,7 @@ export default function Chat({ interlocuteur, onFermer, contexte = 'proprietaire
   async function envoyer() {
     if (!contenu.trim()) return;
     setEnvoi(true);
+    setErreurEnvoi('');
     try {
       await api.post('/messages', {
         destinataire_id: interlocuteur.id,
@@ -52,6 +54,7 @@ export default function Chat({ interlocuteur, onFermer, contexte = 'proprietaire
       chargerMessages();
     } catch (e) {
       console.error(e);
+      setErreurEnvoi(e.response?.data?.message || "Échec de l'envoi. Réessayez.");
     } finally {
       setEnvoi(false);
     }
@@ -114,17 +117,22 @@ export default function Chat({ interlocuteur, onFermer, contexte = 'proprietaire
       </div>
 
       {/* Saisie */}
-      <div className="flex gap-2.5 border-t border-slate-100 bg-slate-50 px-4 py-3.5">
-        <input
-          className="flex-1 rounded-full border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-800 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
-          placeholder="Écrire un message..."
-          value={contenu}
-          onChange={e => setContenu(e.target.value)}
-          onKeyDown={e => e.key === 'Enter' && !e.shiftKey && envoyer()}
-        />
-        <button className="flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-full bg-brand-600 text-lg text-white hover:bg-brand-700 disabled:opacity-60" onClick={envoyer} disabled={envoi || !contenu.trim()}>
-          {envoi ? '...' : '➤'}
-        </button>
+      <div className="border-t border-slate-100 bg-slate-50 px-4 py-3.5">
+        {erreurEnvoi && (
+          <div className="mb-2.5 rounded-lg bg-red-50 px-3 py-2 text-xs font-medium text-red-600">{erreurEnvoi}</div>
+        )}
+        <div className="flex gap-2.5">
+          <input
+            className="flex-1 rounded-full border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-800 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
+            placeholder="Écrire un message..."
+            value={contenu}
+            onChange={e => setContenu(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && !e.shiftKey && envoyer()}
+          />
+          <button className="flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-full bg-brand-600 text-lg text-white hover:bg-brand-700 disabled:opacity-60" onClick={envoyer} disabled={envoi || !contenu.trim()}>
+            {envoi ? '...' : '➤'}
+          </button>
+        </div>
       </div>
     </div>
   );
