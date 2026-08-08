@@ -28,11 +28,17 @@ export default function MonAgent() {
   const [journal, setJournal] = useState(null);
   const [chargementJournal, setChargementJournal] = useState(true);
 
-  useEffect(() => {
+  function chargerAgent() {
+    setChargement(true);
+    setErreur('');
     api.get('/proprietaire/mon-agent')
       .then(r => setAgent(r.data))
       .catch(e => setErreur(e.response?.data?.message || 'Erreur de chargement'))
       .finally(() => setChargement(false));
+  }
+
+  useEffect(() => {
+    chargerAgent();
     api.get('/profil')
       .then(r => setDelegationActive(!!r.data.autorise_agent_gestion))
       .catch(console.error);
@@ -89,6 +95,7 @@ export default function MonAgent() {
             <p className="text-3xl">👔</p>
             <p>{erreur}</p>
             <p className="text-[13px] text-slate-400">Contactez l'administration RentEasy pour vous assigner un agent.</p>
+            <button className="mt-2 rounded-lg border border-brand-200 bg-white px-4 py-1.5 text-sm font-semibold text-brand-600 hover:bg-brand-50" onClick={chargerAgent}>↻ Réessayer</button>
           </div>
         ) : agent && (
           <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[340px_1fr]">
