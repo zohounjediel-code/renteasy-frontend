@@ -148,6 +148,12 @@ export default function Profil() {
     if (roles.includes('super_admin')) return navigate('/superadmin/dashboard');
     if (roles.includes('admin')) return navigate('/admin/dashboard');
     if (roles.includes('agent')) return navigate('/agent/demandes');
+    // Un compte à double rôle (proprietaire + locataire) doit revenir dans l'espace qu'il
+    // avait quitté pour venir sur /profil, pas toujours vers propriétaire par défaut — /profil
+    // ne modifie jamais 'renteasy_dernier_espace' (cf. App.jsx) précisément pour ça.
+    if (roles.includes('proprietaire') && roles.includes('locataire')) {
+      return navigate(localStorage.getItem('renteasy_dernier_espace') === 'locataire' ? '/locataire/dashboard' : '/dashboard');
+    }
     if (roles.includes('proprietaire')) return navigate('/dashboard');
     return navigate('/locataire/dashboard');
   }
