@@ -418,7 +418,16 @@ export default function LocataireDashboard() {
                   {f === 'tous' ? 'Toutes' : STATUT[f]?.label || f}
                 </button>
               ))}
-              <button className="rounded-full border border-accent-300 px-3.5 py-1 text-xs font-semibold text-accent-700 hover:bg-accent-50" onClick={() => setVoirToutesEcheances(!voirToutesEcheances)}>
+              <button
+                className="rounded-full border border-accent-300 px-3.5 py-1 text-xs font-semibold text-accent-700 hover:bg-accent-50"
+                onClick={() => {
+                  // "Voir plus" doit toujours tout montrer, même si un filtre était resté actif
+                  // d'un précédent aller-retour Voir plus / Voir moins (les boutons de filtre
+                  // restent cliquables tant que la liste est dépliée).
+                  if (!voirToutesEcheances) setFiltre('tous');
+                  setVoirToutesEcheances(!voirToutesEcheances);
+                }}
+              >
                 {voirToutesEcheances ? '▲ Voir moins' : '▼ Voir plus'}
               </button>
             </div>
