@@ -6,6 +6,7 @@ export default function ClocheNotifications() {
   const [nonLues, setNonLues] = useState(0);
   const [ouvert, setOuvert] = useState(false);
   const [position, setPosition] = useState(null);
+  const [chargement, setChargement] = useState(true);
   const ref = useRef(null);
   const boutonRef = useRef(null);
 
@@ -39,7 +40,11 @@ export default function ClocheNotifications() {
       right = Math.max(16, right);
       setPosition({ top: rect.bottom + 8, right, width: largeur });
     }
-    setOuvert(o => !o);
+    const seOuvre = !ouvert;
+    setOuvert(seOuvre);
+    // Recharge à chaque ouverture : un éventuel échec silencieux du chargement initial ou du
+    // polling ne doit jamais laisser le panneau bloqué sur "Aucune notification" indéfiniment.
+    if (seOuvre) chargerNotifications();
   }
 
   async function chargerNotifications() {
@@ -49,6 +54,8 @@ export default function ClocheNotifications() {
       setNonLues(r.data.non_lues);
     } catch (e) {
       console.error(e);
+    } finally {
+      setChargement(false);
     }
   }
 
@@ -94,7 +101,9 @@ export default function ClocheNotifications() {
           </div>
 
           <div className="max-h-[400px] overflow-y-auto">
-            {notifications.length === 0 ? (
+            {chargement ? (
+              <p className="p-6 text-center text-sm text-slate-400">Chargement…</p>
+            ) : notifications.length === 0 ? (
               <p className="p-6 text-center text-sm text-slate-400">Aucune notification</p>
             ) : (
               notifications.map(n => (
