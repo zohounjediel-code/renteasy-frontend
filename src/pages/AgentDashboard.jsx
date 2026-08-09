@@ -22,7 +22,7 @@ export default function AgentDashboard() {
 
   return (
     <div className="min-h-screen bg-brand-50">
-      <nav className="sticky top-0 z-[100] flex h-[60px] flex-wrap items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
+      <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
         <div className="flex items-center gap-2 text-lg text-slate-900">
           ⚡ <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span>
           <span className="rounded-full bg-accent-500 px-2.5 py-0.5 text-[11px] font-extrabold text-white">Agent</span>
