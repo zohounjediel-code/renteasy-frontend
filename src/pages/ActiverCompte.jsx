@@ -69,10 +69,10 @@ export default function ActiverCompte() {
             <p className="mt-1 text-sm text-slate-500">Définissez votre mot de passe pour accéder à votre espace locataire.</p>
 
             <label className="mt-4 block text-sm font-semibold text-slate-700">Mot de passe *</label>
-            <input className="mt-1 w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" type="password" placeholder="••••••••" value={motDePasse} onChange={e => setMotDePasse(e.target.value)} />
+            <input className="mt-1 w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" type="password" autoComplete="new-password" placeholder="••••••••" value={motDePasse} onChange={e => setMotDePasse(e.target.value)} />
 
             <label className="mt-3 block text-sm font-semibold text-slate-700">Confirmer le mot de passe *</label>
-            <input className="mt-1 w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" type="password" placeholder="••••••••" value={confirmer} onChange={e => setConfirmer(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleActivation()} />
+            <input className="mt-1 w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" type="password" autoComplete="new-password" placeholder="••••••••" value={confirmer} onChange={e => setConfirmer(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleActivation()} />
 
             {erreur && <p className="mt-2 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{erreur}</p>}
 

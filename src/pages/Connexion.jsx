@@ -45,6 +45,7 @@ export default function Connexion() {
           <input
             className="rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
             type="email"
+            autoComplete="username"
             placeholder="votre@email.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -54,6 +55,7 @@ export default function Connexion() {
           <input
             className="rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
             type="password"
+            autoComplete="current-password"
             placeholder="••••••••"
             value={motDePasse}
             onChange={(e) => setMotDePasse(e.target.value)}

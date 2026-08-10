@@ -75,7 +75,7 @@ export default function Inscription() {
           <input className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" placeholder="Jean Koffi" value={form.nom} onChange={e => setForm({ ...form, nom: e.target.value })} />
 
           <label className="mt-2 text-sm font-semibold text-slate-700">Email *</label>
-          <input className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" type="email" placeholder="votre@email.com" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} />
+          <input className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" type="email" autoComplete="email" placeholder="votre@email.com" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} />
 
           <label className="mt-2 text-sm font-semibold text-slate-700">Téléphone *</label>
           <input className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" placeholder="+22997001122" value={form.telephone} onChange={e => setForm({ ...form, telephone: e.target.value })} />
@@ -84,10 +84,10 @@ export default function Inscription() {
           <input className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" placeholder="Cotonou" value={form.ville} onChange={e => setForm({ ...form, ville: e.target.value })} />
 
           <label className="mt-2 text-sm font-semibold text-slate-700">Mot de passe *</label>
-          <input className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" type="password" placeholder="••••••••" value={form.mot_de_passe} onChange={e => setForm({ ...form, mot_de_passe: e.target.value })} />
+          <input className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" type="password" autoComplete="new-password" placeholder="••••••••" value={form.mot_de_passe} onChange={e => setForm({ ...form, mot_de_passe: e.target.value })} />
 
           <label className="mt-2 text-sm font-semibold text-slate-700">Confirmer le mot de passe *</label>
-          <input className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" type="password" placeholder="••••••••" value={form.confirmer_mot_de_passe} onChange={e => setForm({ ...form, confirmer_mot_de_passe: e.target.value })} onKeyDown={e => e.key === 'Enter' && handleInscription()} />
+          <input className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" type="password" autoComplete="new-password" placeholder="••••••••" value={form.confirmer_mot_de_passe} onChange={e => setForm({ ...form, confirmer_mot_de_passe: e.target.value })} onKeyDown={e => e.key === 'Enter' && handleInscription()} />
 
           {erreur && <p className="mt-2 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{erreur}</p>}
 

@@ -295,13 +295,13 @@ export default function Profil() {
                   <p className="mb-2 text-base font-bold text-slate-900">Changer mon mot de passe</p>
 
                   <label className={champLabel}>Mot de passe actuel</label>
-                  <input className={champInput} type="password" placeholder="••••••••" value={formMdp.ancien} onChange={e => setFormMdp({ ...formMdp, ancien: e.target.value })} />
+                  <input className={champInput} type="password" autoComplete="current-password" placeholder="••••••••" value={formMdp.ancien} onChange={e => setFormMdp({ ...formMdp, ancien: e.target.value })} />
 
                   <label className={champLabel}>Nouveau mot de passe</label>
-                  <input className={champInput} type="password" placeholder="8 caractères minimum" value={formMdp.nouveau} onChange={e => setFormMdp({ ...formMdp, nouveau: e.target.value })} />
+                  <input className={champInput} type="password" autoComplete="new-password" placeholder="8 caractères minimum" value={formMdp.nouveau} onChange={e => setFormMdp({ ...formMdp, nouveau: e.target.value })} />
 
                   <label className={champLabel}>Confirmer le nouveau mot de passe</label>
-                  <input className={champInput} type="password" placeholder="••••••••" value={formMdp.confirmer} onChange={e => setFormMdp({ ...formMdp, confirmer: e.target.value })} />
+                  <input className={champInput} type="password" autoComplete="new-password" placeholder="••••••••" value={formMdp.confirmer} onChange={e => setFormMdp({ ...formMdp, confirmer: e.target.value })} />
 
                   <button className="mt-5 w-full rounded-xl bg-brand-600 py-3 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-60" onClick={changerMotDePasse} disabled={envoi}>
                     {envoi ? 'Modification...' : '🔒 Changer le mot de passe'}
