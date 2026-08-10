@@ -11,11 +11,21 @@ function normaliserUrlApi(url) {
   return /^https?:\/\//i.test(url) ? url : `https://${url}`;
 }
 
+// En production, on appelle systématiquement /api en relatif (proxié vers Railway par le
+// rewrite de vercel.json) plutôt que le domaine Railway en direct. Safari sur iOS bloque ou
+// expire très agressivement les cookies "cross-site" (SameSite=None) via l'Intelligent Tracking
+// Prevention, même avec Secure — la connexion réussissait un instant puis le cookie était rejeté
+// dès la requête suivante, renvoyant aussitôt vers /connexion. Passer par le même domaine que le
+// frontend rend le cookie "first-party" aux yeux du navigateur, ce qui contourne totalement ce
+// blocage (aucun souci en dev local, où frontend et backend ne sont de toute façon jamais servis
+// depuis le même domaine).
+const baseURL = process.env.NODE_ENV === 'production' ? '/api' : normaliserUrlApi(process.env.REACT_APP_API_URL);
+
 const api = axios.create({
-  baseURL: normaliserUrlApi(process.env.REACT_APP_API_URL),
-  // Le token JWT vit dans un cookie httpOnly posé par le backend (inaccessible en JS, donc pas
-  // volable par une faille XSS) : le navigateur doit être autorisé à l'envoyer sur ces requêtes
-  // cross-origin (frontend Vercel, backend Railway ne partagent pas le même domaine).
+  baseURL,
+  // Toujours nécessaire même en same-origin proxié : sans ça, axios n'envoie pas le cookie sur
+  // les requêtes XHR/fetch (le navigateur ne le fait pas non plus par défaut pour du cross-origin,
+  // et withCredentials ne fait pas de mal en same-origin).
   withCredentials: true,
 });
 
