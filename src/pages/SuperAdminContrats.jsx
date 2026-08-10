@@ -123,6 +123,7 @@ export default function SuperAdminContrats() {
                   <div>
                     <div className="text-sm font-semibold text-slate-900">{c.adresse}</div>
                     <div className="mt-0.5 text-xs text-slate-400">{c.ville} · {c.type_bien}</div>
+                    <div className="mt-0.5 font-mono text-[11px] text-slate-300">#{c.id.slice(0, 8)}</div>
                   </div>
                   <div>
                     <div className="text-sm font-semibold text-slate-900">{c.proprietaire_nom}</div>

@@ -621,7 +621,7 @@ export default function Locataires() {
         {contratDetail && (
           <div className={card}>
             <div className="mb-5 flex flex-wrap items-center justify-between gap-2">
-              <h3 className={`${cardTitre} mb-0`}>Contrat — {contratDetail.locataire_nom}</h3>
+              <h3 className={`${cardTitre} mb-0`}>Contrat — {contratDetail.locataire_nom} <span className="font-mono text-xs font-normal text-slate-400">#{contratDetail.id.slice(0, 8)}</span></h3>
               <div className="flex flex-wrap gap-2">
                 <button className="rounded-lg bg-brand-600 px-3.5 py-2 text-xs font-semibold text-white hover:bg-brand-700" onClick={() => voirPDF(contratDetail.id)}>👁️ Voir le contrat</button>
                 <button className="rounded-lg bg-brand-700 px-3.5 py-2 text-xs font-semibold text-white hover:bg-brand-800" onClick={() => telechargerPDF(contratDetail.id)}>📄 Télécharger PDF</button>
@@ -717,10 +717,10 @@ export default function Locataires() {
                     {contratsActifsL.length > 0 ? (
                       contratsActifsL.map(c => (
                         c.statut === 'en_attente_signature' ? (
-                          <span key={c.id} className={badgeAttente}>✍️ {c.numero_bien} — en attente de signature{c.effectue_par_agent_id ? ' (créé par votre agent)' : ''}</span>
+                          <span key={c.id} className={badgeAttente}>✍️ {c.numero_bien} — en attente de signature{c.effectue_par_agent_id ? ' (créé par votre agent)' : ''} <span className="font-mono opacity-60">#{c.id.slice(0, 8)}</span></span>
                         ) : (
                           <button key={c.id} className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2 text-[13px] font-semibold text-emerald-700 hover:bg-emerald-100" onClick={() => voirDetailContrat(c)}>
-                            📋 🔖 {c.numero_bien} · {c.adresse}{c.effectue_par_agent_id ? ' · 🤝 par votre agent' : ''}
+                            📋 🔖 {c.numero_bien} · {c.adresse}{c.effectue_par_agent_id ? ' · 🤝 par votre agent' : ''} <span className="font-mono opacity-60">#{c.id.slice(0, 8)}</span>
                           </button>
                         )
                       ))

@@ -685,7 +685,7 @@ export default function AgentProprietaireDetail() {
                 {contrats.map(c => (
                   <div key={c.id} className="flex cursor-pointer items-center justify-between gap-3 rounded-2xl border border-brand-100 bg-gradient-to-b from-white to-brand-50/50 p-4 shadow-card" onClick={() => voirContrat(c.id)} role="button">
                     <div>
-                      <div className="font-bold text-slate-900">🔖 {c.numero_bien} — {c.locataire_nom}</div>
+                      <div className="font-bold text-slate-900">🔖 {c.numero_bien} — {c.locataire_nom} <span className="font-mono text-xs font-normal text-slate-400">#{c.id.slice(0, 8)}</span></div>
                       <div className="mt-0.5 text-[13px] text-slate-400">
                         {LABELS_LOYER[c.type_loyer] || c.type_loyer} · {formaterMontant(c.loyer_mensuel)} · du {formaterDate(c.date_debut)}{c.date_fin ? ` au ${formaterDate(c.date_fin)}` : ''}
                       </div>
@@ -971,7 +971,7 @@ export default function AgentProprietaireDetail() {
               <p className="text-slate-400">Chargement...</p>
             ) : (
               <>
-                <h3 className="mb-1 text-xl font-bold text-slate-900">🔖 {contratDetail.numero_bien}</h3>
+                <h3 className="mb-1 text-xl font-bold text-slate-900">🔖 {contratDetail.numero_bien} <span className="font-mono text-xs font-normal text-slate-400">#{contratDetail.id.slice(0, 8)}</span></h3>
                 <p className="mb-4 text-[13px] text-slate-400">
                   {contratDetail.adresse}, {contratDetail.ville} · {contratDetail.locataire_nom} · {LABELS_LOYER[contratDetail.type_loyer] || contratDetail.type_loyer} · {formaterMontant(contratDetail.loyer_mensuel)}
                 </p>

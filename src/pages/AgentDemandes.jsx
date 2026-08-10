@@ -196,6 +196,7 @@ export default function AgentDemandes() {
                       <p className="mb-1.5 text-xs font-bold uppercase tracking-wide text-brand-700">🏠 Bien concerné</p>
                       <p className="m-0 mb-0.5 text-sm font-semibold text-slate-800">{d.adresse}, {d.ville}</p>
                       <p className="m-0 text-xs text-slate-400">{d.type_bien}</p>
+                      <p className="m-0 font-mono text-[11px] text-slate-300">Contrat #{d.contrat_id.slice(0, 8)}</p>
                     </div>
                     <div className="rounded-xl bg-slate-50 p-3">
                       <p className="mb-1.5 text-xs font-bold uppercase tracking-wide text-brand-700">👥 Locataire</p>

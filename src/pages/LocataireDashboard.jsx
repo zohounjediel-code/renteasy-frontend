@@ -343,7 +343,7 @@ export default function LocataireDashboard() {
             {contratsEnAttente.map(c => (
               <div key={c.id} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-brand-200 bg-brand-50 px-5 py-4">
                 <div>
-                  <p className="m-0 text-sm font-semibold text-slate-800">✍️ Contrat à signer — {c.numero_bien}</p>
+                  <p className="m-0 text-sm font-semibold text-slate-800">✍️ Contrat à signer — {c.numero_bien} <span className="font-mono text-xs font-normal text-slate-400">#{c.id.slice(0, 8)}</span></p>
                   <p className="mt-1 text-xs text-slate-500">
                     {c.adresse || 'Véhicule'}, {c.ville} · Proposé par {c.proprietaire_nom} · {formaterMontant(c.loyer_mensuel)} / {c.type_loyer}
                   </p>
@@ -361,8 +361,9 @@ export default function LocataireDashboard() {
         {/* Contrats actifs */}
         {(data?.contrats || []).map(c => (
           <div key={c.id} className="mb-6 rounded-2xl bg-gradient-to-br from-brand-700 to-brand-900 p-6 text-white shadow-card">
-            <div className="mb-4">
+            <div className="mb-4 flex items-center gap-2">
               <span className="rounded-full bg-white/15 px-3 py-1 text-[13px] font-semibold">📋 Contrat actif</span>
+              <span className="font-mono text-xs text-white/50">#{c.id.slice(0, 8)}</span>
             </div>
             <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4">
               <div>
@@ -494,7 +495,7 @@ export default function LocataireDashboard() {
                   <h3 className="text-xl font-bold text-slate-900">📄 Contrat de location</h3>
                   <button className={btnRefuser} onClick={() => setContratDetail(null)}>✕ Fermer</button>
                 </div>
-                <p className="mb-4 text-xs font-bold text-accent-600">🔖 {contratDetail.numero_bien}</p>
+                <p className="mb-4 text-xs font-bold text-accent-600">🔖 {contratDetail.numero_bien} <span className="font-mono font-normal text-slate-400">#{contratDetail.id.slice(0, 8)}</span></p>
 
                 <div className="mt-2 grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3">
                   <div className={blocDetail}>
