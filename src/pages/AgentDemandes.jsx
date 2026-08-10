@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import ClocheNotifications from '../components/ClocheNotifications';
 import { useAuth } from '../context/AuthContext';
+import SignaturePad from '../components/SignaturePad';
 
 const STATUT_COULEURS = {
   en_attente: { cls: 'bg-accent-50 text-accent-700', label: '⏳ En attente' },
@@ -20,6 +21,7 @@ const btnValider = 'flex-1 rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-semi
 
 export default function AgentDemandes() {
   const [demandes, setDemandes] = useState([]);
+  const [demandesMarche, setDemandesMarche] = useState([]);
   const [filtre, setFiltre] = useState('en_attente');
   const [chargement, setChargement] = useState(true);
   const [modalTraitement, setModalTraitement] = useState(null);
@@ -31,6 +33,10 @@ export default function AgentDemandes() {
   const [envoi, setEnvoi] = useState(false);
   const [succes, setSucces] = useState('');
   const [erreur, setErreur] = useState('');
+  const [modalApprobationMarche, setModalApprobationMarche] = useState(null);
+  const [signatureApprobationMarche, setSignatureApprobationMarche] = useState(null);
+  const [envoiApprobationMarche, setEnvoiApprobationMarche] = useState(false);
+  const [erreurApprobationMarche, setErreurApprobationMarche] = useState('');
   const { deconnecter } = useAuth();
   const navigate = useNavigate();
 
@@ -38,12 +44,46 @@ export default function AgentDemandes() {
 
   async function chargerDemandes() {
     try {
-      const r = await api.get('/demandes');
-      setDemandes(r.data);
+      const [rDemandes, rMarche] = await Promise.all([
+        api.get('/demandes'),
+        api.get('/agent/demandes-marche'),
+      ]);
+      setDemandes(rDemandes.data);
+      setDemandesMarche(rMarche.data);
     } catch (e) {
       console.error(e);
     } finally {
       setChargement(false);
+    }
+  }
+
+  async function approuverDemandeMarche() {
+    setErreurApprobationMarche('');
+    if (!signatureApprobationMarche) {
+      setErreurApprobationMarche('Signez pour approuver cette demande');
+      return;
+    }
+    setEnvoiApprobationMarche(true);
+    try {
+      await api.post(`/contrats/${modalApprobationMarche.id}/approuver`, { signature_proprietaire: signatureApprobationMarche });
+      setSucces('Demande de location approuvée et signée. En attente de la signature du locataire.');
+      setModalApprobationMarche(null);
+      chargerDemandes();
+    } catch (e) {
+      setErreurApprobationMarche(e.response?.data?.message || "Erreur lors de l'approbation");
+    } finally {
+      setEnvoiApprobationMarche(false);
+    }
+  }
+
+  async function refuserDemandeMarche(id) {
+    if (!window.confirm('Refuser cette demande de location ?')) return;
+    try {
+      await api.post(`/contrats/${id}/refuser-demande`);
+      setSucces('Demande de location refusée.');
+      chargerDemandes();
+    } catch (e) {
+      alert(e.response?.data?.message || 'Erreur lors du refus');
     }
   }
 
@@ -124,10 +164,47 @@ export default function AgentDemandes() {
       <div className="mx-auto max-w-6xl px-6 py-6">
         <div className="mb-6">
           <h2 className="text-2xl font-extrabold text-slate-900">Demandes de contrats</h2>
-          <p className="mt-1 text-sm text-slate-500">{demandes.filter(d => d.statut === 'en_attente').length} demande(s) en attente de traitement</p>
+          <p className="mt-1 text-sm text-slate-500">{demandes.filter(d => d.statut === 'en_attente').length + demandesMarche.length} demande(s) en attente de traitement</p>
         </div>
 
         {succes && <div className="mb-4 rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm text-brand-800">{succes}</div>}
+
+        {/* Demandes de location via le marché : type distinct des demandes_contrat ci-dessous
+            (modification/résiliation) — un locataire a postulé directement sur un bien listé. */}
+        {demandesMarche.length > 0 && (
+          <div className="mb-6 rounded-2xl border border-purple-100 bg-gradient-to-b from-white to-purple-50/50 p-5 shadow-card">
+            <h3 className="mb-3 text-base font-bold text-slate-900">📨 Demandes de location — marché ({demandesMarche.length})</h3>
+            <div className="flex flex-col gap-2.5">
+              {demandesMarche.map(d => (
+                <div key={d.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-100 bg-slate-50 px-4 py-3">
+                  <div>
+                    <div className="font-semibold text-slate-900">🔖 {d.numero_bien} <span className="font-mono text-xs font-normal text-slate-400">#{d.id.slice(0, 8)}</span></div>
+                    <div className="text-xs text-slate-400">
+                      {d.locataire_nom} ({d.locataire_telephone}) · {d.adresse}, {d.ville}
+                    </div>
+                    <div className="text-xs text-slate-400">
+                      Propriétaire : {d.proprietaire_nom} · Du {new Date(d.date_debut).toLocaleDateString('fr-FR')}{d.date_fin ? ` au ${new Date(d.date_fin).toLocaleDateString('fr-FR')}` : ' (durée indéterminée)'} · {parseInt(d.loyer_mensuel).toLocaleString('fr-FR')} FCFA
+                    </div>
+                    {!d.autorise_agent_gestion && (
+                      <div className="mt-1.5 text-xs font-semibold text-accent-700">
+                        ⚠️ Délégation non activée par ce propriétaire — vous ne pouvez pas traiter cette demande à sa place, seulement la consulter.
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <button className="rounded-lg border border-slate-200 px-3.5 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50" onClick={() => navigate(`/agent/proprietaires/${d.proprietaire_id}`)}>👁️ Voir le propriétaire</button>
+                    {d.autorise_agent_gestion && (
+                      <>
+                        <button className="rounded-lg border border-red-200 bg-red-50 px-3.5 py-2 text-xs font-semibold text-red-600 hover:bg-red-100" onClick={() => refuserDemandeMarche(d.id)}>✕ Refuser</button>
+                        <button className="rounded-lg bg-brand-600 px-3.5 py-2 text-xs font-semibold text-white hover:bg-brand-700" onClick={() => { setModalApprobationMarche(d); setSignatureApprobationMarche(null); setErreurApprobationMarche(''); }}>✍️ Approuver et signer</button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Filtres */}
         <div className="mb-5 flex flex-wrap gap-2">
@@ -326,6 +403,30 @@ export default function AgentDemandes() {
               <button className={btnAnnulerModal} onClick={() => setModalRenouvellement(null)}>Annuler</button>
               <button className={btnValider} onClick={soumettreRenouvellement} disabled={envoiRenouvellement}>
                 {envoiRenouvellement ? 'Renouvellement...' : '🔄 Confirmer le renouvellement'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {modalApprobationMarche && (
+        <div className={overlay}>
+          <div className={modal}>
+            <h3 className="mb-1 text-xl font-bold text-slate-900">✍️ Approuver la demande de location</h3>
+            <p className="mb-4 text-[13px] text-slate-400">
+              🔖 {modalApprobationMarche.numero_bien} — {modalApprobationMarche.locataire_nom} · pour {modalApprobationMarche.proprietaire_nom} · du {new Date(modalApprobationMarche.date_debut).toLocaleDateString('fr-FR')}
+              {modalApprobationMarche.date_fin ? ` au ${new Date(modalApprobationMarche.date_fin).toLocaleDateString('fr-FR')}` : ' (durée indéterminée)'}
+            </p>
+            <p className="mb-3 text-[13px] text-slate-700">{parseInt(modalApprobationMarche.loyer_mensuel).toLocaleString('fr-FR')} FCFA / mois</p>
+            <p className="mb-3 text-[13px] text-slate-500">
+              En signant, vous approuvez cette demande au nom du propriétaire (délégation activée). Le locataire devra ensuite signer à son tour pour valider officiellement le contrat.
+            </p>
+            <SignaturePad onChange={setSignatureApprobationMarche} />
+            {erreurApprobationMarche && <p className="mt-2 text-[13px] text-red-600">{erreurApprobationMarche}</p>}
+            <div className="mt-5 flex gap-3">
+              <button className={btnAnnulerModal} onClick={() => setModalApprobationMarche(null)}>Annuler</button>
+              <button className={btnValider} onClick={approuverDemandeMarche} disabled={envoiApprobationMarche}>
+                {envoiApprobationMarche ? 'Envoi...' : '✍️ Signer et approuver'}
               </button>
             </div>
           </div>

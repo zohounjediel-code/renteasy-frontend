@@ -74,7 +74,7 @@ export default function AgentDashboard() {
 
               <div
                 className={`cursor-pointer rounded-2xl border p-5 shadow-card ${perf.demandes_en_attente > 0 ? 'border-accent-300 bg-accent-50' : 'border-slate-100 bg-white'}`}
-                onClick={() => navigate(perf.demandes_marche_en_attente > 0 ? '/agent/proprietaires' : '/agent/demandes')}
+                onClick={() => navigate('/agent/demandes')}
                 role="button"
               >
                 <p className="mb-2 text-xl">📨</p>
