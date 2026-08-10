@@ -129,9 +129,9 @@ export default function AgentProprietaires() {
                     <div className="flex items-center gap-3">
                       <div className="relative">
                         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-600 text-lg font-bold text-white">{p.nom.charAt(0).toUpperCase()}</div>
-                        {p.nb_impayes > 0 && (
-                          <span className="absolute -right-1 -top-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full border-2 border-white bg-red-600 px-1 text-[11px] font-extrabold leading-none text-white" title={`${p.nb_impayes} échéance(s) impayée(s) ou partiellement payée(s)`}>
-                            {p.nb_impayes}
+                        {p.nb_messages_non_lus > 0 && (
+                          <span className="absolute -right-1 -top-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full border-2 border-white bg-red-600 px-1 text-[11px] font-extrabold leading-none text-white" title={`${p.nb_messages_non_lus} message(s) non lu(s)`}>
+                            {p.nb_messages_non_lus}
                           </span>
                         )}
                       </div>
