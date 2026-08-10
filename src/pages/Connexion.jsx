@@ -6,6 +6,7 @@ import { redirigerSelonRole } from './Inscription';
 export default function Connexion() {
   const [email, setEmail] = useState('');
   const [motDePasse, setMotDePasse] = useState('');
+  const [afficherMotDePasse, setAfficherMotDePasse] = useState(false);
   const [erreur, setErreur] = useState('');
   const [chargement, setChargement] = useState(false);
   const { connecter } = useAuth();
@@ -52,15 +53,25 @@ export default function Connexion() {
           />
 
           <label className="mt-3 text-sm font-semibold text-slate-700">Mot de passe</label>
-          <input
-            className="rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
-            type="password"
-            autoComplete="current-password"
-            placeholder="••••••••"
-            value={motDePasse}
-            onChange={(e) => setMotDePasse(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleConnexion()}
-          />
+          <div className="relative">
+            <input
+              className="w-full rounded-xl border border-slate-200 px-4 py-3 pr-11 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
+              type={afficherMotDePasse ? 'text' : 'password'}
+              autoComplete="current-password"
+              placeholder="••••••••"
+              value={motDePasse}
+              onChange={(e) => setMotDePasse(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleConnexion()}
+            />
+            <button
+              type="button"
+              tabIndex={-1}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-lg text-slate-400 hover:text-slate-600"
+              onClick={() => setAfficherMotDePasse(v => !v)}
+            >
+              {afficherMotDePasse ? '🙈' : '👁️'}
+            </button>
+          </div>
           <p className="mt-1.5 cursor-pointer text-right text-xs font-semibold text-accent-600 hover:text-accent-700" onClick={() => navigate('/mot-de-passe-oublie')}>
             Mot de passe oublié ?
           </p>

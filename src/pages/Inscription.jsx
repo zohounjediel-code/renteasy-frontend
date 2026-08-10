@@ -8,6 +8,7 @@ export default function Inscription() {
   const [cguAcceptees, setCguAcceptees] = useState(false);
   const [erreur, setErreur] = useState('');
   const [chargement, setChargement] = useState(false);
+  const [afficherMotDePasse, setAfficherMotDePasse] = useState(false);
   const { inscrire } = useAuth();
   const navigate = useNavigate();
 
@@ -83,11 +84,16 @@ export default function Inscription() {
           <label className="mt-2 text-sm font-semibold text-slate-700">Ville</label>
           <input className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" placeholder="Cotonou" value={form.ville} onChange={e => setForm({ ...form, ville: e.target.value })} />
 
-          <label className="mt-2 text-sm font-semibold text-slate-700">Mot de passe *</label>
-          <input className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" type="password" autoComplete="new-password" placeholder="••••••••" value={form.mot_de_passe} onChange={e => setForm({ ...form, mot_de_passe: e.target.value })} />
+          <label className="mt-2 flex items-center justify-between text-sm font-semibold text-slate-700">
+            Mot de passe *
+            <span className="cursor-pointer text-xs font-medium text-slate-400 hover:text-slate-600" onClick={() => setAfficherMotDePasse(v => !v)}>
+              {afficherMotDePasse ? '🙈 Masquer' : '👁️ Afficher'}
+            </span>
+          </label>
+          <input className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" type={afficherMotDePasse ? 'text' : 'password'} autoComplete="new-password" placeholder="••••••••" value={form.mot_de_passe} onChange={e => setForm({ ...form, mot_de_passe: e.target.value })} />
 
           <label className="mt-2 text-sm font-semibold text-slate-700">Confirmer le mot de passe *</label>
-          <input className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" type="password" autoComplete="new-password" placeholder="••••••••" value={form.confirmer_mot_de_passe} onChange={e => setForm({ ...form, confirmer_mot_de_passe: e.target.value })} onKeyDown={e => e.key === 'Enter' && handleInscription()} />
+          <input className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" type={afficherMotDePasse ? 'text' : 'password'} autoComplete="new-password" placeholder="••••••••" value={form.confirmer_mot_de_passe} onChange={e => setForm({ ...form, confirmer_mot_de_passe: e.target.value })} onKeyDown={e => e.key === 'Enter' && handleInscription()} />
 
           {erreur && <p className="mt-2 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{erreur}</p>}
 
