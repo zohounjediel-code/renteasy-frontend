@@ -295,13 +295,11 @@ export default function LocataireDashboard() {
       <nav className="re-nav sticky top-0 z-[100] flex h-[60px] items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur">
         <div className="text-lg text-slate-900">🏠 <strong>RentEasy</strong> <span className="text-accent-600">Bénin</span></div>
         <div className="flex flex-wrap items-center gap-1.5">
+          <button className="rounded-lg bg-brand-600 px-3 py-1.5 text-sm font-bold text-white hover:bg-brand-700" onClick={() => navigate('/marche')}>🏪 Marché</button>
           {estAussiProprietaire && (
-            <>
-              <button className="rounded-lg bg-brand-600 px-3 py-1.5 text-sm font-bold text-white hover:bg-brand-700" onClick={() => navigate('/marche')}>🏪 Marché</button>
-              <button className="whitespace-nowrap rounded-lg bg-accent-500 px-3 py-1.5 text-sm font-bold text-white hover:bg-accent-600" onClick={() => navigate('/dashboard')}>
-                🔄 Espace propriétaire
-              </button>
-            </>
+            <button className="whitespace-nowrap rounded-lg bg-accent-500 px-3 py-1.5 text-sm font-bold text-white hover:bg-accent-600" onClick={() => navigate('/dashboard')}>
+              🔄 Espace propriétaire
+            </button>
           )}
           <button className="whitespace-nowrap rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50" onClick={() => navigate('/profil')}>👤 Mon profil</button>
           <button className="whitespace-nowrap rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50" onClick={deconnecter}>Déconnexion</button>
