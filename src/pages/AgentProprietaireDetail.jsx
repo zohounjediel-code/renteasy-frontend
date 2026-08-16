@@ -232,7 +232,7 @@ export default function AgentProprietaireDetail() {
 
   // Créer un contrat pour le compte du propriétaire (délégation) — l'agent signe pour lui
   const [modalCreerContrat, setModalCreerContrat] = useState(false);
-  const [formContrat, setFormContrat] = useState({ numero_bien: '', locataire_id: '', date_debut: '', duree_valeur: '', duree_unite: 'mois', type_loyer: 'mensuel', loyer_mensuel: '', caution: '', signature_agent: '' });
+  const [formContrat, setFormContrat] = useState({ numero_bien: '', locataire_id: '', date_debut: '', duree_valeur: '', duree_unite: 'mois', type_loyer: 'mensuel', loyer_mensuel: '', signature_agent: '' });
   const [envoiContrat, setEnvoiContrat] = useState(false);
   const [erreurContrat, setErreurContrat] = useState('');
 
@@ -389,7 +389,7 @@ export default function AgentProprietaireDetail() {
   // --- Créer un contrat pour le compte du propriétaire (l'agent signe pour lui) ---
   async function ouvrirCreerContrat() {
     setErreurContrat('');
-    setFormContrat({ numero_bien: '', locataire_id: '', date_debut: '', duree_valeur: '', duree_unite: 'mois', type_loyer: 'mensuel', loyer_mensuel: '', caution: '', signature_agent: '' });
+    setFormContrat({ numero_bien: '', locataire_id: '', date_debut: '', duree_valeur: '', duree_unite: 'mois', type_loyer: 'mensuel', loyer_mensuel: '', signature_agent: '' });
     if (!biens) await chargerBiens();
     if (!locataires) await chargerLocataires();
     setModalCreerContrat(true);
@@ -440,7 +440,6 @@ export default function AgentProprietaireDetail() {
         duree_unite: formContrat.duree_unite,
         type_loyer: formContrat.type_loyer,
         loyer_mensuel: parseInt(formContrat.loyer_mensuel),
-        caution: formContrat.caution,
         signature_proprietaire: formContrat.signature_agent,
       });
       setModalCreerContrat(false);
@@ -689,6 +688,11 @@ export default function AgentProprietaireDetail() {
                       <div className="mt-0.5 text-[13px] text-slate-400">
                         {LABELS_LOYER[c.type_loyer] || c.type_loyer} · {formaterMontant(c.loyer_mensuel)} · du {formaterDate(c.date_debut)}{c.date_fin ? ` au ${formaterDate(c.date_fin)}` : ''}
                       </div>
+                      {c.caution > 0 && (
+                        <div className={`mt-0.5 text-[13px] font-semibold ${c.statut_caution === 'payee' ? 'text-emerald-600' : 'text-accent-600'}`}>
+                          🔒 Caution {formaterMontant(c.caution)} — {c.statut_caution === 'payee' ? '✅ payée' : c.statut_caution === 'transferee' ? '↩️ transférée' : '⏳ non payée'}
+                        </div>
+                      )}
                       {c.effectue_par_agent_id && <span className="mt-2 inline-block rounded-full border border-accent-200 bg-accent-50 px-2.5 py-0.5 text-[11px] font-bold text-accent-700">🤝 Créé et signé par vous (agent)</span>}
                     </div>
                     <span className={`text-[13px] font-semibold ${LABELS_STATUT_CONTRAT[c.statut]?.cls || 'text-slate-400'}`}>
@@ -948,8 +952,10 @@ export default function AgentProprietaireDetail() {
             <label className={champLabel}>Loyer ({TYPES_LOYER_LISTE.find(t => t.value === formContrat.type_loyer)?.label?.toLowerCase()}) *</label>
             <input className={champInput} type="number" value={formContrat.loyer_mensuel} onChange={e => setFormContrat({ ...formContrat, loyer_mensuel: e.target.value })} />
 
-            <label className={champLabel}>Caution (FCFA)</label>
-            <input className={champInput} type="number" value={formContrat.caution} onChange={e => setFormContrat({ ...formContrat, caution: e.target.value })} />
+            <label className={champLabel}>Caution</label>
+            <p className={`${champInput} flex min-h-[20px] items-center bg-slate-50 text-slate-500`}>
+              {formContrat.loyer_mensuel ? `${(parseInt(formContrat.loyer_mensuel) * 3).toLocaleString('fr-FR')} FCFA (3 × loyer, calculée automatiquement)` : 'Calculée automatiquement une fois le loyer renseigné'}
+            </p>
 
             <label className={champLabel}>Votre signature (pour le compte du propriétaire) *</label>
             <input className={champInput} value={formContrat.signature_agent} onChange={e => setFormContrat({ ...formContrat, signature_agent: e.target.value })} placeholder="Votre nom complet" />
@@ -972,9 +978,16 @@ export default function AgentProprietaireDetail() {
             ) : (
               <>
                 <h3 className="mb-1 text-xl font-bold text-slate-900">🔖 {contratDetail.numero_bien} <span className="font-mono text-xs font-normal text-slate-400">#{contratDetail.id.slice(0, 8)}</span></h3>
-                <p className="mb-4 text-[13px] text-slate-400">
-                  {contratDetail.adresse}, {contratDetail.ville} · {contratDetail.locataire_nom} · {LABELS_LOYER[contratDetail.type_loyer] || contratDetail.type_loyer} · {formaterMontant(contratDetail.loyer_mensuel)}
-                </p>
+                <div className="mb-4">
+                  <p className="text-[13px] text-slate-400">
+                    {contratDetail.adresse}, {contratDetail.ville} · {contratDetail.locataire_nom} · {LABELS_LOYER[contratDetail.type_loyer] || contratDetail.type_loyer} · {formaterMontant(contratDetail.loyer_mensuel)}
+                  </p>
+                  {contratDetail.caution > 0 && (
+                    <p className={`text-[13px] font-semibold ${contratDetail.statut_caution === 'payee' ? 'text-emerald-600' : 'text-accent-600'}`}>
+                      🔒 Caution {formaterMontant(contratDetail.caution)} — {contratDetail.statut_caution === 'payee' ? '✅ payée' : contratDetail.statut_caution === 'transferee' ? '↩️ transférée' : '⏳ non payée'}
+                    </p>
+                  )}
+                </div>
 
                 {contratDetail.statut === 'demande_locataire' && delegationActive && (
                   <div className="mb-4 rounded-xl border border-blue-200 bg-blue-50 p-3.5">

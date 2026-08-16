@@ -133,7 +133,14 @@ export default function SuperAdminContrats() {
                     <div className="text-sm font-semibold text-slate-900">{c.locataire_nom}</div>
                     <div className="mt-0.5 text-xs text-slate-400">{c.locataire_telephone}</div>
                   </div>
-                  <div className="font-bold text-accent-600">{formaterMontant(c.loyer_mensuel)}</div>
+                  <div>
+                    <div className="font-bold text-accent-600">{formaterMontant(c.loyer_mensuel)}</div>
+                    {c.caution > 0 && (
+                      <div className={`mt-0.5 text-[11px] font-semibold ${c.statut_caution === 'payee' ? 'text-emerald-600' : 'text-accent-600'}`}>
+                        🔒 {formaterMontant(c.caution)} {c.statut_caution === 'payee' ? '✅' : c.statut_caution === 'transferee' ? '↩️' : '⏳'}
+                      </div>
+                    )}
+                  </div>
                   <div className="text-[13px] text-slate-400">{formaterDate(c.date_debut)}</div>
                   <div>
                     <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${st.cls}`}>

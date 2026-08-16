@@ -26,6 +26,8 @@ export default function Profil() {
   const [erreur, setErreur] = useState('');
   const [solde, setSolde] = useState(0);
   const [transactions, setTransactions] = useState([]);
+  const [cautions, setCautions] = useState([]);
+  const [cautionsTotal, setCautionsTotal] = useState(0);
   const [modalSolde, setModalSolde] = useState(null); // 'recharge' | 'retrait' | null
   const [formSolde, setFormSolde] = useState({ methode: 'mtn_momo', telephone: '', montant: '' });
   const { utilisateur, setUtilisateur, deconnecter } = useAuth();
@@ -51,7 +53,12 @@ export default function Profil() {
 
   function chargerSolde() {
     api.get('/solde')
-      .then(r => { setSolde(r.data.solde); setTransactions(r.data.transactions); })
+      .then(r => {
+        setSolde(r.data.solde);
+        setTransactions(r.data.transactions);
+        setCautions(r.data.cautions || []);
+        setCautionsTotal(r.data.cautions_total || 0);
+      })
       .catch(console.error);
   }
 
@@ -330,6 +337,35 @@ export default function Profil() {
                       <button className="rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50" onClick={() => ouvrirModalSolde('retrait')}>↓ Retirer</button>
                     </div>
                   </div>
+
+                  {cautions.length > 0 && (
+                    <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <p className="m-0 text-[13px] font-semibold text-slate-600">🔒 Cautions bloquées</p>
+                        <p className="m-0 text-lg font-extrabold text-slate-700">{formaterMontant(cautionsTotal)}</p>
+                      </div>
+                      <p className="mb-3 mt-1 text-xs text-slate-400">
+                        Ce montant est retenu par contrat en garantie du loyer et n'est pas disponible pour recharger/retirer. Il est automatiquement transféré sur votre solde principal à la fin de chaque contrat.
+                      </p>
+                      <div className="flex flex-col gap-2">
+                        {cautions.map(c => (
+                          <div key={c.contrat_id} className="flex items-center justify-between rounded-lg border border-slate-100 bg-white px-4 py-2.5">
+                            <div>
+                              <div className="text-[13px] font-semibold text-slate-800">🔖 {c.numero_bien}</div>
+                              <div className="text-xs text-slate-400">{c.adresse}, {c.ville}</div>
+                            </div>
+                            <div className="text-right">
+                              <div className="font-bold text-slate-700">{formaterMontant(c.caution_solde)}</div>
+                              <span className={`text-[11px] font-semibold ${c.statut_caution === 'payee' ? 'text-emerald-600' : 'text-accent-600'}`}>
+                                {c.statut_caution === 'payee' ? '✅ Payée' : '⏳ Non payée'}
+                                {c.statut_caution === 'payee' && c.caution_solde < c.caution ? ` (sur ${formaterMontant(c.caution)})` : ''}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   <p className="mb-3 mt-7 text-sm font-bold text-slate-900">Historique des transactions</p>
                   {transactions.length === 0 ? (

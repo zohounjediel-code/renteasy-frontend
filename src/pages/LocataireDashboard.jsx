@@ -196,6 +196,20 @@ export default function LocataireDashboard() {
     }
   }
 
+  async function payerCaution(id, montant) {
+    if (!window.confirm(`Payer la caution de ${formaterMontant(montant)} depuis votre solde RentEasy ? Cette somme sera bloquée jusqu'à la fin du contrat.`)) return;
+    setEnvoiPaiement(id);
+    try {
+      const r = await api.post(`/contrats/${id}/payer-caution`);
+      alert(r.data.message);
+      chargerDonnees();
+    } catch (e) {
+      alert(e.response?.data?.message || 'Erreur lors du paiement de la caution');
+    } finally {
+      setEnvoiPaiement(null);
+    }
+  }
+
   function ouvrirModalTranche(echeance) {
     setModalTranche(echeance);
     setMontantTranche('');
@@ -386,11 +400,25 @@ export default function LocataireDashboard() {
                   {c.stats?.impayees > 0 ? `⚠️ ${c.stats.impayees} impayée(s)` : '✅ À jour'}
                 </p>
               </div>
+              {c.caution > 0 && (
+                <div>
+                  <p className="mb-1 text-[11px] uppercase tracking-wide text-white/60">🔒 Caution</p>
+                  <p className="mb-0.5 text-[15px] font-semibold">{formaterMontant(c.caution)}</p>
+                  <p className={`text-xs ${c.statut_caution === 'payee' ? 'text-emerald-300' : 'text-accent-300'}`}>
+                    {c.statut_caution === 'payee' ? '✅ Payée' : c.statut_caution === 'transferee' ? '↩️ Transférée' : '⏳ Non payée'}
+                  </p>
+                </div>
+              )}
             </div>
             <div className="mt-4 flex flex-wrap gap-2.5">
               <button className="rounded-lg bg-white/10 px-4 py-2 text-[13px] font-semibold text-white hover:bg-white/20" onClick={() => voirContrat(c.id)}>👁️ Voir</button>
               <button className="rounded-lg bg-white/10 px-4 py-2 text-[13px] font-semibold text-white hover:bg-white/20" onClick={() => telechargerContratPDF(c.id)}>📄 Télécharger</button>
               <button className="rounded-lg bg-white/10 px-4 py-2 text-[13px] font-semibold text-white hover:bg-white/20" onClick={() => ouvrirAgentResponsable(c.id)}>👔 Agent responsable</button>
+              {c.statut_caution === 'en_attente' && (
+                <button className="rounded-lg bg-accent-500 px-4 py-2 text-[13px] font-bold text-white hover:bg-accent-600 disabled:opacity-60" onClick={() => payerCaution(c.id, c.caution)} disabled={envoiPaiement === c.id}>
+                  {envoiPaiement === c.id ? '...' : `🔒 Payer la caution (${formaterMontant(c.caution)})`}
+                </button>
+              )}
               <button className="rounded-lg bg-red-500/80 px-4 py-2 text-[13px] font-semibold text-white hover:bg-red-500" onClick={() => ouvrirModalResiliation(c)}>⚠️ Résilier</button>
             </div>
           </div>
@@ -517,8 +545,17 @@ export default function LocataireDashboard() {
                   <div className={blocDetail}>
                     <p className={blocDetailTitre}>💰 Loyer</p>
                     <p className="m-0 text-lg font-bold text-brand-700">{formaterMontant(contratDetail.loyer_mensuel)}</p>
-                    <p className="m-0 text-[13px] text-slate-400">Périodicité : {contratDetail.type_loyer}{contratDetail.caution > 0 ? ` · Caution : ${formaterMontant(contratDetail.caution)}` : ''}</p>
+                    <p className="m-0 text-[13px] text-slate-400">Périodicité : {contratDetail.type_loyer}</p>
                   </div>
+                  {contratDetail.caution > 0 && (
+                    <div className={blocDetail}>
+                      <p className={blocDetailTitre}>🔒 Caution</p>
+                      <p className="m-0 text-lg font-bold text-slate-700">{formaterMontant(contratDetail.caution)}</p>
+                      <p className={`m-0 text-[13px] font-semibold ${contratDetail.statut_caution === 'payee' ? 'text-emerald-600' : 'text-accent-600'}`}>
+                        {contratDetail.statut_caution === 'payee' ? '✅ Payée' : contratDetail.statut_caution === 'transferee' ? '↩️ Transférée sur votre solde' : '⏳ Non payée'}
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 {contratDetail.photos && contratDetail.photos.length > 0 && (

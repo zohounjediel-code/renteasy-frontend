@@ -65,6 +65,13 @@ const STATUT_ECHEANCE = {
   partielle: { cls: 'bg-blue-50 text-blue-700', label: 'Partielle' },
 };
 
+const STATUT_CAUTION_LABELS = {
+  non_requise: { cls: 'text-slate-400', label: 'Non requise' },
+  en_attente: { cls: 'text-accent-600', label: '⏳ En attente de paiement' },
+  payee: { cls: 'text-emerald-600', label: '✅ Payée' },
+  transferee: { cls: 'text-slate-400', label: '↩️ Transférée au solde du locataire' },
+};
+
 export default function Locataires() {
   const [locataires, setLocataires] = useState([]);
   const [liaisonsEnAttente, setLiaisonsEnAttente] = useState([]);
@@ -298,7 +305,6 @@ export default function Locataires() {
         duree_unite: formContrat.duree_unite,
         type_loyer: formContrat.type_loyer,
         loyer_mensuel: parseInt(formContrat.loyer_mensuel),
-        caution: formContrat.caution,
         signature_proprietaire: formContrat.signature_proprietaire,
         ...(enConsultationAdmin ? { proprietaire_id: proprietaireIdConsulte } : {}),
       });
@@ -606,6 +612,11 @@ export default function Locataires() {
                 <input className={champInput} type="number" placeholder="80000" value={formContrat.loyer_mensuel} onChange={e => setFormContrat({ ...formContrat, loyer_mensuel: e.target.value })} />
               </div>
             </div>
+            {formContrat.loyer_mensuel > 0 && (
+              <p className="mt-2 text-xs text-slate-400">
+                🔒 Caution : {(parseInt(formContrat.loyer_mensuel) * 3).toLocaleString('fr-FR')} FCFA (3 × loyer, calculée automatiquement — à payer par le locataire depuis son solde une fois le contrat actif)
+              </p>
+            )}
             <div className="my-4 rounded-xl border border-brand-200 bg-brand-50 px-4 py-3.5">
               <label className="mb-1 block text-sm font-semibold text-brand-700">✍️ Signature électronique du propriétaire *</label>
               <p className="mb-2 text-xs text-slate-500">
@@ -638,6 +649,16 @@ export default function Locataires() {
                 <p className="text-lg font-bold text-brand-700">{formaterMontant(contratDetail.loyer_mensuel)}</p>
                 <p className="text-xs text-slate-400">Commission RentEasy : {formaterMontant(Math.round(contratDetail.loyer_mensuel * 0.05))}</p>
               </div>
+              {contratDetail.caution > 0 && (
+                <div className={bloc}>
+                  <p className={blocTitre}>🔒 Caution</p>
+                  <p className="text-lg font-bold text-slate-700">{formaterMontant(contratDetail.caution)}</p>
+                  <p className={`text-xs font-semibold ${STATUT_CAUTION_LABELS[contratDetail.statut_caution]?.cls || 'text-slate-400'}`}>
+                    {STATUT_CAUTION_LABELS[contratDetail.statut_caution]?.label || contratDetail.statut_caution}
+                    {contratDetail.statut_caution === 'payee' && contratDetail.caution_solde < contratDetail.caution && ` (reste ${formaterMontant(contratDetail.caution_solde)} après déduction(s))`}
+                  </p>
+                </div>
+              )}
             </div>
 
             {contratDetail.photos && contratDetail.photos.length > 0 && (
