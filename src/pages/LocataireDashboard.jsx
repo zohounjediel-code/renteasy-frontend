@@ -632,6 +632,11 @@ export default function LocataireDashboard() {
             <p className="mb-3 text-[13px] text-slate-500">
               Dessinez votre signature ci-dessous pour signer électroniquement ce contrat. Il deviendra alors officiellement actif.
             </p>
+            {modalSignature.caution > 0 && (
+              <p className="mb-3 rounded-lg bg-accent-50 px-3 py-2 text-[13px] font-semibold text-accent-800">
+                🔒 La signature débitera automatiquement {formaterMontant(modalSignature.caution)} de caution depuis votre solde. Assurez-vous d'avoir ce montant disponible.
+              </p>
+            )}
             <SignaturePad onChange={setSignatureLocataire} />
             {erreurSignature && <p className="mt-2 text-[13px] text-red-600">{erreurSignature}</p>}
             <div className="mt-5 flex gap-3">
